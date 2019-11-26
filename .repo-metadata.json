@@ -1,0 +1,9 @@
+{
+  "name": "storage-nio",
+  "name_pretty": "Cloud Storage",
+  "release_level": "alpha",
+  "language": "java",
+  "repo": "googleapis/java-storage-nio",
+  "repo_short": "java-storage-nio",
+  "distribution_name": "com.google.cloud:google-cloud-nio"
+}

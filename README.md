@@ -1,5 +1,4 @@
-NIO Filesystem Provider for Google Cloud Storage
-========================================================
+# NIO Filesystem Provider for Google Cloud Storage
 
 Implementation of Java 7 `java.nio.file.FileSystem` for
 [Google Cloud Storage](https://cloud.google.com/storage/).
@@ -7,17 +6,16 @@ Implementation of Java 7 `java.nio.file.FileSystem` for
 This library allows you to use the standardized Java file system API
 for interacting with Google Cloud Storage.
 
-[![Kokoro CI](http://storage.googleapis.com/cloud-devrel-public/java/badges/google-cloud-java/master.svg)](http://storage.googleapis.com/cloud-devrel-public/java/badges/google-cloud-java/master.html)
+[![Kokoro CI](http://storage.googleapis.com/cloud-devrel-public/java/badges/java-storage-nio/master.svg)](http://storage.googleapis.com/cloud-devrel-public/java/badges/java-storage-nio/master.html)
 [![Maven](https://img.shields.io/maven-central/v/com.google.cloud/google-cloud-nio.svg)]( https://img.shields.io/maven-central/v/com.google.cloud/google-cloud-nio.svg)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/9da006ad7c3a4fe1abd142e77c003917)](https://www.codacy.com/app/mziccard/google-cloud-java)
 
--  [API Documentation](https://googleapis.dev/java/google-cloud-clients/latest/index.html?com/google/cloud/storage/contrib/nio/package-summary.html)
+-  [API Documentation](https://googleapis.dev/java/google-cloud-nio/latest/)
 
 > Note: This client is a work-in-progress, and may occasionally
 > make backwards-incompatible changes.
 
-Quickstart
-----------
+## Quickstart
+
 If you are using Maven with a BOM, add this to your pom.xml file.
 ```xml
 <dependencyManagement>
@@ -56,29 +54,25 @@ libraryDependencies += "com.google.cloud" % "google-cloud-nio" % "0.119.0-alpha"
 ```
 [//]: # ({x-version-update-end})
 
-Example Applications
--------------------
+## Example Applications
 
-* [`Stat`](../../../google-cloud-examples/src/main/java/com/google/cloud/examples/nio/Stat.java)
+* [`Stat`](https://github.com/googleapis/google-cloud-java/tree/master/google-cloud-examples/src/main/java/com/google/cloud/examples/nio/Stat.java)
 shows how to get started with NIO.
 
-* [`ParallelCountBytes`](../../../google-cloud-examples/src/main/java/com/google/cloud/examples/nio/ParallelCountBytes.java)
+* [`ParallelCountBytes`](https://github.com/googleapis/google-cloud-java/tree/master/google-cloud-examples/src/main/java/com/google/cloud/examples/nio/ParallelCountBytes.java)
 efficiently downloads a file from Google Cloud Storage.
 
-* [`ListFileSystems`](../google-cloud-nio-examples/README.md) illustrates how
+* [`ListFileSystems`](google-cloud-nio-examples/README.md) illustrates how
 NIO can add Google Cloud Storage support to some legacy programs, without
 having to modify them.
 
-
-Authentication
---------------
+## Authentication
 
 See the [Authentication](https://github.com/googleapis/google-cloud-java#authentication)
 section in the base directory's README. This shows how to construct the `StorageOptions` object,
 which you can then pass to `CloudStorageFileSystem.forBucket`.
 
-About Google Cloud Storage
---------------------------
+## About Google Cloud Storage
 
 [Google Cloud Storage][cloud-storage] is a durable and highly available
 object storage service. Google Cloud Storage is almost infinitely scalable
@@ -88,16 +82,15 @@ object will be returned to any GET, globally.
 See the [Google Cloud Storage docs][cloud-storage-activation] for more details
 on how to activate Cloud Storage for your project.
 
-About Java NIO Providers
-------------------------
+## About Java NIO Providers
 
 Java NIO Providers is an extension mechanism that is part of Java and allows
 third parties to extend Java's [normal File API][java-file-api] to support
 additional filesystems.
 
-Getting Started
----------------
-#### Prerequisites
+## Getting Started
+
+### Prerequisites
 
 For this tutorial, you will need a [Google Developers
 Console](https://console.developers.google.com/) project with "Google Cloud
@@ -111,7 +104,7 @@ environment by [installing the Google Cloud SDK](https://cloud.google.com/sdk/)
 and running the following commands in command line: `gcloud auth login` and
 `gcloud config set project [YOUR PROJECT ID]`.
 
-#### Installation and setup
+### Installation and setup
 You'll need to obtain the `google-cloud-nio` library.
 
 There are two ways to use this library.
@@ -123,7 +116,7 @@ The second way is more complicated, but it allows you to add Google Cloud
 Storage support to some legacy Java programs. This approach is described in the
 [google-cloud-nio-examples README](../google-cloud-nio-examples/README.md).
 
-#### Accessing files
+### Accessing files
 
 The simplest way to get started is with `Paths` and `Files`:
 
@@ -151,8 +144,7 @@ You can also set various attributes using CloudStorageOptions static helpers:
         withMimeType(MediaType.CSV_UTF8),
         withoutCaching());
 
-Limitations
------------
+## Limitations
 
 This library is usable, but not yet complete. The following features are not
 yet implemented:
@@ -176,9 +168,9 @@ This allows you to do path manipulation in the same manner as you would with the
 system implementation. You can disable this feature with
 `CloudStorageConfiguration.usePseudoDirectories()`.
 
-#### Complete source code
+## Complete source code
 
-There are examples in [google-cloud-examples](../../google-cloud-examples/src/main/java/com/google/cloud/examples/nio/)
+There are examples in [google-cloud-examples](https://github.com/googleapis/google-cloud-java/tree/master/google-cloud-examples/src/main/java/com/google/cloud/examples/nio/)
 for your perusal.
 
 Java Versions
