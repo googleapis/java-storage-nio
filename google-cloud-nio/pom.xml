@@ -109,12 +109,19 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>3.5.1</version>
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
           <encoding>UTF-8</encoding>
           <compilerArgument>-Xlint:unchecked</compilerArgument>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.auto.value</groupId>
+              <artifactId>auto-value</artifactId>
+              <version>${autovalue.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <!-- shade the jar so we can demo adding the NIO jar to add functionality. -->
