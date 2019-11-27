@@ -17,6 +17,7 @@
   <properties>
     <site.installationModule>google-cloud-nio</site.installationModule>
     <autovalue.version>1.7</autovalue.version>
+    <hamcrest.version>2.2</hamcrest.version>
   </properties>
   <dependencies>
     <dependency>
@@ -70,6 +71,11 @@
       <artifactId>google-api-services-storage</artifactId>
       <version>v1-rev20190910-1.30.3</version>
     </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>${hamcrest.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>junit</groupId>
@@ -92,14 +98,16 @@
       <version>3.1.0</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <version>2.2</version>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <usedDependencies>com.google.auto.service:auto-service</usedDependencies>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
