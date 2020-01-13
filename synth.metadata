@@ -1,0 +1,12 @@
+{
+  "updateTime": "2020-01-13T18:30:24.490550Z",
+  "sources": [
+    {
+      "template": {
+        "name": "java_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.5.2"
+      }
+    }
+  ]
+}

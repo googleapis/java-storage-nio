@@ -1,0 +1,10 @@
+{
+  "name": "google-cloud-nio",
+  "name_pretty": "NIO Filesystem Provider for Google Cloud Storage",
+  "client_documentation": "https://googleapis.dev/java/google-cloud-nio/latest",
+  "release_level": "alpha",
+  "language": "java",
+  "repo": "googleapis/java-storage-nio",
+  "repo_short": "java-storage-nio",
+  "distribution_name": "com.google.cloud:google-cloud-nio"
+}
