@@ -73,7 +73,7 @@
     <github.global.server>github</github.global.server>
     <site.installationModule>google-cloud-storage-nio-parent</site.installationModule>
     <junit.version>4.13</junit.version>
-    <guava.version>28.1-android</guava.version>
+    <guava.version>28.2-android</guava.version>
   </properties>
 
   <dependencyManagement>
@@ -82,6 +82,11 @@
         <groupId>com.google.cloud</groupId>
         <artifactId>google-cloud-storage</artifactId>
         <version>1.103.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.apis</groupId>
+        <artifactId>google-api-services-storage</artifactId>
+        <version>v1-rev20191011-1.30.3</version>
       </dependency>
       <dependency>
         <groupId>com.google.auto.value</groupId>
@@ -95,6 +100,49 @@
         <version>3.11.1</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+       <groupId>com.google.auto.value</groupId>
+        <artifactId>auto-value-annotations</artifactId>
+        <version>1.7</version>
+      </dependency>
+<!--      <dependency>-->
+<!--        <groupId>com.google.auto.service</groupId>-->
+<!--        <artifactId>auto-service-annotations</artifactId>-->
+<!--        <version>${auto-service-annotations.version}</version>-->
+<!--      </dependency>-->
+      <dependency>
+        <groupId>com.google.cloud</groupId>
+        <artifactId>google-cloud-core-bom</artifactId>
+        <version>1.92.2</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.api</groupId>
+        <artifactId>gax-bom</artifactId>
+        <version>1.53.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.http-client</groupId>
+        <artifactId>google-http-client-bom</artifactId>
+        <version>1.34.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-bom</artifactId>
+        <version>${guava.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>3.0.2</version>
       </dependency>
 
       <dependency>
@@ -185,7 +233,6 @@
             <link>https://developers.google.com/protocol-buffers/docs/reference/java/</link>
             <link>https://googleapis.dev/java/google-auth-library/latest/</link>
             <link>https://googleapis.dev/java/gax/latest/</link>
-            <link>https://googleapis.github.io/api-common-java/${google.api-common.version}/apidocs/</link>
           </links>
         </configuration>
       </plugin>
@@ -196,7 +243,6 @@
     <profile>
       <id>include-samples</id>
       <modules>
-        <module>samples</module>
         <module>google-cloud-nio-examples</module>
       </modules>
     </profile>
