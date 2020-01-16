@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.cloud.nio.examples;
+package com.google.cloud.nio.retrofit;
 
 import java.io.IOException;
 import java.nio.file.spi.FileSystemProvider;
 
-/** ListFilesystems is a super-simple program that lists the available NIO filesystems. */
+/**
+ * ListFilesystems is a simple program that lists the available NIO filesystems.
+ *
+ * Note that the code here doesn't do anything special to link in the google-cloud-nio
+ * code. It doesn't use any of its methods.
+ *
+ * The README explains how, by just adding the google-cloud-nio JAR in the classpath,
+ * this program will magically gain the ability to read files on Google Cloud Storage.
+ * */
 public class ListFilesystems {
 
   /** See the class documentation. */
