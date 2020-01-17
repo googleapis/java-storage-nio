@@ -17,13 +17,12 @@
 package com.google.cloud.storage.contrib.nio;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.cloud.WriteChannel;
@@ -95,7 +94,7 @@ public class CloudStorageWriteChannelTest {
   public void testSize() throws IOException {
     assertThat(chan.size()).isEqualTo(0L);
     verify(gcsChannel).isOpen();
-    verifyZeroInteractions(gcsChannel);
+    verifyNoMoreInteractions(gcsChannel);
   }
 
   @Test
