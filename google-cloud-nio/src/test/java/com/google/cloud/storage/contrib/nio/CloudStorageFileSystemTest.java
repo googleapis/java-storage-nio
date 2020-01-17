@@ -18,8 +18,6 @@ package com.google.cloud.storage.contrib.nio;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
@@ -271,9 +269,8 @@ public class CloudStorageFileSystemTest {
       Files.delete(fs.getPath("dir/"));
       Assert.fail();
     } catch (CloudStoragePseudoDirectoryException ex) {
-      String message = "Can't perform I/O on pseudo-directories (trailing slash): dir/";
-      assertNotNull(ex.getMessage());
-      assertEquals(message, ex.getMessage());
+      assertThat(ex.getMessage())
+          .isEqualTo("Can't perform I/O on pseudo-directories (trailing slash): dir/");
     }
   }
 

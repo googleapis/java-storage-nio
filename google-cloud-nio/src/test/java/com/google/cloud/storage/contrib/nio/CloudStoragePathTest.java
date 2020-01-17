@@ -66,7 +66,6 @@ public class CloudStoragePathTest {
       fs.getPath("").getBlobId();
       Assert.fail();
     } catch (IllegalArgumentException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage()).isEqualTo("Object names cannot be empty.");
     }
   }
@@ -93,7 +92,6 @@ public class CloudStoragePathTest {
       fs.getPath("a//b").getBlobId().getName();
       Assert.fail();
     } catch (IllegalArgumentException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage())
           .isEqualTo(
               "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a//b");
@@ -114,7 +112,6 @@ public class CloudStoragePathTest {
       fs.getPath("a//b/..").getBlobId().getName();
       Assert.fail();
     } catch (IllegalArgumentException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage())
           .isEqualTo(
               "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a//b/..");
@@ -214,7 +211,6 @@ public class CloudStoragePathTest {
       fs.getPath("a/./b").toRealPath();
       Assert.fail();
     } catch (IllegalArgumentException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage())
           .isEqualTo(
               "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a/./b");
@@ -229,7 +225,6 @@ public class CloudStoragePathTest {
       fs.getPath("a/../b").toRealPath();
       Assert.fail();
     } catch (IllegalArgumentException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage())
           .isEqualTo(
               "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a/../b");
@@ -242,7 +237,6 @@ public class CloudStoragePathTest {
       fs.getPath("a//b").toRealPath();
       Assert.fail();
     } catch (IllegalArgumentException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage())
           .isEqualTo(
               "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a//b");
@@ -343,7 +337,6 @@ public class CloudStoragePathTest {
       gcs.getPath("/etc").relativize(FileSystems.getDefault().getPath("/dog"));
       Assert.fail();
     } catch (ProviderMismatchException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage()).contains("Not a Cloud Storage path: /dog");
     }
   }
@@ -355,7 +348,6 @@ public class CloudStoragePathTest {
       gcs.getPath("/dog").relativize(FileSystems.getDefault().getPath("/etc"));
       Assert.fail();
     } catch (ProviderMismatchException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage()).contains("Not a Cloud Storage path: /etc");
     }
   }
@@ -374,7 +366,6 @@ public class CloudStoragePathTest {
       gcs.getPath("etc").resolve(FileSystems.getDefault().getPath("/dog"));
       Assert.fail();
     } catch (ProviderMismatchException ex) {
-      assertThat(ex.getMessage()).isNotNull();
       assertThat(ex.getMessage()).contains("Not a Cloud Storage path: /dog");
     }
   }
@@ -481,9 +472,7 @@ public class CloudStoragePathTest {
       path.toFile();
       Assert.fail();
     } catch (UnsupportedOperationException ex) {
-      String expectedMessage = "GCS objects aren't available locally";
-      assertThat(ex.getMessage()).isNotNull();
-      assertThat(ex.getMessage()).isEqualTo(expectedMessage);
+      assertThat(ex.getMessage()).isEqualTo("GCS objects aren't available locally");
     }
   }
 
