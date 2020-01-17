@@ -21,17 +21,13 @@ import static org.junit.Assume.assumeTrue;
 
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link UnixPath}. */
 @RunWith(JUnit4.class)
 public class UnixPathTest {
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void testNormalize() {
@@ -131,9 +127,8 @@ public class UnixPathTest {
     assertThat(p("").relativize(p("foo/mop/top/"))).isEqualTo(p("foo/mop/top/"));
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testRelativize_absoluteMismatch_notAllowed() {
-    thrown.expect(IllegalArgumentException.class);
     p("/a/b/").relativize(p(""));
   }
 
@@ -262,33 +257,28 @@ public class UnixPathTest {
     assertThat(p("").subpath(0, 1)).isEqualTo(p(""));
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testSubpath_root_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
     p("/").subpath(0, 1);
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testSubpath_negativeIndex_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
     p("/eins/zwei/drei/vier").subpath(-1, 1);
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testSubpath_notEnoughElements_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
     p("/eins/zwei/drei/vier").subpath(0, 5);
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testSubpath_beginAboveEnd_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
     p("/eins/zwei/drei/vier").subpath(1, 0);
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testSubpath_beginAndEndEqual_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
     p("/eins/zwei/drei/vier").subpath(0, 0);
   }
 

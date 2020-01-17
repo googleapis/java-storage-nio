@@ -24,9 +24,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -102,8 +100,6 @@ public class CloudStorageWriteFileChannelTest {
       return this;
     }
   }
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private CloudStorageWriteFileChannel fileChannel;
   private SeekableByteChannel writeChannel;

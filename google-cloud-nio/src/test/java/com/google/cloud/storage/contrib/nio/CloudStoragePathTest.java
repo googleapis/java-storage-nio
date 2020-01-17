@@ -29,18 +29,15 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.ProviderMismatchException;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link CloudStoragePath}. */
 @RunWith(JUnit4.class)
 public class CloudStoragePathTest {
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void before() {
@@ -66,8 +63,11 @@ public class CloudStoragePathTest {
   @Test
   public void testGetGcsFilename_empty_notAllowed() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(IllegalArgumentException.class);
       fs.getPath("").getBlobId();
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage()).isEqualTo("Object names cannot be empty.");
     }
   }
 
@@ -90,8 +90,13 @@ public class CloudStoragePathTest {
   @Test
   public void testGetGcsFilename_extraSlashes_throwsIae() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(IllegalArgumentException.class);
       fs.getPath("a//b").getBlobId().getName();
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage())
+          .isEqualTo(
+              "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a//b");
     }
   }
 
@@ -106,8 +111,13 @@ public class CloudStoragePathTest {
   @Test
   public void testGetGcsFilename_freaksOutOnExtraSlashesAndDotDirs() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(IllegalArgumentException.class);
       fs.getPath("a//b/..").getBlobId().getName();
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage())
+          .isEqualTo(
+              "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a//b/..");
     }
   }
 
@@ -131,18 +141,16 @@ public class CloudStoragePathTest {
     }
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testGetName_negative_throwsIae() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(IllegalArgumentException.class);
       fs.getPath("angel").getName(-1);
     }
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testGetName_overflow_throwsIae() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(IllegalArgumentException.class);
       fs.getPath("angel").getName(1);
     }
   }
@@ -203,9 +211,13 @@ public class CloudStoragePathTest {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
       fs.getPath("a/hi./b").toRealPath();
       fs.getPath("a/.hi/b").toRealPath();
-      thrown.expect(IllegalArgumentException.class);
-      thrown.expectMessage("dot-dir");
       fs.getPath("a/./b").toRealPath();
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage())
+          .isEqualTo(
+              "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a/./b");
     }
   }
 
@@ -214,18 +226,26 @@ public class CloudStoragePathTest {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
       fs.getPath("a/hi../b").toRealPath();
       fs.getPath("a/..hi/b").toRealPath();
-      thrown.expect(IllegalArgumentException.class);
-      thrown.expectMessage("dot-dir");
       fs.getPath("a/../b").toRealPath();
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage())
+          .isEqualTo(
+              "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a/../b");
     }
   }
 
   @Test
   public void testToRealPath_extraSlashes_throwsIae() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(IllegalArgumentException.class);
-      thrown.expectMessage("extra slashes");
       fs.getPath("a//b").toRealPath();
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage())
+          .isEqualTo(
+              "I/O not allowed on dot-dirs or extra slashes when !permitEmptyPathComponents: /a//b");
     }
   }
 
@@ -320,8 +340,11 @@ public class CloudStoragePathTest {
   @Test
   public void testRelativize_providerMismatch() throws IOException {
     try (CloudStorageFileSystem gcs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(ProviderMismatchException.class);
       gcs.getPath("/etc").relativize(FileSystems.getDefault().getPath("/dog"));
+      Assert.fail();
+    } catch (ProviderMismatchException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage()).contains("Not a Cloud Storage path: /dog");
     }
   }
 
@@ -329,8 +352,11 @@ public class CloudStoragePathTest {
   @SuppressWarnings("ReturnValueIgnored") // testing that an Exception is thrown
   public void testRelativize_providerMismatch2() throws IOException {
     try (CloudStorageFileSystem gcs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(ProviderMismatchException.class);
       gcs.getPath("/dog").relativize(FileSystems.getDefault().getPath("/etc"));
+      Assert.fail();
+    } catch (ProviderMismatchException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage()).contains("Not a Cloud Storage path: /etc");
     }
   }
 
@@ -345,8 +371,11 @@ public class CloudStoragePathTest {
   @Test
   public void testResolve_providerMismatch() throws IOException {
     try (CloudStorageFileSystem gcs = CloudStorageFileSystem.forBucket("doodle")) {
-      thrown.expect(ProviderMismatchException.class);
       gcs.getPath("etc").resolve(FileSystems.getDefault().getPath("/dog"));
+      Assert.fail();
+    } catch (ProviderMismatchException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage()).contains("Not a Cloud Storage path: /dog");
     }
   }
 
@@ -449,8 +478,12 @@ public class CloudStoragePathTest {
   public void testToFile_unsupported() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
       Path path = fs.getPath("/lol");
-      thrown.expect(UnsupportedOperationException.class);
       path.toFile();
+      Assert.fail();
+    } catch (UnsupportedOperationException ex) {
+      String expectedMessage = "GCS objects aren't available locally";
+      assertThat(ex.getMessage()).isNotNull();
+      assertThat(ex.getMessage()).isEqualTo(expectedMessage);
     }
   }
 

@@ -26,17 +26,13 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import java.net.URI;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link CloudStorageFileSystemProvider} late initialization. */
 @RunWith(JUnit4.class)
 public class CloudStorageLateInitializationTest {
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private StorageOptions mockOptions;
 

@@ -21,17 +21,13 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.net.SocketTimeoutException;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link CloudStorageConfiguration}. */
 @RunWith(JUnit4.class)
 public class CloudStorageConfigurationTest {
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void testBuilder() {
@@ -81,9 +77,8 @@ public class CloudStorageConfigurationTest {
         .isEqualTo(ImmutableList.<Class<? extends Exception>>of(SocketTimeoutException.class));
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testFromMap_badKey_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
     CloudStorageConfiguration.fromMap(ImmutableMap.of("lol", "/omg"));
   }
 

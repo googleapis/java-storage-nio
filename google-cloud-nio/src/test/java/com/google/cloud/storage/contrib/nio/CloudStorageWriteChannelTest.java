@@ -32,17 +32,13 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonReadableChannelException;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link CloudStorageWriteChannel}. */
 @RunWith(JUnit4.class)
 public class CloudStorageWriteChannelTest {
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private final WriteChannel gcsChannel = mock(WriteChannel.class);
   private final CloudStorageWriteChannel chan = new CloudStorageWriteChannel(gcsChannel);
@@ -52,9 +48,8 @@ public class CloudStorageWriteChannelTest {
     when(gcsChannel.isOpen()).thenReturn(true);
   }
 
-  @Test
+  @Test(expected = NonReadableChannelException.class)
   public void testRead_throwsNonReadableChannelException() throws IOException {
-    thrown.expect(NonReadableChannelException.class);
     chan.read(ByteBuffer.allocate(1));
   }
 
@@ -73,10 +68,9 @@ public class CloudStorageWriteChannelTest {
     verifyNoMoreInteractions(gcsChannel);
   }
 
-  @Test
+  @Test(expected = ClosedChannelException.class)
   public void testWrite_whenClosed_throwsCce() throws IOException {
     when(gcsChannel.isOpen()).thenReturn(false);
-    thrown.expect(ClosedChannelException.class);
     chan.write(ByteBuffer.allocate(1));
   }
 
@@ -98,17 +92,15 @@ public class CloudStorageWriteChannelTest {
     verifyZeroInteractions(gcsChannel);
   }
 
-  @Test
+  @Test(expected = ClosedChannelException.class)
   public void testSize_whenClosed_throwsCce() throws IOException {
     when(gcsChannel.isOpen()).thenReturn(false);
-    thrown.expect(ClosedChannelException.class);
     chan.size();
   }
 
-  @Test
+  @Test(expected = ClosedChannelException.class)
   public void testPosition_whenClosed_throwsCce() throws IOException {
     when(gcsChannel.isOpen()).thenReturn(false);
-    thrown.expect(ClosedChannelException.class);
     chan.position();
   }
 
