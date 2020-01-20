@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.net.SocketTimeoutException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -77,9 +78,14 @@ public class CloudStorageConfigurationTest {
         .isEqualTo(ImmutableList.<Class<? extends Exception>>of(SocketTimeoutException.class));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testFromMap_badKey_throwsIae() {
-    CloudStorageConfiguration.fromMap(ImmutableMap.of("lol", "/omg"));
+    try {
+      CloudStorageConfiguration.fromMap(ImmutableMap.of("lol", "/omg"));
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+    }
   }
 
   @Test

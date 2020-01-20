@@ -138,17 +138,23 @@ public class CloudStoragePathTest {
     }
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testGetName_negative_throwsIae() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
       fs.getPath("angel").getName(-1);
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
     }
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testGetName_overflow_throwsIae() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("doodle")) {
       fs.getPath("angel").getName(1);
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
     }
   }
 

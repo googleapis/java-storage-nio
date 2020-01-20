@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -126,9 +127,14 @@ public class CloudStorageFileSystemProviderTest {
     Files.delete(path);
   }
 
-  @Test(expected = CloudStoragePseudoDirectoryException.class)
+  @Test
   public void testReadAllBytes_trailingSlash() throws Exception {
-    Files.readAllBytes(Paths.get(URI.create("gs://bucket/wat/")));
+    try {
+      Files.readAllBytes(Paths.get(URI.create("gs://bucket/wat/")));
+      Assert.fail();
+    } catch (CloudStoragePseudoDirectoryException ex) {
+      assertThat(ex.getClass()).isEqualTo(CloudStoragePseudoDirectoryException.class);
+    }
   }
 
   @Test
@@ -182,16 +188,27 @@ public class CloudStorageFileSystemProviderTest {
     }
   }
 
-  @Test(expected = CloudStoragePseudoDirectoryException.class)
+  @Test
   public void testNewByteChannelRead_trailingSlash() throws Exception {
-    Path path = Paths.get(URI.create("gs://bucket/wat/"));
-    Files.newByteChannel(path);
+    try {
+      Path path = Paths.get(URI.create("gs://bucket/wat/"));
+      Files.newByteChannel(path);
+      Assert.fail();
+    } catch (CloudStoragePseudoDirectoryException ex) {
+      assertThat(ex.getMessage())
+          .isEqualTo("Can't perform I/O on pseudo-directories (trailing slash): /wat/");
+    }
   }
 
-  @Test(expected = NoSuchFileException.class)
+  @Test
   public void testNewByteChannelRead_notFound() throws Exception {
-    Path path = Paths.get(URI.create("gs://bucket/wednesday"));
-    Files.newByteChannel(path);
+    try {
+      Path path = Paths.get(URI.create("gs://bucket/wednesday"));
+      Files.newByteChannel(path);
+      Assert.fail();
+    } catch (NoSuchFileException ex) {
+      assertThat(ex.getClass()).isEqualTo(NoSuchFileException.class);
+    }
   }
 
   @Test
@@ -223,19 +240,25 @@ public class CloudStorageFileSystemProviderTest {
     }
   }
 
-  @Test(expected = CloudStoragePseudoDirectoryException.class)
+  @Test
   public void testNewInputStream_trailingSlash() throws Exception {
     Path path = Paths.get(URI.create("gs://bucket/wat/"));
     try (InputStream input = Files.newInputStream(path)) {
       input.read();
+      Assert.fail();
+    } catch (CloudStoragePseudoDirectoryException ex) {
+      assertThat(ex.getClass()).isEqualTo(CloudStoragePseudoDirectoryException.class);
     }
   }
 
-  @Test(expected = NoSuchFileException.class)
+  @Test
   public void testNewInputStream_notFound() throws Exception {
     Path path = Paths.get(URI.create("gs://cry/wednesday"));
     try (InputStream input = Files.newInputStream(path)) {
       input.read();
+      Assert.fail();
+    } catch (NoSuchFileException ex) {
+      assertThat(ex.getClass()).isEqualTo(NoSuchFileException.class);
     }
   }
 
@@ -271,10 +294,15 @@ public class CloudStorageFileSystemProviderTest {
     assertThat(new String(Files.readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
   }
 
-  @Test(expected = CloudStoragePseudoDirectoryException.class)
+  @Test
   public void testNewOutputStream_trailingSlash() throws Exception {
-    Path path = Paths.get(URI.create("gs://bucket/wat/"));
-    Files.newOutputStream(path);
+    try {
+      Path path = Paths.get(URI.create("gs://bucket/wat/"));
+      Files.newOutputStream(path);
+      Assert.fail();
+    } catch (CloudStoragePseudoDirectoryException ex) {
+      assertThat(ex.getClass()).isEqualTo(CloudStoragePseudoDirectoryException.class);
+    }
   }
 
   @Test
@@ -283,17 +311,27 @@ public class CloudStorageFileSystemProviderTest {
     Files.newOutputStream(path, CREATE_NEW);
   }
 
-  @Test(expected = FileAlreadyExistsException.class)
+  @Test
   public void testNewOutputStream_createNew_alreadyExists() throws Exception {
-    Path path = Paths.get(URI.create("gs://cry/wednesday"));
-    Files.write(path, SINGULARITY.getBytes(UTF_8));
-    Files.newOutputStream(path, CREATE_NEW);
+    try {
+      Path path = Paths.get(URI.create("gs://cry/wednesday"));
+      Files.write(path, SINGULARITY.getBytes(UTF_8));
+      Files.newOutputStream(path, CREATE_NEW);
+      Assert.fail();
+    } catch (FileAlreadyExistsException ex) {
+      assertThat(ex.getClass()).isEqualTo(FileAlreadyExistsException.class);
+    }
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testWrite_objectNameWithExtraSlashes_throwsIae() throws Exception {
-    Path path = Paths.get(URI.create("gs://double/slash//yep"));
-    Files.write(path, FILE_CONTENTS, UTF_8);
+    try {
+      Path path = Paths.get(URI.create("gs://double/slash//yep"));
+      Files.write(path, FILE_CONTENTS, UTF_8);
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+    }
   }
 
   @Test
@@ -367,9 +405,14 @@ public class CloudStorageFileSystemProviderTest {
     assertThat(Files.size(path)).isGreaterThan(100L);
   }
 
-  @Test(expected = CloudStoragePseudoDirectoryException.class)
+  @Test
   public void testWrite_trailingSlash() throws Exception {
-    Files.write(Paths.get(URI.create("gs://greenbean/adipose/")), FILE_CONTENTS, UTF_8);
+    try {
+      Files.write(Paths.get(URI.create("gs://greenbean/adipose/")), FILE_CONTENTS, UTF_8);
+      Assert.fail();
+    } catch (CloudStoragePseudoDirectoryException ex) {
+      assertThat(ex.getClass()).isEqualTo(CloudStoragePseudoDirectoryException.class);
+    }
   }
 
   @Test
@@ -448,9 +491,14 @@ public class CloudStorageFileSystemProviderTest {
     assertThat(Files.exists(Paths.get(URI.create("gs://love/fashion")))).isFalse();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testDelete_dotDirNotNormalized_throwsIae() throws Exception {
-    Files.delete(Paths.get(URI.create("gs://love/fly/../passion")));
+    try {
+      Files.delete(Paths.get(URI.create("gs://love/fly/../passion")));
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+    }
   }
 
   @Test
@@ -469,9 +517,14 @@ public class CloudStorageFileSystemProviderTest {
     }
   }
 
-  @Test(expected = NoSuchFileException.class)
+  @Test
   public void testDelete_notFound() throws Exception {
-    Files.delete(Paths.get(URI.create("gs://loveh/passionehu")));
+    try {
+      Files.delete(Paths.get(URI.create("gs://loveh/passionehu")));
+      Assert.fail();
+    } catch (NoSuchFileException ex) {
+      assertThat(ex.getClass()).isEqualTo(NoSuchFileException.class);
+    }
   }
 
   @Test
@@ -501,20 +554,30 @@ public class CloudStorageFileSystemProviderTest {
     assertThat(Files.exists(target)).isTrue();
   }
 
-  @Test(expected = NoSuchFileException.class)
+  @Test
   public void testCopy_sourceMissing_throwsNoSuchFileException() throws Exception {
-    Files.copy(
-        Paths.get(URI.create("gs://military/fashion.show")),
-        Paths.get(URI.create("gs://greenbean/adipose")));
+    try {
+      Files.copy(
+          Paths.get(URI.create("gs://military/fashion.show")),
+          Paths.get(URI.create("gs://greenbean/adipose")));
+      Assert.fail();
+    } catch (NoSuchFileException ex) {
+      assertThat(ex.getClass()).isEqualTo(NoSuchFileException.class);
+    }
   }
 
-  @Test(expected = FileAlreadyExistsException.class)
+  @Test
   public void testCopy_targetExists_throwsFileAlreadyExistsException() throws Exception {
-    Path source = Paths.get(URI.create("gs://military/fashion.show"));
-    Path target = Paths.get(URI.create("gs://greenbean/adipose"));
-    Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
-    Files.write(target, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
-    Files.copy(source, target);
+    try {
+      Path source = Paths.get(URI.create("gs://military/fashion.show"));
+      Path target = Paths.get(URI.create("gs://greenbean/adipose"));
+      Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
+      Files.write(target, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
+      Files.copy(source, target);
+      Assert.fail();
+    } catch (FileAlreadyExistsException ex) {
+      assertThat(ex.getClass()).isEqualTo(FileAlreadyExistsException.class);
+    }
   }
 
   @Test
@@ -533,12 +596,17 @@ public class CloudStorageFileSystemProviderTest {
     Files.copy(source, target);
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testCopy_atomic_throwsUnsupported() throws Exception {
-    Path source = Paths.get(URI.create("gs://military/fashion.show"));
-    Path target = Paths.get(URI.create("gs://greenbean/adipose"));
-    Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
-    Files.copy(source, target, ATOMIC_MOVE);
+    try {
+      Path source = Paths.get(URI.create("gs://military/fashion.show"));
+      Path target = Paths.get(URI.create("gs://greenbean/adipose"));
+      Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
+      Files.copy(source, target, ATOMIC_MOVE);
+      Assert.fail();
+    } catch (UnsupportedOperationException ex) {
+      assertThat(ex.getClass()).isEqualTo(UnsupportedOperationException.class);
+    }
   }
 
   @Test
@@ -559,12 +627,17 @@ public class CloudStorageFileSystemProviderTest {
     assertThat(Files.exists(path)).isTrue();
   }
 
-  @Test(expected = AtomicMoveNotSupportedException.class)
+  @Test
   public void testMove_atomicMove_notSupported() throws Exception {
-    Path source = Paths.get(URI.create("gs://military/fashion.show"));
-    Path target = Paths.get(URI.create("gs://greenbean/adipose"));
-    Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
-    Files.move(source, target, ATOMIC_MOVE);
+    try {
+      Path source = Paths.get(URI.create("gs://military/fashion.show"));
+      Path target = Paths.get(URI.create("gs://greenbean/adipose"));
+      Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
+      Files.move(source, target, ATOMIC_MOVE);
+      Assert.fail();
+    } catch (AtomicMoveNotSupportedException ex) {
+      assertThat(ex.getClass()).isEqualTo(AtomicMoveNotSupportedException.class);
+    }
   }
 
   @Test

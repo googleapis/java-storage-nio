@@ -29,6 +29,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,11 +57,16 @@ public class CloudStorageFileAttributeViewTest {
     assertThat(lazyAttributes.readAttributes().cacheControl().get()).isEqualTo("potato");
   }
 
-  @Test(expected = NoSuchFileException.class)
+  @Test
   public void testReadAttributes_notFound_throwsNoSuchFileException() throws IOException {
-    CloudStorageFileAttributeView lazyAttributes =
-        Files.getFileAttributeView(path, CloudStorageFileAttributeView.class);
-    lazyAttributes.readAttributes();
+    try {
+      CloudStorageFileAttributeView lazyAttributes =
+          Files.getFileAttributeView(path, CloudStorageFileAttributeView.class);
+      lazyAttributes.readAttributes();
+      Assert.fail();
+    } catch (NoSuchFileException ex) {
+      assertThat(ex.getClass()).isEqualTo(NoSuchFileException.class);
+    }
   }
 
   @Test

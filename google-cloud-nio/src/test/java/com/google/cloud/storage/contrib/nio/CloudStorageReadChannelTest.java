@@ -35,6 +35,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonWritableChannelException;
 import javax.net.ssl.SSLHandshakeException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,37 +120,57 @@ public class CloudStorageReadChannelTest {
     verify(gcsChannel, times(2)).read(any(ByteBuffer.class));
   }
 
-  @Test(expected = StorageException.class)
+  @Test
   public void testReadRetryEventuallyGivesUp() throws IOException {
-    ByteBuffer buffer = ByteBuffer.allocate(1);
-    when(gcsChannel.read(eq(buffer)))
-        .thenThrow(
-            new StorageException(
-                new IOException(
-                    "Connection closed prematurely: bytesRead = 33554432, Content-Length = 41943040")))
-        .thenThrow(
-            new StorageException(
-                new IOException(
-                    "Connection closed prematurely: bytesRead = 33554432, Content-Length = 41943040")))
-        .thenReturn(1);
-    assertThat(chan.position()).isEqualTo(0L);
-    chan.read(buffer);
+    try {
+      ByteBuffer buffer = ByteBuffer.allocate(1);
+      when(gcsChannel.read(eq(buffer)))
+          .thenThrow(
+              new StorageException(
+                  new IOException(
+                      "Connection closed prematurely: bytesRead = 33554432, Content-Length = 41943040")))
+          .thenThrow(
+              new StorageException(
+                  new IOException(
+                      "Connection closed prematurely: bytesRead = 33554432, Content-Length = 41943040")))
+          .thenReturn(1);
+      assertThat(chan.position()).isEqualTo(0L);
+      chan.read(buffer);
+      Assert.fail();
+    } catch (StorageException ex) {
+      assertThat(ex.getClass()).isEqualTo(StorageException.class);
+    }
   }
 
-  @Test(expected = ClosedChannelException.class)
+  @Test
   public void testRead_whenClosed_throwsCce() throws IOException {
-    when(gcsChannel.isOpen()).thenReturn(false);
-    chan.read(ByteBuffer.allocate(1));
+    try {
+      when(gcsChannel.isOpen()).thenReturn(false);
+      chan.read(ByteBuffer.allocate(1));
+      Assert.fail();
+    } catch (ClosedChannelException ex) {
+      assertThat(ex.getClass()).isEqualTo(ClosedChannelException.class);
+    }
   }
 
-  @Test(expected = NonWritableChannelException.class)
+  @Test
   public void testWrite_throwsNonWritableChannelException() throws IOException {
-    chan.write(ByteBuffer.allocate(1));
+    try {
+      chan.write(ByteBuffer.allocate(1));
+      Assert.fail();
+    } catch (NonWritableChannelException ex) {
+      assertThat(ex.getClass()).isEqualTo(NonWritableChannelException.class);
+    }
   }
 
-  @Test(expected = NonWritableChannelException.class)
+  @Test
   public void testTruncate_throwsNonWritableChannelException() throws IOException {
-    chan.truncate(0);
+    try {
+      chan.truncate(0);
+      Assert.fail();
+    } catch (NonWritableChannelException ex) {
+      assertThat(ex.getClass()).isEqualTo(NonWritableChannelException.class);
+    }
   }
 
   @Test
@@ -169,22 +190,37 @@ public class CloudStorageReadChannelTest {
     verifyZeroInteractions(gcsChannel);
   }
 
-  @Test(expected = ClosedChannelException.class)
+  @Test
   public void testSize_whenClosed_throwsCce() throws IOException {
-    when(gcsChannel.isOpen()).thenReturn(false);
-    chan.size();
+    try {
+      when(gcsChannel.isOpen()).thenReturn(false);
+      chan.size();
+      Assert.fail();
+    } catch (ClosedChannelException ex) {
+      assertThat(ex.getClass()).isEqualTo(ClosedChannelException.class);
+    }
   }
 
-  @Test(expected = ClosedChannelException.class)
+  @Test
   public void testPosition_whenClosed_throwsCce() throws IOException {
-    when(gcsChannel.isOpen()).thenReturn(false);
-    chan.position();
+    try {
+      when(gcsChannel.isOpen()).thenReturn(false);
+      chan.position();
+      Assert.fail();
+    } catch (ClosedChannelException ex) {
+      assertThat(ex.getClass()).isEqualTo(ClosedChannelException.class);
+    }
   }
 
-  @Test(expected = ClosedChannelException.class)
+  @Test
   public void testSetPosition_whenClosed_throwsCce() throws IOException {
-    when(gcsChannel.isOpen()).thenReturn(false);
-    chan.position(0);
+    try {
+      when(gcsChannel.isOpen()).thenReturn(false);
+      chan.position(0);
+      Assert.fail();
+    } catch (ClosedChannelException ex) {
+      assertThat(ex.getClass()).isEqualTo(ClosedChannelException.class);
+    }
   }
 
   @Test
