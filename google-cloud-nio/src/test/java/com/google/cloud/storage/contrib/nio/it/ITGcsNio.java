@@ -218,7 +218,7 @@ public class ITGcsNio {
     try {
       // fails
       Files.readAllBytes(path);
-      // Assert.fail("It should have thrown an exception.");
+      //Assert.fail("It should have thrown an exception.");
     } catch (StorageException ex) {
       assertIsRequesterPaysException("testCantReadWithoutUserProject", ex);
     }
@@ -271,8 +271,8 @@ public class ITGcsNio {
               .contains("Bucket is requester pays bucket but no user project provided"));
     } catch (StorageException ex) {
       assertIsRequesterPaysException(description, ex);
-    } catch (FileAlreadyExistsException faex) {
-      assertThat(faex.getMessage()).isEqualTo(TMP_FILE);
+    } catch (Exception ex) {
+      Assert.fail("Wrong exception type " + ex);
     }
   }
 
