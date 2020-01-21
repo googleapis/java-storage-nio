@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.api.client.http.HttpResponseException;
+import com.google.cloud.ServiceOptions;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.BucketInfo;
@@ -58,6 +59,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -98,13 +100,15 @@ public class ITGcsNio {
   private static final String BUCKET = RemoteStorageHelper.generateBucketName();
   private static final String REQUESTER_PAYS_BUCKET =
       RemoteStorageHelper.generateBucketName() + "_rp";
-  private static final String SML_FILE = "tmp-test-small-file.txt";
-  private static final String TMP_FILE = "tmp/tmp-test-rnd-file.txt";
+  private static final String ID = UUID.randomUUID().toString().substring(0, 8);
+  private static final String SML_FILE = "tmp-test-small-file-" + ID + ".txt";
+  private static final String TMP_FILE = "tmp/tmp-test-rnd-file-" + ID + ".txt";
   private static final int SML_SIZE = 100;
-  private static final String BIG_FILE = "tmp-test-big-file.txt"; // it's big, relatively speaking.
+  private static final String BIG_FILE =
+      "tmp-test-big-file-" + ID + ".txt"; // it's big, relatively speaking.
   private static final int BIG_SIZE = 2 * 1024 * 1024 - 50; // arbitrary size that's not too round.
   private static final String PREFIX = "tmp-test-file";
-  private static String project;
+  private static final String PROJECT = ServiceOptions.getDefaultProjectId();
   private static Storage storage;
   private static StorageOptions storageOptions;
 
@@ -115,7 +119,6 @@ public class ITGcsNio {
     // loads the credentials from local disk as par README
     RemoteStorageHelper gcsHelper = RemoteStorageHelper.create();
     storageOptions = gcsHelper.getOptions();
-    project = storageOptions.getProjectId();
     storage = storageOptions.getService();
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
@@ -131,7 +134,7 @@ public class ITGcsNio {
   public static void afterClass() throws ExecutionException, InterruptedException {
     if (storage != null) {
       for (String bucket : new String[] {BUCKET, REQUESTER_PAYS_BUCKET}) {
-        if (!RemoteStorageHelper.forceDelete(storage, bucket, 5, TimeUnit.SECONDS, project)
+        if (!RemoteStorageHelper.forceDelete(storage, bucket, 5, TimeUnit.SECONDS, PROJECT)
             && log.isLoggable(Level.WARNING)) {
           log.log(Level.WARNING, "Deletion of bucket {0} timed out, bucket is not empty", bucket);
         }
@@ -155,7 +158,7 @@ public class ITGcsNio {
     storage.create(
         BlobInfo.newBuilder(REQUESTER_PAYS_BUCKET, fname).build(),
         randomContents(size),
-        BlobTargetOption.userProject(project));
+        BlobTargetOption.userProject(PROJECT));
   }
 
   // Start of tests related to the "requester pays" feature
@@ -174,7 +177,7 @@ public class ITGcsNio {
 
   @Test
   public void testFileExistsRequesterPays() throws IOException {
-    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, project);
+    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, PROJECT);
     Path path = testBucket.getPath(SML_FILE);
     // should succeed because we specified a project
     Files.exists(path);
@@ -182,7 +185,7 @@ public class ITGcsNio {
 
   @Test
   public void testFileExistsRequesterPaysWithAutodetect() throws IOException {
-    CloudStorageFileSystem testBucket = getRequesterPaysBucket(true, project);
+    CloudStorageFileSystem testBucket = getRequesterPaysBucket(true, PROJECT);
     Path path = testBucket.getPath(SML_FILE);
     // should succeed because we specified a project
     Files.exists(path);
@@ -203,7 +206,7 @@ public class ITGcsNio {
 
   @Test
   public void testCanCreateWithUserProject() throws IOException {
-    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, project);
+    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, PROJECT);
     Path path = testBucket.getPath(TMP_FILE);
     // should succeed because we specified a project
     Files.write(path, "I would like to write, please?".getBytes());
@@ -224,7 +227,7 @@ public class ITGcsNio {
 
   @Test
   public void testCanReadWithUserProject() throws IOException {
-    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, project);
+    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, PROJECT);
     Path path = testBucket.getPath(SML_FILE);
     // should succeed because we specified a project
     Files.readAllBytes(path);
@@ -274,7 +277,7 @@ public class ITGcsNio {
 
   @Test
   public void testCanCopyWithUserProject() throws IOException {
-    CloudStorageFileSystem testRPBucket = getRequesterPaysBucket(false, project);
+    CloudStorageFileSystem testRPBucket = getRequesterPaysBucket(false, PROJECT);
     CloudStorageFileSystem testBucket = getTestBucket();
     CloudStoragePath[] sources =
         new CloudStoragePath[] {testBucket.getPath(SML_FILE), testRPBucket.getPath(SML_FILE)};
@@ -293,11 +296,11 @@ public class ITGcsNio {
 
   @Test
   public void testAutodetectWhenRequesterPays() throws IOException {
-    CloudStorageFileSystem testRPBucket = getRequesterPaysBucket(true, project);
+    CloudStorageFileSystem testRPBucket = getRequesterPaysBucket(true, PROJECT);
     Assert.assertEquals(
         "Autodetect should have detected the RP bucket",
         testRPBucket.config().userProject(),
-        project);
+        PROJECT);
   }
 
   @Test
@@ -305,7 +308,7 @@ public class ITGcsNio {
     CloudStorageConfiguration config =
         CloudStorageConfiguration.builder()
             .autoDetectRequesterPays(true)
-            .userProject(project)
+            .userProject(PROJECT)
             .build();
     CloudStorageFileSystem testBucket =
         CloudStorageFileSystem.forBucket(BUCKET, config, storageOptions);
@@ -334,7 +337,7 @@ public class ITGcsNio {
   public void testListBuckets() throws IOException {
     boolean bucketFound = false;
     boolean rpBucketFound = false;
-    for (Bucket b : CloudStorageFileSystem.listBuckets(project).iterateAll()) {
+    for (Bucket b : CloudStorageFileSystem.listBuckets(PROJECT).iterateAll()) {
       bucketFound |= BUCKET.equals(b.getName());
       rpBucketFound |= REQUESTER_PAYS_BUCKET.equals(b.getName());
     }
