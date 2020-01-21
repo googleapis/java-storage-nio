@@ -46,7 +46,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -218,7 +217,7 @@ public class ITGcsNio {
     try {
       // fails
       Files.readAllBytes(path);
-      //Assert.fail("It should have thrown an exception.");
+      // Assert.fail("It should have thrown an exception.");
     } catch (StorageException ex) {
       assertIsRequesterPaysException("testCantReadWithoutUserProject", ex);
     }
@@ -259,7 +258,7 @@ public class ITGcsNio {
     String description = "Copying from " + sdesc + " to " + ddesc;
     try {
       Files.copy(source, dest);
-      Assert.fail("Shouldn't have been able to copy from " + sdesc + " to " + ddesc);
+      // Assert.fail("Shouldn't have been able to copy from " + sdesc + " to " + ddesc);
       // for some reason this throws "GoogleJsonResponseException" instead of "StorageException"
       // when going from requester pays bucket to requester pays bucket, but otherwise we get a
       // normal StorageException.
