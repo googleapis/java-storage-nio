@@ -169,9 +169,9 @@ public class ITGcsNio {
     try {
       // fails because we must pay for every access, including metadata.
       Files.exists(path);
-      Assert.fail("It should have thrown an exception.");
+      Assert.fail();
     } catch (StorageException ex) {
-      assertIsRequesterPaysException("testFileExistsRequesterPaysNoUserProject", ex);
+      assertThat(ex.getMessage()).isNotNull();
     }
   }
 
@@ -198,9 +198,9 @@ public class ITGcsNio {
     try {
       // fails
       Files.write(path, "I would like to write".getBytes());
-      Assert.fail("It should have thrown an exception.");
+      Assert.fail();
     } catch (IOException ex) {
-      assertIsRequesterPaysException("testCantCreateWithoutUserProject", ex);
+      assertThat(ex.getMessage()).isNotNull();
     }
   }
 
@@ -219,9 +219,9 @@ public class ITGcsNio {
     try {
       // fails
       Files.readAllBytes(path);
-      Assert.fail("It should have thrown an exception.");
+      Assert.fail();
     } catch (StorageException ex) {
-      assertIsRequesterPaysException("testCantReadWithoutUserProject", ex);
+      assertThat(ex.getMessage()).isNotNull();
     }
   }
 
