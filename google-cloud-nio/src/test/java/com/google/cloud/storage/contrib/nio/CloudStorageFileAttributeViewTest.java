@@ -65,7 +65,7 @@ public class CloudStorageFileAttributeViewTest {
       lazyAttributes.readAttributes();
       Assert.fail();
     } catch (NoSuchFileException ex) {
-      assertThat(ex.getClass()).isEqualTo(NoSuchFileException.class);
+      assertThat(ex.getMessage()).isNotNull();
     }
   }
 

@@ -134,7 +134,6 @@ public class UnixPathTest {
       p("/a/b/").relativize(p(""));
       Assert.fail();
     } catch (IllegalArgumentException ex) {
-      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
       assertThat(ex.getMessage()).isEqualTo("'other' is different type of Path");
     }
   }
@@ -269,8 +268,7 @@ public class UnixPathTest {
     try {
       p("/").subpath(0, 1);
       Assert.fail();
-    } catch (IllegalArgumentException ex) {
-      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+    } catch (IllegalArgumentException expected) {
     }
   }
 
@@ -279,8 +277,7 @@ public class UnixPathTest {
     try {
       p("/eins/zwei/drei/vier").subpath(-1, 1);
       Assert.fail();
-    } catch (IllegalArgumentException ex) {
-      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+    } catch (IllegalArgumentException expected) {
     }
   }
 
@@ -289,8 +286,7 @@ public class UnixPathTest {
     try {
       p("/eins/zwei/drei/vier").subpath(0, 5);
       Assert.fail();
-    } catch (IllegalArgumentException ex) {
-      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+    } catch (IllegalArgumentException expected) {
     }
   }
 
@@ -299,8 +295,7 @@ public class UnixPathTest {
     try {
       p("/eins/zwei/drei/vier").subpath(1, 0);
       Assert.fail();
-    } catch (IllegalArgumentException ex) {
-      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+    } catch (IllegalArgumentException expected) {
     }
   }
 
@@ -309,8 +304,7 @@ public class UnixPathTest {
     try {
       p("/eins/zwei/drei/vier").subpath(0, 0);
       Assert.fail();
-    } catch (IllegalArgumentException ex) {
-      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+    } catch (IllegalArgumentException expected) {
     }
   }
 

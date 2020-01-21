@@ -84,7 +84,7 @@ public class CloudStorageConfigurationTest {
       CloudStorageConfiguration.fromMap(ImmutableMap.of("lol", "/omg"));
       Assert.fail();
     } catch (IllegalArgumentException ex) {
-      assertThat(ex.getClass()).isEqualTo(IllegalArgumentException.class);
+      assertThat(ex.getMessage()).isNotNull();
     }
   }
 

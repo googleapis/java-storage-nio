@@ -523,7 +523,7 @@ public class CloudStorageFileSystemProviderTest {
       Files.delete(Paths.get(URI.create("gs://loveh/passionehu")));
       Assert.fail();
     } catch (NoSuchFileException ex) {
-      assertThat(ex.getClass()).isEqualTo(NoSuchFileException.class);
+      assertThat(ex.getMessage()).isNotNull();
     }
   }
 
@@ -561,8 +561,7 @@ public class CloudStorageFileSystemProviderTest {
           Paths.get(URI.create("gs://military/fashion.show")),
           Paths.get(URI.create("gs://greenbean/adipose")));
       Assert.fail();
-    } catch (NoSuchFileException ex) {
-      assertThat(ex.getClass()).isEqualTo(NoSuchFileException.class);
+    } catch (NoSuchFileException expected) {
     }
   }
 
@@ -575,8 +574,7 @@ public class CloudStorageFileSystemProviderTest {
       Files.write(target, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
       Files.copy(source, target);
       Assert.fail();
-    } catch (FileAlreadyExistsException ex) {
-      assertThat(ex.getClass()).isEqualTo(FileAlreadyExistsException.class);
+    } catch (FileAlreadyExistsException expected) {
     }
   }
 
@@ -605,7 +603,7 @@ public class CloudStorageFileSystemProviderTest {
       Files.copy(source, target, ATOMIC_MOVE);
       Assert.fail();
     } catch (UnsupportedOperationException ex) {
-      assertThat(ex.getClass()).isEqualTo(UnsupportedOperationException.class);
+      assertThat(ex.getMessage()).isNotNull();
     }
   }
 
@@ -636,7 +634,7 @@ public class CloudStorageFileSystemProviderTest {
       Files.move(source, target, ATOMIC_MOVE);
       Assert.fail();
     } catch (AtomicMoveNotSupportedException ex) {
-      assertThat(ex.getClass()).isEqualTo(AtomicMoveNotSupportedException.class);
+      assertThat(ex.getMessage()).isNotNull();
     }
   }
 

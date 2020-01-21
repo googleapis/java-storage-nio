@@ -54,8 +54,7 @@ public class CloudStorageWriteChannelTest {
     try {
       chan.read(ByteBuffer.allocate(1));
       Assert.fail();
-    } catch (NonReadableChannelException ex) {
-      assertThat(ex.getClass()).isEqualTo(NonReadableChannelException.class);
+    } catch (NonReadableChannelException expected) {
     }
   }
 
@@ -80,8 +79,7 @@ public class CloudStorageWriteChannelTest {
       when(gcsChannel.isOpen()).thenReturn(false);
       chan.write(ByteBuffer.allocate(1));
       Assert.fail();
-    } catch (ClosedChannelException ex) {
-      assertThat(ex.getClass()).isEqualTo(ClosedChannelException.class);
+    } catch (ClosedChannelException expected) {
     }
   }
 
@@ -109,8 +107,7 @@ public class CloudStorageWriteChannelTest {
       when(gcsChannel.isOpen()).thenReturn(false);
       chan.size();
       Assert.fail();
-    } catch (ClosedChannelException ex) {
-      assertThat(ex.getClass()).isEqualTo(ClosedChannelException.class);
+    } catch (ClosedChannelException expected) {
     }
   }
 
@@ -120,8 +117,7 @@ public class CloudStorageWriteChannelTest {
       when(gcsChannel.isOpen()).thenReturn(false);
       chan.position();
       Assert.fail();
-    } catch (ClosedChannelException ex) {
-      assertThat(ex.getClass()).isEqualTo(ClosedChannelException.class);
+    } catch (ClosedChannelException expected) {
     }
   }
 
