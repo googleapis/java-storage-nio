@@ -169,6 +169,7 @@
   <modules>
     <module>google-cloud-nio</module>
     <module>google-cloud-nio-retrofit</module>
+    <module>google-cloud-nio-examples</module>
   </modules>
 
   <reporting>
@@ -245,6 +246,7 @@
       <id>include-samples</id>
       <modules>
         <module>google-cloud-nio-retrofit</module>
+        <module>google-cloud-nio-examples</module>
       </modules>
     </profile>
   </profiles>
