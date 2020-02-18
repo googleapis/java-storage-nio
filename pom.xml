@@ -91,8 +91,7 @@
       <dependency>
         <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value</artifactId>
-        <scope>provided</scope> <!-- to leave out of the all-deps jar -->
-        <version>1.7</version>
+        <version>${auto-value.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.protobuf</groupId>
@@ -102,15 +101,10 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-       <groupId>com.google.auto.value</groupId>
+        <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value-annotations</artifactId>
-        <version>1.7</version>
+        <version>${auto-value-annotations.version}</version>
       </dependency>
-<!--      <dependency>-->
-<!--        <groupId>com.google.auto.service</groupId>-->
-<!--        <artifactId>auto-service-annotations</artifactId>-->
-<!--        <version>${auto-service-annotations.version}</version>-->
-<!--      </dependency>-->
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>google-cloud-core-bom</artifactId>
@@ -241,6 +235,64 @@
   </reporting>
 
   <profiles>
+    <profile>
+      <id>autovalue-java7</id>
+      <activation>
+        <jdk>1.7</jdk>
+      </activation>
+      <properties>
+        <auto-value-annotations.version>1.7</auto-value-annotations.version>
+        <auto-value.version>1.4</auto-value.version>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.google.auto.value</groupId>
+                  <artifactId>auto-value</artifactId>
+                  <version>${auto-value.version}</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>autovalue-java8</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <properties>
+        <auto-value.version>1.7</auto-value.version>
+        <auto-value-annotations.version>${auto-value.version}</auto-value-annotations.version>
+        <auto-service-annotations.version>1.0-rc6</auto-service-annotations.version>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.google.auto.value</groupId>
+                  <artifactId>auto-value</artifactId>
+                  <version>${auto-value.version}</version>
+                </path>
+                <path>
+                  <groupId>com.google.auto.service</groupId>
+                  <artifactId>auto-service-annotations</artifactId>
+                  <version>${auto-service-annotations.version}</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>include-samples</id>
       <modules>
