@@ -91,6 +91,7 @@
       <dependency>
         <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value</artifactId>
+        <scope>provided</scope> <!-- to leave out of the all-deps jar -->
         <version>${auto-value.version}</version>
       </dependency>
       <dependency>
