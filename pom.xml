@@ -162,7 +162,21 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <configuration>
+            <ignoredUnusedDeclaredDependencies>
+              <ignoredDependency>com.google.auto.value:auto-value-annotations</ignoredDependency>
+            </ignoredUnusedDeclaredDependencies>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
   <modules>
     <module>google-cloud-nio</module>
     <module>google-cloud-nio-retrofit</module>
