@@ -116,6 +116,8 @@ public class ITGcsNio {
     RemoteStorageHelper gcsHelper = RemoteStorageHelper.create();
     storageOptions = gcsHelper.getOptions();
     project = storageOptions.getProjectId();
+    System.out.println(project);
+    System.out.println(BUCKET);
     storage = storageOptions.getService();
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
@@ -152,6 +154,7 @@ public class ITGcsNio {
 
   private static void fillRequesterPaysFile(Storage storage, String fname, int size)
       throws IOException {
+    System.out.println(REQUESTER_PAYS_BUCKET);
     storage.create(
         BlobInfo.newBuilder(REQUESTER_PAYS_BUCKET, fname).build(),
         randomContents(size),
@@ -190,8 +193,11 @@ public class ITGcsNio {
 
   @Test
   public void testCantCreateWithoutUserProject() throws IOException {
-    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
+    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, null);
+    System.out.println(testBucket.config());
+    System.out.println(testBucket.bucket());
     Path path = testBucket.getPath(TMP_FILE);
+    System.out.println(path);
     try {
       // fails
       Files.write(path, "I would like to write".getBytes());
