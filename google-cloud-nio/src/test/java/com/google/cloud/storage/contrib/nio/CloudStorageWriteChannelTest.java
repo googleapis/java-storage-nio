@@ -30,18 +30,15 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonReadableChannelException;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link CloudStorageWriteChannel}. */
 @RunWith(JUnit4.class)
 public class CloudStorageWriteChannelTest {
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private final WriteChannel gcsChannel = mock(WriteChannel.class);
   private final CloudStorageWriteChannel chan = new CloudStorageWriteChannel(gcsChannel);
@@ -53,8 +50,11 @@ public class CloudStorageWriteChannelTest {
 
   @Test
   public void testRead_throwsNonReadableChannelException() throws IOException {
-    thrown.expect(NonReadableChannelException.class);
-    chan.read(ByteBuffer.allocate(1));
+    try {
+      chan.read(ByteBuffer.allocate(1));
+      Assert.fail();
+    } catch (NonReadableChannelException expected) {
+    }
   }
 
   @Test
@@ -74,9 +74,12 @@ public class CloudStorageWriteChannelTest {
 
   @Test
   public void testWrite_whenClosed_throwsCce() throws IOException {
-    when(gcsChannel.isOpen()).thenReturn(false);
-    thrown.expect(ClosedChannelException.class);
-    chan.write(ByteBuffer.allocate(1));
+    try {
+      when(gcsChannel.isOpen()).thenReturn(false);
+      chan.write(ByteBuffer.allocate(1));
+      Assert.fail();
+    } catch (ClosedChannelException expected) {
+    }
   }
 
   @Test
@@ -99,16 +102,22 @@ public class CloudStorageWriteChannelTest {
 
   @Test
   public void testSize_whenClosed_throwsCce() throws IOException {
-    when(gcsChannel.isOpen()).thenReturn(false);
-    thrown.expect(ClosedChannelException.class);
-    chan.size();
+    try {
+      when(gcsChannel.isOpen()).thenReturn(false);
+      chan.size();
+      Assert.fail();
+    } catch (ClosedChannelException expected) {
+    }
   }
 
   @Test
   public void testPosition_whenClosed_throwsCce() throws IOException {
-    when(gcsChannel.isOpen()).thenReturn(false);
-    thrown.expect(ClosedChannelException.class);
-    chan.position();
+    try {
+      when(gcsChannel.isOpen()).thenReturn(false);
+      chan.position();
+      Assert.fail();
+    } catch (ClosedChannelException expected) {
+    }
   }
 
   @Test

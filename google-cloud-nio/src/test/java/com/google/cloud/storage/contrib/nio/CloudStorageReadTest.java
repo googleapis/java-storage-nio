@@ -32,9 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -54,8 +52,6 @@ public class CloudStorageReadTest {
 
   // Large enough value that we write more than one "chunk", for interesting behavior.
   private static final int repeat = 10000;
-
-  @Rule public ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void before() {
