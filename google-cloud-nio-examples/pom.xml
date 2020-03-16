@@ -1,21 +1,29 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>google-cloud-nio-retrofit</artifactId>
+  <artifactId>google-cloud-nio-examples</artifactId>
   <version>0.120.1-alpha-SNAPSHOT</version><!-- {x-version-update:google-cloud-nio:current} -->
   <packaging>jar</packaging>
-  <name>Google Cloud NIO Retrofit Example</name>
+  <name>Google Cloud NIO Examples</name>
   <url>https://github.com/googleapis/java-storage-nio</url>
   <description>
-    Demonstrates how to use the google-cloud-nio jar to add Google Cloud Storage functionality to legacy code.
+    Examples for google-cloud-nio (Java idiomatic client for Google Cloud
+    Storage).
   </description>
   <parent>
     <groupId>com.google.cloud</groupId>
     <artifactId>google-cloud-nio-parent</artifactId>
     <version>0.120.1-alpha-SNAPSHOT</version><!-- {x-version-update:google-cloud-nio:current} -->
   </parent>
+  <dependencies>
+    <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>19.0</version>
+    </dependency>
+  </dependencies>
   <properties>
-    <site.installationModule>google-cloud-nio-retrofit</site.installationModule>
+    <site.installationModule>google-cloud-nio-examples</site.installationModule>
   </properties>
   <build>
     <plugins>
@@ -24,6 +32,13 @@
         <artifactId>exec-maven-plugin</artifactId>
         <configuration>
           <skip>false</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>clirr-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>
