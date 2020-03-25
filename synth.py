@@ -14,10 +14,11 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-import synthtool.languages.java as java
+import synthtool as s
+import synthtool.gcp as gcp
 
-AUTOSYNTH_MULTIPLE_COMMITS = True
 
-java.common_templates(excludes=[
+templates = gcp.CommonTemplates().java_library()
+s.copy(templates, excludes=[
     'README.md',
 ])
