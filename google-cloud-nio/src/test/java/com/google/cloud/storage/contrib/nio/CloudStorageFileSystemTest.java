@@ -122,6 +122,13 @@ public class CloudStorageFileSystemTest {
   }
 
   @Test
+  public void testUnderscoreInPath() throws IOException {
+    try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("pth_with_underscore")) {
+      URI path = fs.getPath("*.txt").toUri();
+    }
+  }
+
+  @Test
   public void testWrite() throws IOException {
     try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket")) {
       Files.write(fs.getPath("/angel"), ALONE.getBytes(UTF_8));
