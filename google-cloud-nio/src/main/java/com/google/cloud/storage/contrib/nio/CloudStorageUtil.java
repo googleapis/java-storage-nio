@@ -52,7 +52,6 @@ final class CloudStorageUtil {
   }
 
   static URI stripPathFromUri(URI uri) {
-
     try {
       return new URI(
           uri.getScheme(),
