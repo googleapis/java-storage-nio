@@ -24,10 +24,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.common.collect.UnmodifiableIterator;
-import com.sun.xml.internal.ws.policy.spi.AssertionCreationException;
-
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -354,8 +351,12 @@ public final class CloudStoragePath implements Path {
   @Override
   public URI toUri() {
     try {
-      URI uri = new URI(
-              CloudStorageFileSystem.URI_SCHEME + "://" +  bucket() + path.toAbsolutePath().toString());
+      URI uri =
+          new URI(
+              CloudStorageFileSystem.URI_SCHEME
+                  + "://"
+                  + bucket()
+                  + path.toAbsolutePath().toString());
       if (uri.getHost() == null) {
         final Field hostField = URI.class.getDeclaredField("host");
         hostField.setAccessible(true);
