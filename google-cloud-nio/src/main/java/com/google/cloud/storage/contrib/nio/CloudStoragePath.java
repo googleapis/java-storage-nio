@@ -357,17 +357,8 @@ public final class CloudStoragePath implements Path {
                   + "://"
                   + bucket()
                   + path.toAbsolutePath().toString());
-      if (uri.getHost() == null) {
-        final Field hostField = URI.class.getDeclaredField("host");
-        hostField.setAccessible(true);
-        hostField.set(uri, bucket());
-      }
       return uri;
     } catch (URISyntaxException e) {
-      throw new AssertionError(e);
-    } catch (NoSuchFieldException e) {
-      throw new AssertionError(e);
-    } catch (IllegalAccessException e) {
       throw new AssertionError(e);
     }
   }

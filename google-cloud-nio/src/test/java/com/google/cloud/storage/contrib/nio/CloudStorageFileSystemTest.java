@@ -25,6 +25,7 @@ import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -122,7 +123,7 @@ public class CloudStorageFileSystemTest {
   }
 
   @Test
-  public void testUnderscoreInPath() throws IOException {
+  public void testUnderscoreInPath() throws IOException, URISyntaxException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("pth_with_underscore")) {
       URI path = fs.getPath("*.txt").toUri();
       assertThat(path.toString()).isEqualTo("gs://pth_with_underscore/*.txt");
