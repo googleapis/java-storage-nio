@@ -125,6 +125,7 @@ public class CloudStorageFileSystemTest {
   public void testUnderscoreInPath() throws IOException {
     try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("pth_with_underscore")) {
       URI path = fs.getPath("*.txt").toUri();
+      assertThat(path.toString()).isEqualTo("gs://pth_with_underscore/*.txt");
     }
   }
 
