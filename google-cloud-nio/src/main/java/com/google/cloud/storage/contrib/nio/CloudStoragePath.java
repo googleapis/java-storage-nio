@@ -350,9 +350,8 @@ public final class CloudStoragePath implements Path {
   @Override
   public URI toUri() {
     try {
-      URI uri =
-          new URI(CloudStorageFileSystem.URI_SCHEME + "://" + bucket() + path.toAbsolutePath());
-      return uri;
+      return new URI(
+          CloudStorageFileSystem.URI_SCHEME, bucket(), path.toAbsolutePath().toString(), null);
     } catch (URISyntaxException e) {
       throw new AssertionError(e);
     }

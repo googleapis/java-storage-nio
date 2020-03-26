@@ -41,6 +41,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -169,6 +170,16 @@ public class ITGcsNio {
       Assert.fail("It should have thrown an exception.");
     } catch (StorageException ex) {
       assertIsRequesterPaysException("testFileExistsRequesterPaysNoUserProject", ex);
+    }
+  }
+
+  @Test
+  public void testUnderscoreInPath() throws IOException, URISyntaxException {
+    try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("anima_frank")) {
+      SeekableByteChannel chan = Files.newByteChannel(fs.getPath("test"), StandardOpenOption.READ);
+      ByteBuffer byteBuffer = ByteBuffer.allocate(1000);
+      chan.read(byteBuffer);
+      assertThat(Files.readAllBytes(fs.getPath("test"))).isNotNull();
     }
   }
 

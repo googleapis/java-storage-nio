@@ -124,9 +124,11 @@ public class CloudStorageFileSystemTest {
 
   @Test
   public void testUnderscoreInPath() throws IOException, URISyntaxException {
-    try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("pth_with_underscore")) {
-      URI path = fs.getPath("*.txt").toUri();
-      assertThat(path.toString()).isEqualTo("gs://pth_with_underscore/*.txt");
+    try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("anima-frank")) {
+      // URI uri = fs.getPath("*.txt").toUri();
+      //      assertThat(uri.toString()).isEqualTo("gs://pth_with_underscore/*.txt");
+      // Path path = Paths.get(uri);
+      assertThat(Files.readAllBytes(Paths.get(fs.getPath("test").toUri()))).isNull();
     }
   }
 
