@@ -123,16 +123,6 @@ public class CloudStorageFileSystemTest {
   }
 
   @Test
-  public void testUnderscoreInPath() throws IOException, URISyntaxException {
-    try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("anima-frank")) {
-      // URI uri = fs.getPath("*.txt").toUri();
-      //      assertThat(uri.toString()).isEqualTo("gs://pth_with_underscore/*.txt");
-      // Path path = Paths.get(uri);
-      assertThat(Files.readAllBytes(Paths.get(fs.getPath("test").toUri()))).isNull();
-    }
-  }
-
-  @Test
   public void testWrite() throws IOException {
     try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket")) {
       Files.write(fs.getPath("/angel"), ALONE.getBytes(UTF_8));
