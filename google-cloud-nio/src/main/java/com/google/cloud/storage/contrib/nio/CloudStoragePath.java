@@ -25,7 +25,6 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.common.collect.UnmodifiableIterator;
 import java.io.File;
-import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.LinkOption;
@@ -352,11 +351,7 @@ public final class CloudStoragePath implements Path {
   public URI toUri() {
     try {
       URI uri =
-          new URI(
-              CloudStorageFileSystem.URI_SCHEME
-                  + "://"
-                  + bucket()
-                  + path.toAbsolutePath().toString());
+          new URI(CloudStorageFileSystem.URI_SCHEME + "://" + bucket() + path.toAbsolutePath());
       return uri;
     } catch (URISyntaxException e) {
       throw new AssertionError(e);
