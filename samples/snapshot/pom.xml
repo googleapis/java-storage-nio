@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-nio</artifactId>
-      <version></version>
+      <version>0.120.1-alpha-SNAPSHOT</version>
     </dependency>
 
     <dependency>
