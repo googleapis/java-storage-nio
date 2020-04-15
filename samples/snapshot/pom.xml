@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.google.cloud.samples</groupId>
     <artifactId>shared-configuration</artifactId>
-    <version>1.0.15</version>
+    <version>1.0.12</version>
   </parent>
 
   <properties>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-nio</artifactId>
-      <version>0.120.1-alpha-SNAPSHOT</version>
+      <version></version>
     </dependency>
 
     <dependency>

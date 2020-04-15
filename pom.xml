@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.google.cloud</groupId>
     <artifactId>google-cloud-shared-config</artifactId>
-    <version>0.5.0</version>
+    <version>0.4.0</version>
   </parent>
 
   <developers>
@@ -73,7 +73,7 @@
     <github.global.server>github</github.global.server>
     <site.installationModule>google-cloud-storage-nio-parent</site.installationModule>
     <junit.version>4.13</junit.version>
-    <guava.version>29.0-android</guava.version>
+    <guava.version>28.2-android</guava.version>
   </properties>
 
   <dependencyManagement>
@@ -81,12 +81,12 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>google-cloud-storage</artifactId>
-        <version>1.106.0</version>
+        <version>1.105.2</version>
       </dependency>
       <dependency>
         <groupId>com.google.apis</groupId>
         <artifactId>google-api-services-storage</artifactId>
-        <version>v1-rev20200326-1.30.9</version>
+        <version>v1-rev20200226-1.30.9</version>
       </dependency>
       <dependency>
         <groupId>com.google.auto.value</groupId>
