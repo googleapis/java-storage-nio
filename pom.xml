@@ -75,7 +75,7 @@
     <junit.version>4.13</junit.version>
     <guava.version>28.2-android</guava.version>
     <auto-value-annotations.version>1.7</auto-value-annotations.version>
-    <auto-value.version>1.4</auto-value.version>
+    <auto-value.version>1.7</auto-value.version>
   </properties>
 
   <dependencyManagement>
