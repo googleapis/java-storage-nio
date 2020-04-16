@@ -37,10 +37,9 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -57,8 +56,6 @@ public class CloudStorageFileSystemTest {
           + "No more; and by a sleep, to say we end\n"
           + "The Heart-ache, and the thousand Natural shocks\n"
           + "That Flesh is heir to? 'Tis a consummation\n";
-
-  @Rule public ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void before() {
@@ -266,11 +263,14 @@ public class CloudStorageFileSystemTest {
 
   @Test
   public void testDeleteFullFolder() throws IOException {
-    thrown.expect(CloudStoragePseudoDirectoryException.class);
     try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket")) {
       Files.write(fs.getPath("dir/angel"), ALONE.getBytes(UTF_8));
       // we cannot delete existing folders if they contain something
       Files.delete(fs.getPath("dir/"));
+      Assert.fail();
+    } catch (CloudStoragePseudoDirectoryException ex) {
+      assertThat(ex.getMessage())
+          .isEqualTo("Can't perform I/O on pseudo-directories (trailing slash): dir/");
     }
   }
 

@@ -21,17 +21,14 @@ import static org.junit.Assume.assumeTrue;
 
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
-import org.junit.Rule;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link UnixPath}. */
 @RunWith(JUnit4.class)
 public class UnixPathTest {
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void testNormalize() {
@@ -133,8 +130,12 @@ public class UnixPathTest {
 
   @Test
   public void testRelativize_absoluteMismatch_notAllowed() {
-    thrown.expect(IllegalArgumentException.class);
-    p("/a/b/").relativize(p(""));
+    try {
+      p("/a/b/").relativize(p(""));
+      Assert.fail();
+    } catch (IllegalArgumentException ex) {
+      assertThat(ex.getMessage()).isEqualTo("'other' is different type of Path");
+    }
   }
 
   @Test
@@ -264,32 +265,47 @@ public class UnixPathTest {
 
   @Test
   public void testSubpath_root_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
-    p("/").subpath(0, 1);
+    try {
+      p("/").subpath(0, 1);
+      Assert.fail();
+    } catch (IllegalArgumentException expected) {
+    }
   }
 
   @Test
   public void testSubpath_negativeIndex_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
-    p("/eins/zwei/drei/vier").subpath(-1, 1);
+    try {
+      p("/eins/zwei/drei/vier").subpath(-1, 1);
+      Assert.fail();
+    } catch (IllegalArgumentException expected) {
+    }
   }
 
   @Test
   public void testSubpath_notEnoughElements_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
-    p("/eins/zwei/drei/vier").subpath(0, 5);
+    try {
+      p("/eins/zwei/drei/vier").subpath(0, 5);
+      Assert.fail();
+    } catch (IllegalArgumentException expected) {
+    }
   }
 
   @Test
   public void testSubpath_beginAboveEnd_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
-    p("/eins/zwei/drei/vier").subpath(1, 0);
+    try {
+      p("/eins/zwei/drei/vier").subpath(1, 0);
+      Assert.fail();
+    } catch (IllegalArgumentException expected) {
+    }
   }
 
   @Test
   public void testSubpath_beginAndEndEqual_throwsIae() {
-    thrown.expect(IllegalArgumentException.class);
-    p("/eins/zwei/drei/vier").subpath(0, 0);
+    try {
+      p("/eins/zwei/drei/vier").subpath(0, 0);
+      Assert.fail();
+    } catch (IllegalArgumentException expected) {
+    }
   }
 
   @Test

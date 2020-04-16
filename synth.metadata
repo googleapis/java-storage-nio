@@ -1,11 +1,17 @@
 {
-  "updateTime": "2020-02-01T09:13:50.266376Z",
   "sources": [
     {
-      "template": {
-        "name": "java_library",
-        "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/java-storage-nio.git",
+        "sha": "90dc7188686a05ce0c4e5ce1095336bb3d8560e9"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "52638600f387deb98efb5f9c85fec39e82aa9052"
       }
     }
   ]

@@ -29,10 +29,9 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -41,8 +40,6 @@ import org.junit.runners.JUnit4;
 public class CloudStorageFileAttributeViewTest {
 
   private static final byte[] HAPPY = "(✿◕ ‿◕ )ノ".getBytes(UTF_8);
-
-  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private Path path;
 
@@ -62,10 +59,14 @@ public class CloudStorageFileAttributeViewTest {
 
   @Test
   public void testReadAttributes_notFound_throwsNoSuchFileException() throws IOException {
-    CloudStorageFileAttributeView lazyAttributes =
-        Files.getFileAttributeView(path, CloudStorageFileAttributeView.class);
-    thrown.expect(NoSuchFileException.class);
-    lazyAttributes.readAttributes();
+    try {
+      CloudStorageFileAttributeView lazyAttributes =
+          Files.getFileAttributeView(path, CloudStorageFileAttributeView.class);
+      lazyAttributes.readAttributes();
+      Assert.fail();
+    } catch (NoSuchFileException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+    }
   }
 
   @Test
