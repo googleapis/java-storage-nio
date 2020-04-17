@@ -73,6 +73,8 @@
     <github.global.server>github</github.global.server>
     <site.installationModule>google-cloud-storage-nio-parent</site.installationModule>
     <junit.version>4.13</junit.version>
+    <auto-value-annotations.version>1.7</auto-value-annotations.version>
+    <auto-value.version>1.7</auto-value.version>
     <guava.version>29.0-android</guava.version>
   </properties>
 
@@ -92,7 +94,7 @@
         <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value</artifactId>
         <scope>provided</scope> <!-- to leave out of the all-deps jar -->
-        <version>1.7</version>
+        <version>${auto-value.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.protobuf</groupId>
@@ -104,13 +106,8 @@
       <dependency>
        <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value-annotations</artifactId>
-        <version>1.7</version>
+        <version>${auto-value-annotations.version}</version>
       </dependency>
-<!--      <dependency>-->
-<!--        <groupId>com.google.auto.service</groupId>-->
-<!--        <artifactId>auto-service-annotations</artifactId>-->
-<!--        <version>${auto-service-annotations.version}</version>-->
-<!--      </dependency>-->
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>google-cloud-core-bom</artifactId>
@@ -165,7 +162,21 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <configuration>
+            <ignoredUnusedDeclaredDependencies>
+              <ignoredDependency>com.google.auto.value:auto-value-annotations</ignoredDependency>
+            </ignoredUnusedDeclaredDependencies>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
   <modules>
     <module>google-cloud-nio</module>
     <module>google-cloud-nio-retrofit</module>
@@ -236,6 +247,18 @@
             <link>https://googleapis.dev/java/google-auth-library/latest/</link>
             <link>https://googleapis.dev/java/gax/latest/</link>
           </links>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.auto.value</groupId>
+              <artifactId>auto-value</artifactId>
+              <version>${auto-value.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>
