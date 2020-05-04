@@ -74,7 +74,7 @@
     <site.installationModule>google-cloud-storage-nio-parent</site.installationModule>
     <junit.version>4.13</junit.version>
     <auto-value-annotations.version>1.7.1</auto-value-annotations.version>
-    <auto-value.version>1.7</auto-value.version>
+    <auto-value.version>1.7.1</auto-value.version>
     <guava.version>29.0-android</guava.version>
   </properties>
 
