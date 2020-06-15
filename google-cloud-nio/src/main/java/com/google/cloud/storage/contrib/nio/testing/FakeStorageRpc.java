@@ -17,20 +17,13 @@
 package com.google.cloud.storage.contrib.nio.testing;
 
 import com.google.api.services.storage.model.Bucket;
-import com.google.api.services.storage.model.BucketAccessControl;
-import com.google.api.services.storage.model.HmacKey;
-import com.google.api.services.storage.model.HmacKeyMetadata;
-import com.google.api.services.storage.model.Notification;
-import com.google.api.services.storage.model.ObjectAccessControl;
-import com.google.api.services.storage.model.Policy;
 import com.google.api.services.storage.model.ServiceAccount;
 import com.google.api.services.storage.model.StorageObject;
-import com.google.api.services.storage.model.TestIamPermissionsResponse;
 import com.google.cloud.Tuple;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
-import com.google.cloud.storage.spi.v1.RpcBatch;
 import com.google.cloud.storage.spi.v1.StorageRpc;
+import com.google.cloud.storage.testing.StorageRpcTestBase;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -75,7 +68,7 @@ import javax.annotation.concurrent.NotThreadSafe;
  * </ul>
  */
 @NotThreadSafe
-class FakeStorageRpc implements StorageRpc {
+class FakeStorageRpc extends StorageRpcTestBase {
 
   // fullname -> metadata
   Map<String, StorageObject> metadata = new HashMap<>();
@@ -98,11 +91,6 @@ class FakeStorageRpc implements StorageRpc {
   }
 
   @Override
-  public Bucket create(Bucket bucket, Map<Option, ?> options) throws StorageException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public StorageObject create(StorageObject object, InputStream content, Map<Option, ?> options)
       throws StorageException {
     potentiallyThrow(options);
@@ -115,11 +103,6 @@ class FakeStorageRpc implements StorageRpc {
     }
     // TODO: crc, etc
     return object;
-  }
-
-  @Override
-  public Tuple<String, Iterable<Bucket>> list(Map<Option, ?> options) throws StorageException {
-    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -241,12 +224,6 @@ class FakeStorageRpc implements StorageRpc {
     String key = fullname(object);
     contents.remove(key);
     return null != metadata.remove(key);
-  }
-
-  @Override
-  public RpcBatch createBatch() {
-    // return new DefaultRpcBatch(storage);
-    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -437,111 +414,6 @@ class FakeStorageRpc implements StorageRpc {
         data.length);
   }
 
-  @Override
-  public RewriteResponse continueRewrite(RewriteResponse previousResponse) throws StorageException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public BucketAccessControl getAcl(String bucket, String entity, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean deleteAcl(String bucket, String entity, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public BucketAccessControl createAcl(BucketAccessControl acl, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public BucketAccessControl patchAcl(BucketAccessControl acl, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public List<BucketAccessControl> listAcls(String bucket, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public HmacKey createHmacKey(String serviceAccountEmail, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Tuple<String, Iterable<HmacKeyMetadata>> listHmacKeys(Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public HmacKeyMetadata updateHmacKey(HmacKeyMetadata hmacKeyMetadata, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public HmacKeyMetadata getHmacKey(String accessId, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void deleteHmacKey(HmacKeyMetadata hmacKeyMetadata, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ObjectAccessControl getDefaultAcl(String bucket, String entity) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean deleteDefaultAcl(String bucket, String entity) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ObjectAccessControl createDefaultAcl(ObjectAccessControl acl) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ObjectAccessControl patchDefaultAcl(ObjectAccessControl acl) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public List<ObjectAccessControl> listDefaultAcls(String bucket) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ObjectAccessControl getAcl(String bucket, String object, Long generation, String entity) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean deleteAcl(String bucket, String object, Long generation, String entity) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ObjectAccessControl createAcl(ObjectAccessControl acl) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ObjectAccessControl patchAcl(ObjectAccessControl acl) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public List<ObjectAccessControl> listAcls(String bucket, String object, Long generation) {
-    throw new UnsupportedOperationException();
-  }
-
   private String fullname(StorageObject so) {
     return (so.getBucket() + "/" + so.getName());
   }
@@ -610,42 +482,6 @@ class FakeStorageRpc implements StorageRpc {
     fakeFolder.setSize(BigInteger.ZERO);
     folders.put(folderName, fakeFolder);
     return true;
-  }
-
-  @Override
-  public Policy getIamPolicy(String bucket, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Policy setIamPolicy(String bucket, Policy policy, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public TestIamPermissionsResponse testIamPermissions(
-      String bucket, List<String> permissions, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean deleteNotification(String bucket, String notification) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public List<Notification> listNotifications(String bucket) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Notification createNotification(String bucket, Notification notification) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Bucket lockRetentionPolicy(Bucket bucket, Map<Option, ?> options) {
-    throw new UnsupportedOperationException();
   }
 
   @Override
