@@ -1,5 +1,31 @@
 # Changelog
 
+### [0.120.1](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.0...v0.120.1) (2020-06-16)
+
+
+### Dependencies
+
+* update dependency com.google.apis:google-api-services-storage to v1-rev20200410-1.30.9 ([#97](https://www.github.com/googleapis/java-storage-nio/issues/97)) ([b86aed8](https://www.github.com/googleapis/java-storage-nio/commit/b86aed82b7959f2866d3430a4ab79f5983ea6e6f))
+* update dependency com.google.apis:google-api-services-storage to v1-rev20200430-1.30.9 ([#110](https://www.github.com/googleapis/java-storage-nio/issues/110)) ([9350ed4](https://www.github.com/googleapis/java-storage-nio/commit/9350ed430c656fc3622025299008de934c80b99d))
+* update dependency com.google.auto.value:auto-value to v1.7.1 ([#98](https://www.github.com/googleapis/java-storage-nio/issues/98)) ([3f07925](https://www.github.com/googleapis/java-storage-nio/commit/3f07925cb97b578774d721640588a83d3426b58d))
+* update dependency com.google.auto.value:auto-value to v1.7.2 ([#104](https://www.github.com/googleapis/java-storage-nio/issues/104)) ([ff05184](https://www.github.com/googleapis/java-storage-nio/commit/ff05184b1c151ebea2dd45a818cdf5d65f437adc))
+* update dependency com.google.auto.value:auto-value to v1.7.3 ([#131](https://www.github.com/googleapis/java-storage-nio/issues/131)) ([a225b87](https://www.github.com/googleapis/java-storage-nio/commit/a225b878e793e111390ce9e403b2a0018cff7c4c))
+* update dependency com.google.auto.value:auto-value-annotations to v1.7.1 ([#99](https://www.github.com/googleapis/java-storage-nio/issues/99)) ([6aef5d6](https://www.github.com/googleapis/java-storage-nio/commit/6aef5d60f1d30e861b5ca6899f4942c3831c1bf8))
+* update dependency com.google.auto.value:auto-value-annotations to v1.7.2 ([#105](https://www.github.com/googleapis/java-storage-nio/issues/105)) ([c0f3611](https://www.github.com/googleapis/java-storage-nio/commit/c0f36119bafbef4536f2ec66a8c417fe3eae624f))
+* update dependency com.google.auto.value:auto-value-annotations to v1.7.3 ([#132](https://www.github.com/googleapis/java-storage-nio/issues/132)) ([3a46dd5](https://www.github.com/googleapis/java-storage-nio/commit/3a46dd59a3777aea490e6100a20425183d982cb3))
+* update dependency com.google.cloud:google-cloud-core-bom to v1.93.5 ([#115](https://www.github.com/googleapis/java-storage-nio/issues/115)) ([7088962](https://www.github.com/googleapis/java-storage-nio/commit/70889626de81793e19c85b8c886dbea3456449d0))
+* update dependency com.google.cloud:google-cloud-storage to v1.108.0 ([#100](https://www.github.com/googleapis/java-storage-nio/issues/100)) ([6a9a281](https://www.github.com/googleapis/java-storage-nio/commit/6a9a28105561d4408110d54bb92d4e1099ed7544))
+* update dependency com.google.cloud:google-cloud-storage to v1.109.0 ([#133](https://www.github.com/googleapis/java-storage-nio/issues/133)) ([cb23faf](https://www.github.com/googleapis/java-storage-nio/commit/cb23faf0132db61bfdc8d0c6409dc9fa98ae2d11))
+* update dependency com.google.http-client:google-http-client-bom to v1.35.0 ([#93](https://www.github.com/googleapis/java-storage-nio/issues/93)) ([0683dd2](https://www.github.com/googleapis/java-storage-nio/commit/0683dd21731b86d22a9d9f7201dad9deb1878d8a))
+* update dependency com.google.protobuf:protobuf-bom to v3.12.0 ([#111](https://www.github.com/googleapis/java-storage-nio/issues/111)) ([4e592fb](https://www.github.com/googleapis/java-storage-nio/commit/4e592fb506a9b85c8d38c662605d4f97ad60b730))
+* update dependency com.google.protobuf:protobuf-bom to v3.12.1 ([#114](https://www.github.com/googleapis/java-storage-nio/issues/114)) ([1b9b5e5](https://www.github.com/googleapis/java-storage-nio/commit/1b9b5e5a780f44abcba2b7eb25a2a46f5bf8c1ba))
+* update dependency com.google.protobuf:protobuf-bom to v3.12.2 ([#116](https://www.github.com/googleapis/java-storage-nio/issues/116)) ([c297693](https://www.github.com/googleapis/java-storage-nio/commit/c297693dee0747d259ff1bcbc40d05218a782709))
+
+
+### Documentation
+
+* update CONTRIBUTING.md to include code formatting ([#534](https://www.github.com/googleapis/java-storage-nio/issues/534)) ([#103](https://www.github.com/googleapis/java-storage-nio/issues/103)) ([c329a58](https://www.github.com/googleapis/java-storage-nio/commit/c329a58086501f77d7c7e0db44eb06cb68eb933b))
+
 ## [0.120.0](https://www.github.com/googleapis/java-storage-nio/compare/0.120.0-alpha...v0.120.0) (2020-04-24)
 
 
