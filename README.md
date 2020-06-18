@@ -178,7 +178,7 @@ system implementation. You can disable this feature with
 
 #### Complete source code
 
-There are examples in [google-cloud-examples](google-cloud-examples/src/main/java/com/google/cloud/examples/nio/)
+There are examples in [google-cloud-examples](google-cloud-nio-examples/src/main/java/com/google/cloud/examples/nio/)
 for your perusal.
 
 Java Versions
