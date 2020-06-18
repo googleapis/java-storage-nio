@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.120.2](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.1...v0.120.2) (2020-06-18)
+
+
+### Bug Fixes
+
+* update FakeStorageRpc to extend StorageRpcTestBase [#135](https://www.github.com/googleapis/java-storage-nio/issues/135) ([7614295](https://www.github.com/googleapis/java-storage-nio/commit/761429571eea15b11b2d44b4f5a2c65b4f649484))
+
 ### [0.120.1](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.0...v0.120.1) (2020-06-16)
 
 
