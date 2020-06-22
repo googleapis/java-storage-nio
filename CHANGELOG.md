@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.120.3](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.2...v0.120.3) (2020-06-22)
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-storage to v1.110.0 ([#154](https://www.github.com/googleapis/java-storage-nio/issues/154)) ([fd6de38](https://www.github.com/googleapis/java-storage-nio/commit/fd6de38ee63376afff03c7e794dce1f4524a4375))
+
 ### [0.120.2](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.1...v0.120.2) (2020-06-18)
 
 
