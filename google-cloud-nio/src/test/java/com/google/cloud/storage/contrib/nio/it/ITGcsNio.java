@@ -20,6 +20,8 @@ import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import com.google.api.client.http.HttpResponseException;
 import com.google.cloud.storage.BlobInfo;
@@ -96,6 +98,7 @@ public class ITGcsNio {
 
   private static final Logger log = Logger.getLogger(ITGcsNio.class.getName());
   private static final String BUCKET = RemoteStorageHelper.generateBucketName();
+  private static final String TARGET_BUCKET = RemoteStorageHelper.generateBucketName();
   private static final String REQUESTER_PAYS_BUCKET =
       RemoteStorageHelper.generateBucketName() + "_rp";
   private static final String SML_FILE = "tmp-test-small-file.txt";
@@ -119,6 +122,7 @@ public class ITGcsNio {
     storage = storageOptions.getService();
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
+    storage.create(BucketInfo.of(TARGET_BUCKET));
     fillFile(storage, BUCKET, SML_FILE, SML_SIZE);
     fillFile(storage, BUCKET, BIG_FILE, BIG_SIZE);
     BucketInfo requesterPaysBucket =
@@ -1038,6 +1042,34 @@ public class ITGcsNio {
     public ImmutableList<Path> getPaths() {
       return copyOf(paths);
     }
+  }
+
+  @Test
+  public void testCopyWithSameProvider() throws IOException {
+    CloudStorageFileSystem sourceFileSystem = getTestBucket();
+    CloudStorageFileSystem targetFileSystem =
+        CloudStorageFileSystem.forBucket(
+            TARGET_BUCKET, CloudStorageConfiguration.DEFAULT, storageOptions);
+    Path sourceFileSystemPath = sourceFileSystem.getPath(SML_FILE);
+    Path targetFileSystemPath = targetFileSystem.getPath(PREFIX + randomSuffix());
+    Files.copy(sourceFileSystemPath, targetFileSystemPath);
+    assertEquals(sourceFileSystem.provider(), targetFileSystem.provider());
+    assertEquals(sourceFileSystem.config(), targetFileSystem.config());
+  }
+
+  @Test
+  public void testCopyWithDifferentProvider() throws IOException {
+    CloudStorageFileSystem sourceFileSystem = getTestBucket();
+    CloudStorageFileSystem targetFileSystem =
+        CloudStorageFileSystem.forBucket(
+            TARGET_BUCKET,
+            CloudStorageConfiguration.builder().permitEmptyPathComponents(true).build(),
+            storageOptions);
+    Path sourceFileSystemPath = sourceFileSystem.getPath(SML_FILE);
+    Path targetFileSystemPath = targetFileSystem.getPath(PREFIX + randomSuffix());
+    Files.copy(sourceFileSystemPath, targetFileSystemPath);
+    assertThat(sourceFileSystem.provider() == targetFileSystem.provider()).isFalse();
+    assertNotEquals(sourceFileSystem.config(), targetFileSystem.config());
   }
 
   private CloudStorageFileSystem getTestBucket() throws IOException {
