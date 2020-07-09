@@ -137,8 +137,8 @@ public final class CloudStorageFileSystem extends FileSystem {
   /**
    * Creates new file system instance for {@code bucket}, with existing provider and configuration.
    *
-   * @param bucketName the name of the bucket to initialize CloudStorageFileSystem Object.
-   * @return CloudStorageFileSystem Object with existing provider and config.
+   * @param bucketName name of the bucket to initialize {@code CloudStorageFileSystem} object
+   * @return {@code CloudStorageFileSystem} object with existing provider and config
    * @see #forBucket(String)
    */
   private static CloudStorageFileSystem getExistingCloudStorageConfiguration(String bucketName) {
