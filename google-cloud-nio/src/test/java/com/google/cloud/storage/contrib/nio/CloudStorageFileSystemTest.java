@@ -338,7 +338,7 @@ public class CloudStorageFileSystemTest {
   }
 
   @Test
-  public void testSameProvider() {
+  public void testSameProvider() throws IOException {
     try (CloudStorageFileSystem sourceFileSystem =
         CloudStorageFileSystem.forBucket(
             "bucket",
@@ -351,13 +351,11 @@ public class CloudStorageFileSystemTest {
       assertEquals(sourceFileSystem.config(), destFileSystem.config());
       assertEquals("bucket", sourceFileSystem.bucket());
       assertEquals("new-bucket", destFileSystem.bucket());
-    } catch (IOException e) {
-
     }
   }
 
   @Test
-  public void testDifferentProvider() {
+  public void testDifferentProvider() throws IOException {
     try (CloudStorageFileSystem sourceFileSystem =
         CloudStorageFileSystem.forBucket(
             "bucket",
@@ -370,8 +368,6 @@ public class CloudStorageFileSystemTest {
       assertNotEquals(sourceFileSystem.config(), destFileSystem.config());
       assertEquals("bucket", sourceFileSystem.bucket());
       assertEquals("new-bucket", destFileSystem.bucket());
-    } catch (IOException e) {
-      // fail
     }
   }
   /**
