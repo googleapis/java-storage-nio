@@ -16,6 +16,7 @@
 
 package com.google.cloud.storage.contrib.nio.testing;
 
+import com.google.api.client.util.DateTime;
 import com.google.api.services.storage.model.Bucket;
 import com.google.api.services.storage.model.ServiceAccount;
 import com.google.api.services.storage.model.StorageObject;
@@ -29,8 +30,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.nio.file.FileAlreadyExistsException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +73,9 @@ import javax.annotation.concurrent.NotThreadSafe;
 @NotThreadSafe
 class FakeStorageRpc extends StorageRpcTestBase {
 
+  private static final SimpleDateFormat RFC_3339_FORMATTER =
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+
   // fullname -> metadata
   Map<String, StorageObject> metadata = new HashMap<>();
   // fullname -> contents
@@ -95,6 +101,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
       throws StorageException {
     potentiallyThrow(options);
     String key = fullname(object);
+    object.setUpdated(now());
     metadata.put(key, object);
     try {
       contents.put(key, com.google.common.io.ByteStreams.toByteArray(content));
@@ -357,6 +364,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
       futureContents.remove(uploadId);
       if (metadata.containsKey(uploadId)) {
         StorageObject storageObject = metadata.get(uploadId);
+        storageObject.setUpdated(now());
         Long generation = storageObject.getGeneration();
         if (null == generation) {
           generation = Long.valueOf(0);
@@ -401,6 +409,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
 
     rewriteRequest.target.setGeneration(generation);
     rewriteRequest.target.setSize(BigInteger.valueOf(data.length));
+    rewriteRequest.target.setUpdated(metadata.get(sourceKey).getUpdated());
 
     metadata.put(destKey, rewriteRequest.target);
 
@@ -412,6 +421,10 @@ class FakeStorageRpc extends StorageRpcTestBase {
         true,
         "rewriteToken goes here",
         data.length);
+  }
+
+  private static DateTime now() {
+    return DateTime.parseRfc3339(RFC_3339_FORMATTER.format(new Date()));
   }
 
   private String fullname(StorageObject so) {
