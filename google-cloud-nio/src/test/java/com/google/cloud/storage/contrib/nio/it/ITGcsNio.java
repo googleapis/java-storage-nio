@@ -22,6 +22,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import com.google.api.client.http.HttpResponseException;
 import com.google.cloud.storage.BlobInfo;
@@ -1053,7 +1055,7 @@ public class ITGcsNio {
     Path sourceFileSystemPath = sourceFileSystem.getPath(SML_FILE);
     Path targetFileSystemPath = targetFileSystem.getPath(PREFIX + randomSuffix());
     Files.copy(sourceFileSystemPath, targetFileSystemPath);
-    assertEquals(sourceFileSystem.provider(), targetFileSystem.provider());
+    assertSame(sourceFileSystem.provider(), targetFileSystem.provider());
     assertEquals(sourceFileSystem.config(), targetFileSystem.config());
   }
 
@@ -1068,7 +1070,7 @@ public class ITGcsNio {
     Path sourceFileSystemPath = sourceFileSystem.getPath(SML_FILE);
     Path targetFileSystemPath = targetFileSystem.getPath(PREFIX + randomSuffix());
     Files.copy(sourceFileSystemPath, targetFileSystemPath);
-    assertThat(sourceFileSystem.provider() == targetFileSystem.provider()).isFalse();
+    assertNotSame(sourceFileSystem.provider(), targetFileSystem.provider());
     assertNotEquals(sourceFileSystem.config(), targetFileSystem.config());
   }
 

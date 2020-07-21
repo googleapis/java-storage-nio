@@ -19,8 +19,9 @@ package com.google.cloud.storage.contrib.nio;
 import static com.google.common.truth.Truth.assertThat;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
@@ -347,7 +348,7 @@ public class CloudStorageFileSystemTest {
           CloudStorageFileSystem.forBucket(
               "new-bucket",
               CloudStorageConfiguration.builder().permitEmptyPathComponents(true).build());
-      assertEquals(sourceFileSystem.provider(), destFileSystem.provider());
+      assertSame(sourceFileSystem.provider(), destFileSystem.provider());
       assertEquals(sourceFileSystem.config(), destFileSystem.config());
       assertEquals("bucket", sourceFileSystem.bucket());
       assertEquals("new-bucket", destFileSystem.bucket());
@@ -364,7 +365,7 @@ public class CloudStorageFileSystemTest {
           CloudStorageFileSystem.forBucket(
               "new-bucket",
               CloudStorageConfiguration.builder().permitEmptyPathComponents(false).build());
-      assertFalse(sourceFileSystem.provider() == destFileSystem.provider());
+      assertNotSame(sourceFileSystem.provider(), destFileSystem.provider());
       assertNotEquals(sourceFileSystem.config(), destFileSystem.config());
       assertEquals("bucket", sourceFileSystem.bucket());
       assertEquals("new-bucket", destFileSystem.bucket());
