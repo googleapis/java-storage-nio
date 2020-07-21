@@ -38,6 +38,8 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.annotation.CheckReturnValue;
@@ -64,7 +66,8 @@ public final class CloudStorageFileSystem extends FileSystem {
   private final CloudStorageFileSystemProvider provider;
   private final String bucket;
   private final CloudStorageConfiguration config;
-  private static CloudStorageFileSystem cloudStorageFileSystem;
+  private static final Map<CloudStorageConfiguration, Set<CloudStorageFileSystemProvider>>
+      CONFIG_TO_PROVIDERS_MAP = new HashMap<>();
 
   // Users can change this: then this affects every filesystem object created
   // later, including via SPI. This is meant to be done only once, at the beginning
@@ -135,18 +138,6 @@ public final class CloudStorageFileSystem extends FileSystem {
   }
 
   /**
-   * Creates new file system instance for {@code bucket}, with existing provider and configuration.
-   *
-   * @param bucketName name of the bucket to initialize {@code CloudStorageFileSystem} object
-   * @return {@code CloudStorageFileSystem} object with existing provider and config
-   * @see #forBucket(String)
-   */
-  private static CloudStorageFileSystem getExistingCloudStorageConfiguration(String bucketName) {
-    return new CloudStorageFileSystem(
-        cloudStorageFileSystem.provider(), bucketName, cloudStorageFileSystem.config());
-  }
-
-  /**
    * Creates new file system instance for {@code bucket}, with customizable settings.
    *
    * @see #forBucket(String)
@@ -156,10 +147,29 @@ public final class CloudStorageFileSystem extends FileSystem {
     checkArgument(
         !bucket.startsWith(URI_SCHEME + ":"), "Bucket name must not have schema: %s", bucket);
     checkNotNull(config);
-    return (cloudStorageFileSystem != null && cloudStorageFileSystem.config().equals(config))
-        ? getExistingCloudStorageConfiguration(bucket)
-        : new CloudStorageFileSystem(
-            new CloudStorageFileSystemProvider(config.userProject()), bucket, config);
+    return new CloudStorageFileSystem(
+        getCloudStorageFileSystemProvider(config, null), bucket, config);
+  }
+
+  private static CloudStorageFileSystemProvider getCloudStorageFileSystemProvider(
+      CloudStorageConfiguration config, StorageOptions storageOptions) {
+    CloudStorageFileSystemProvider newProvider =
+        (storageOptions == null)
+            ? new CloudStorageFileSystemProvider(config.userProject())
+            : new CloudStorageFileSystemProvider(config.userProject(), storageOptions);
+    Set<CloudStorageFileSystemProvider> existingProviders = CONFIG_TO_PROVIDERS_MAP.get(config);
+    if (existingProviders == null) {
+      existingProviders = new HashSet<>();
+    } else {
+      for (CloudStorageFileSystemProvider existiningProvider : existingProviders) {
+        if (existiningProvider.equals(newProvider)) {
+          return existiningProvider;
+        }
+      }
+    }
+    existingProviders.add(newProvider);
+    CONFIG_TO_PROVIDERS_MAP.put(config, existingProviders);
+    return newProvider;
   }
 
   /**
@@ -182,12 +192,8 @@ public final class CloudStorageFileSystem extends FileSystem {
       String bucket, CloudStorageConfiguration config, @Nullable StorageOptions storageOptions) {
     checkArgument(
         !bucket.startsWith(URI_SCHEME + ":"), "Bucket name must not have schema: %s", bucket);
-    return (cloudStorageFileSystem != null && cloudStorageFileSystem.config().equals(config))
-        ? getExistingCloudStorageConfiguration(bucket)
-        : new CloudStorageFileSystem(
-            new CloudStorageFileSystemProvider(config.userProject(), storageOptions),
-            bucket,
-            checkNotNull(config));
+    return new CloudStorageFileSystem(
+        getCloudStorageFileSystemProvider(config, storageOptions), bucket, checkNotNull(config));
   }
 
   CloudStorageFileSystem(
@@ -211,7 +217,6 @@ public final class CloudStorageFileSystem extends FileSystem {
     }
     this.provider = provider;
     this.config = config;
-    this.cloudStorageFileSystem = this;
   }
 
   @Override
