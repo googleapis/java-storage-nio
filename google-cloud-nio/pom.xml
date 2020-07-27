@@ -56,11 +56,6 @@
     </dependency>
     <dependency>
       <groupId>com.google.auto.value</groupId>
-      <artifactId>auto-value</artifactId>
-      <scope>provided</scope> <!-- to leave out of the all-deps jar -->
-    </dependency>
-    <dependency>
-      <groupId>com.google.auto.value</groupId>
       <artifactId>auto-value-annotations</artifactId>
     </dependency>
     <dependency>
@@ -95,6 +90,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -112,6 +108,13 @@
           <target>1.7</target>
           <encoding>UTF-8</encoding>
           <compilerArgument>-Xlint:unchecked</compilerArgument>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.auto.value</groupId>
+              <artifactId>auto-value</artifactId>
+              <version>1.7.3</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <!-- shade the jar so we can demo adding the NIO jar to add functionality. -->

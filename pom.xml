@@ -95,12 +95,6 @@
         <version>v1-rev20200611-1.30.9</version>
       </dependency>
       <dependency>
-        <groupId>com.google.auto.value</groupId>
-        <artifactId>auto-value</artifactId>
-        <scope>provided</scope> <!-- to leave out of the all-deps jar -->
-        <version>${auto-value-annotation.version}</version>
-      </dependency>
-      <dependency>
        <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value-annotations</artifactId>
         <version>${auto-value-annotation.version}</version>
@@ -124,6 +118,18 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>com.google.auto.value</groupId>
+                <artifactId>auto-value</artifactId>
+                <version>1.7.3</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
           <configuration>
@@ -135,6 +141,7 @@
       </plugins>
     </pluginManagement>
   </build>
+
   <modules>
     <module>google-cloud-nio</module>
     <module>google-cloud-nio-retrofit</module>
