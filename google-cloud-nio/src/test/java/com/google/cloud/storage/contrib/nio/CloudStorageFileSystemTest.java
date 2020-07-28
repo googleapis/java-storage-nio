@@ -19,8 +19,6 @@ package com.google.cloud.storage.contrib.nio;
 import static com.google.common.truth.Truth.assertThat;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.common.testing.EqualsTester;
@@ -57,8 +55,6 @@ public class CloudStorageFileSystemTest {
           + "No more; and by a sleep, to say we end\n"
           + "The Heart-ache, and the thousand Natural shocks\n"
           + "That Flesh is heir to? 'Tis a consummation\n";
-
-  private static final Storage STORAGE = LocalStorageHelper.getOptions().getService();
 
   @Before
   public void before() {
@@ -198,30 +194,31 @@ public class CloudStorageFileSystemTest {
   public void testListFiles() throws IOException {
     try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket")) {
       List<Path> goodPaths = new ArrayList<>();
-      List<Path> paths = new ArrayList<>();
       goodPaths.add(fs.getPath("dir/angel"));
       goodPaths.add(fs.getPath("dir/alone"));
       goodPaths.add(fs.getPath("dir/dir2/angel"));
+      assertThat(goodPaths.size()).isEqualTo(3);
+
+      List<Path> paths = new ArrayList<>();
       paths.add(fs.getPath("dir1/another_angel"));
       paths.add(fs.getPath("atroot"));
       paths.addAll(goodPaths);
-      for (Path path : paths) {
-        Files.write(path, ALONE.getBytes(UTF_8));
-      }
-      assertThat(goodPaths.size()).isEqualTo(3);
       assertThat(paths.size()).isEqualTo(5);
 
-      List<Path> got = new ArrayList<>();
-      for (Blob blob : STORAGE.list("bucket", Storage.BlobListOption.prefix("/dir/")).getValues()) {
-        got.add(fs.getPath(blob.getName()));
+      List<Path> pathList = new ArrayList<>();
+      for (Path path : paths) {
+        pathList.add(Files.write(path, ALONE.getBytes(UTF_8)));
       }
-      assertThat(got).containsExactlyElementsIn(goodPaths);
+      assertThat(pathList.size()).isEqualTo(5);
+      assertThat(pathList).containsExactlyElementsIn(paths);
 
-      // Must also work with relative path
-      got.clear();
-      for (Blob blob : STORAGE.list("bucket", Storage.BlobListOption.prefix("dir/")).getValues()) {
-        got.add(fs.getPath(blob.getName()));
+      List<Path> got = new ArrayList<>();
+      for (Path path : pathList) {
+        if (path.toString().contains("/dir/")) {
+          got.add(path);
+        }
       }
+      assertThat(got.size()).isEqualTo(3);
       assertThat(got).containsExactlyElementsIn(goodPaths);
     }
   }
