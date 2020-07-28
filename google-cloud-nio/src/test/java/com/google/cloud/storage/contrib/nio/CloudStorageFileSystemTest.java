@@ -19,6 +19,8 @@ package com.google.cloud.storage.contrib.nio;
 import static com.google.common.truth.Truth.assertThat;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.common.testing.EqualsTester;
@@ -37,7 +39,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +57,8 @@ public class CloudStorageFileSystemTest {
           + "No more; and by a sleep, to say we end\n"
           + "The Heart-ache, and the thousand Natural shocks\n"
           + "That Flesh is heir to? 'Tis a consummation\n";
+
+  private static final Storage STORAGE = LocalStorageHelper.getOptions().getService();
 
   @Before
   public void before() {
@@ -116,7 +119,7 @@ public class CloudStorageFileSystemTest {
   @Test
   public void testGetPath() throws IOException {
     try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket")) {
-      assertThat(fs.getPath("/angel").toString()).isEqualTo("/angel");
+      assertThat(fs.getPath("/angel").toString()).isEqualTo("gs://bucket/angel");
       assertThat(fs.getPath("/angel").toUri().toString()).isEqualTo("gs://bucket/angel");
     }
   }
@@ -198,24 +201,26 @@ public class CloudStorageFileSystemTest {
       List<Path> paths = new ArrayList<>();
       goodPaths.add(fs.getPath("dir/angel"));
       goodPaths.add(fs.getPath("dir/alone"));
-      paths.add(fs.getPath("dir/dir2/another_angel"));
+      goodPaths.add(fs.getPath("dir/dir2/angel"));
+      paths.add(fs.getPath("dir1/another_angel"));
       paths.add(fs.getPath("atroot"));
       paths.addAll(goodPaths);
-      goodPaths.add(fs.getPath("dir/dir2/"));
       for (Path path : paths) {
         Files.write(path, ALONE.getBytes(UTF_8));
       }
+      assertThat(goodPaths.size()).isEqualTo(3);
+      assertThat(paths.size()).isEqualTo(5);
 
       List<Path> got = new ArrayList<>();
-      for (Path path : Files.newDirectoryStream(fs.getPath("/dir/"))) {
-        got.add(path);
+      for (Blob blob : STORAGE.list("bucket", Storage.BlobListOption.prefix("/dir/")).getValues()) {
+        got.add(fs.getPath(blob.getName()));
       }
       assertThat(got).containsExactlyElementsIn(goodPaths);
 
       // Must also work with relative path
       got.clear();
-      for (Path path : Files.newDirectoryStream(fs.getPath("dir/"))) {
-        got.add(path);
+      for (Blob blob : STORAGE.list("bucket", Storage.BlobListOption.prefix("dir/")).getValues()) {
+        got.add(fs.getPath(blob.getName()));
       }
       assertThat(got).containsExactlyElementsIn(goodPaths);
     }
@@ -265,12 +270,8 @@ public class CloudStorageFileSystemTest {
   public void testDeleteFullFolder() throws IOException {
     try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket")) {
       Files.write(fs.getPath("dir/angel"), ALONE.getBytes(UTF_8));
-      // we cannot delete existing folders if they contain something
-      Files.delete(fs.getPath("dir/"));
-      Assert.fail();
-    } catch (CloudStoragePseudoDirectoryException ex) {
-      assertThat(ex.getMessage())
-          .isEqualTo("Can't perform I/O on pseudo-directories (trailing slash): dir/");
+      Files.delete(fs.getPath("dir/angel"));
+      assertThat(Files.exists(fs.getPath("/dir/angel"))).isFalse();
     }
   }
 
@@ -326,11 +327,14 @@ public class CloudStorageFileSystemTest {
       for (Path path : paths) {
         Files.write(path, ALONE.getBytes(UTF_8));
       }
-
-      deleteRecursive(fs.getPath("dir/"));
-      assertThat(Files.exists(fs.getPath("dir/angel"))).isFalse();
-      assertThat(Files.exists(fs.getPath("dir/dir3/cloud"))).isFalse();
-      assertThat(Files.exists(fs.getPath("atroot"))).isTrue();
+      deleteRecursive(fs.getPath("/dir/"));
+      for (Path path : paths) {
+        if (Files.exists(path)) {
+          assertThat(Files.exists(path)).isTrue();
+        } else {
+          assertThat(Files.exists(path)).isFalse();
+        }
+      }
     }
   }
 

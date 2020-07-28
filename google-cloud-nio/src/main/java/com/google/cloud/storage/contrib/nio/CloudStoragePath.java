@@ -344,7 +344,7 @@ public final class CloudStoragePath implements Path {
 
   @Override
   public String toString() {
-    return path.toString();
+    return toUri().toString();
   }
 
   @Override
