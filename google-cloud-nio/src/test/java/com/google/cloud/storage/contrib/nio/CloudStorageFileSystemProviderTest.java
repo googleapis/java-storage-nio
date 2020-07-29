@@ -781,8 +781,8 @@ public class CloudStorageFileSystemProviderTest {
     assertThat(path1.toUri()).isEqualTo(path3.toUri());
 
     // getPath does not interpret the string at all.
-    Path path4 = provider.getPath("gs://bucket/with/a%20percent");
-    assertThat(path4.toString()).isEqualTo("gs://bucket/with/a%2520percent");
+    Path path4 = provider.getPath(URI.create("gs://bucket/with/a%20percent"));
+    assertThat(path4.toString()).isEqualTo("gs://bucket/with/a%20percent");
   }
 
   private static CloudStorageConfiguration permitEmptyPathComponents(boolean value) {
