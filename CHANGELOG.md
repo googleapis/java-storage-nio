@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.121.0](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.2...v0.121.0) (2020-07-29)
+
+
+### Features
+
+* **deps:** adopt flatten plugin and google-cloud-shared-dependencies ([#156](https://www.github.com/googleapis/java-storage-nio/issues/156)) ([510f6a5](https://www.github.com/googleapis/java-storage-nio/commit/510f6a5efc4a13b010020a8d67ec1511bbd46564))
+* update cloudstorageconfiguration to improve copy accross cross-bucket performance ([#168](https://www.github.com/googleapis/java-storage-nio/issues/168)) ([db74524](https://www.github.com/googleapis/java-storage-nio/commit/db74524d68487df71c80b122d8c0ff384dc9ace3))
+
+
+### Dependencies
+
+* update dependency com.google.apis:google-api-services-storage to v1-rev20200611-1.30.9 ([#166](https://www.github.com/googleapis/java-storage-nio/issues/166)) ([3cab5f2](https://www.github.com/googleapis/java-storage-nio/commit/3cab5f25e081c0198d06903a42c7de3dbd34bbad))
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v0.8.2 ([#167](https://www.github.com/googleapis/java-storage-nio/issues/167)) ([3b14bbc](https://www.github.com/googleapis/java-storage-nio/commit/3b14bbc05d5658c57d4f272fdfdf152d7d9ee18d))
+* update dependency com.google.cloud:google-cloud-storage to v1.110.0 ([#154](https://www.github.com/googleapis/java-storage-nio/issues/154)) ([fd6de38](https://www.github.com/googleapis/java-storage-nio/commit/fd6de38ee63376afff03c7e794dce1f4524a4375))
+* update dependency org.mockito:mockito-core to v3.4.4 ([#170](https://www.github.com/googleapis/java-storage-nio/issues/170)) ([3e06bd5](https://www.github.com/googleapis/java-storage-nio/commit/3e06bd5b07065acb1b41a03ebbb862487c046eeb))
+
 ### [0.120.2](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.1...v0.120.2) (2020-06-18)
 
 
