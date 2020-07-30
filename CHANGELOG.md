@@ -1,13 +1,13 @@
 # Changelog
 
-### [0.120.2](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.1...v0.120.2) (2020-06-18)
+### [0.121.2](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.1...v0.121.2) (2020-06-18)
 
 
 ### Bug Fixes
 
 * update FakeStorageRpc to extend StorageRpcTestBase [#135](https://www.github.com/googleapis/java-storage-nio/issues/135) ([7614295](https://www.github.com/googleapis/java-storage-nio/commit/761429571eea15b11b2d44b4f5a2c65b4f649484))
 
-### [0.120.1](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.0...v0.120.1) (2020-06-16)
+### [0.121.1](https://www.github.com/googleapis/java-storage-nio/compare/v0.120.0...v0.121.1) (2020-06-16)
 
 
 ### Dependencies
@@ -33,7 +33,7 @@
 
 * update CONTRIBUTING.md to include code formatting ([#534](https://www.github.com/googleapis/java-storage-nio/issues/534)) ([#103](https://www.github.com/googleapis/java-storage-nio/issues/103)) ([c329a58](https://www.github.com/googleapis/java-storage-nio/commit/c329a58086501f77d7c7e0db44eb06cb68eb933b))
 
-## [0.120.0](https://www.github.com/googleapis/java-storage-nio/compare/0.120.0-alpha...v0.120.0) (2020-04-24)
+## [0.121.0](https://www.github.com/googleapis/java-storage-nio/compare/0.120.0-alpha...v0.121.0) (2020-04-24)
 
 
 ### Features
