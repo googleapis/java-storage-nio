@@ -338,6 +338,17 @@ class FakeStorageRpc extends StorageRpcTestBase {
   public void write(
       String uploadId, byte[] toWrite, int toWriteOffset, long destOffset, int length, boolean last)
       throws StorageException {
+    writeWithResponse(uploadId, toWrite, toWriteOffset, destOffset, length, last);
+  }
+
+  @Override
+  public StorageObject writeWithResponse(
+      String uploadId,
+      byte[] toWrite,
+      int toWriteOffset,
+      long destOffset,
+      int length,
+      boolean last) {
     // this may have a lot more allocations than ideal, but it'll work.
     byte[] bytes;
     if (futureContents.containsKey(uploadId)) {
@@ -352,11 +363,12 @@ class FakeStorageRpc extends StorageRpcTestBase {
     }
     System.arraycopy(toWrite, toWriteOffset, bytes, (int) destOffset, length);
     // we want to mimic the GCS behavior that file contents are only visible on close.
+    StorageObject storageObject = null;
     if (last) {
       contents.put(uploadId, bytes);
       futureContents.remove(uploadId);
       if (metadata.containsKey(uploadId)) {
-        StorageObject storageObject = metadata.get(uploadId);
+        storageObject = metadata.get(uploadId);
         Long generation = storageObject.getGeneration();
         if (null == generation) {
           generation = Long.valueOf(0);
@@ -367,6 +379,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
     } else {
       futureContents.put(uploadId, bytes);
     }
+    return storageObject;
   }
 
   @Override
