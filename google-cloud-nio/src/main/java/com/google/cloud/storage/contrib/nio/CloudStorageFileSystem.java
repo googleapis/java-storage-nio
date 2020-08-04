@@ -38,6 +38,8 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.annotation.CheckReturnValue;
@@ -61,10 +63,11 @@ public final class CloudStorageFileSystem extends FileSystem {
   public static final int BLOCK_SIZE_DEFAULT = 2 * 1024 * 1024;
   public static final FileTime FILE_TIME_UNKNOWN = FileTime.fromMillis(0);
   public static final Set<String> SUPPORTED_VIEWS = ImmutableSet.of(BASIC_VIEW, GCS_VIEW);
-
   private final CloudStorageFileSystemProvider provider;
   private final String bucket;
   private final CloudStorageConfiguration config;
+  private static final Map<CloudStorageConfiguration, Set<CloudStorageFileSystemProvider>>
+      CONFIG_TO_PROVIDERS_MAP = new HashMap<>();
 
   // Users can change this: then this affects every filesystem object created
   // later, including via SPI. This is meant to be done only once, at the beginning
@@ -145,7 +148,28 @@ public final class CloudStorageFileSystem extends FileSystem {
         !bucket.startsWith(URI_SCHEME + ":"), "Bucket name must not have schema: %s", bucket);
     checkNotNull(config);
     return new CloudStorageFileSystem(
-        new CloudStorageFileSystemProvider(config.userProject()), bucket, config);
+        getCloudStorageFileSystemProvider(config, null), bucket, config);
+  }
+
+  private static CloudStorageFileSystemProvider getCloudStorageFileSystemProvider(
+      CloudStorageConfiguration config, StorageOptions storageOptions) {
+    CloudStorageFileSystemProvider newProvider =
+        (storageOptions == null)
+            ? new CloudStorageFileSystemProvider(config.userProject())
+            : new CloudStorageFileSystemProvider(config.userProject(), storageOptions);
+    Set<CloudStorageFileSystemProvider> existingProviders = CONFIG_TO_PROVIDERS_MAP.get(config);
+    if (existingProviders == null) {
+      existingProviders = new HashSet<>();
+    } else {
+      for (CloudStorageFileSystemProvider existiningProvider : existingProviders) {
+        if (existiningProvider.equals(newProvider)) {
+          return existiningProvider;
+        }
+      }
+    }
+    existingProviders.add(newProvider);
+    CONFIG_TO_PROVIDERS_MAP.put(config, existingProviders);
+    return newProvider;
   }
 
   /**
@@ -169,9 +193,7 @@ public final class CloudStorageFileSystem extends FileSystem {
     checkArgument(
         !bucket.startsWith(URI_SCHEME + ":"), "Bucket name must not have schema: %s", bucket);
     return new CloudStorageFileSystem(
-        new CloudStorageFileSystemProvider(config.userProject(), storageOptions),
-        bucket,
-        checkNotNull(config));
+        getCloudStorageFileSystemProvider(config, storageOptions), bucket, checkNotNull(config));
   }
 
   CloudStorageFileSystem(
