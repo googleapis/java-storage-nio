@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import com.google.api.client.http.HttpResponseException;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.BucketInfo;
@@ -37,8 +38,10 @@ import com.google.cloud.storage.contrib.nio.CloudStorageConfiguration;
 import com.google.cloud.storage.contrib.nio.CloudStorageFileSystem;
 import com.google.cloud.storage.contrib.nio.CloudStorageFileSystemProvider;
 import com.google.cloud.storage.contrib.nio.CloudStoragePath;
+import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
@@ -62,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -1072,6 +1076,32 @@ public class ITGcsNio {
     Files.copy(sourceFileSystemPath, targetFileSystemPath);
     assertNotSame(sourceFileSystem.provider(), targetFileSystem.provider());
     assertNotEquals(sourceFileSystem.config(), targetFileSystem.config());
+  }
+
+  @Test
+  public void testListObject() throws IOException {
+    String firstBucket = "first-bucket-" + UUID.randomUUID().toString();
+    String secondBucket = "second-bucket" + UUID.randomUUID().toString();
+    Storage localStorageService = LocalStorageHelper.customOptions(true).getService();
+    fillFile(localStorageService, firstBucket, "object", SML_SIZE);
+    fillFile(localStorageService, firstBucket, "test-object", SML_SIZE);
+    fillFile(localStorageService, secondBucket, "test-object", SML_SIZE);
+
+    // Listing objects from first bucket without prefix.
+    List<Blob> objects = Lists.newArrayList(localStorageService.list(firstBucket).getValues());
+    assertThat(objects.size()).isEqualTo(2);
+
+    // Listing objects from first bucket with prefix.
+    objects =
+        Lists.newArrayList(
+            localStorageService
+                .list(firstBucket, Storage.BlobListOption.prefix("test-"))
+                .getValues());
+    assertThat(objects.size()).isEqualTo(1);
+
+    // Listing objects from second bucket.
+    objects = Lists.newArrayList(localStorageService.list(secondBucket).getValues());
+    assertThat(objects.size()).isEqualTo(1);
   }
 
   private CloudStorageFileSystem getTestBucket() throws IOException {
