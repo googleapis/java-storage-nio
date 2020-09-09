@@ -151,7 +151,9 @@ class FakeStorageRpc extends StorageRpcTestBase {
         continue;
       }
       so.setSize(size(so));
-      values.add(so);
+      if (so.getBucket().equals(bucket)) {
+        values.add(so);
+      }
     }
     values.addAll(folders.values());
 
