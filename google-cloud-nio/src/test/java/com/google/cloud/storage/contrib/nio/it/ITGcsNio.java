@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import com.google.api.client.http.HttpResponseException;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.BucketInfo;
@@ -1087,7 +1088,7 @@ public class ITGcsNio {
     fillFile(localStorageService, secondBucket, "test-object", SML_SIZE);
 
     // Listing objects from first bucket without prefix.
-    List objects = Lists.newArrayList(localStorageService.list(firstBucket).getValues());
+    List<Blob> objects = Lists.newArrayList(localStorageService.list(firstBucket).getValues());
     assertThat(objects.size()).isEqualTo(2);
 
     // Listing objects from first bucket with prefix.
@@ -1099,7 +1100,7 @@ public class ITGcsNio {
     assertThat(objects.size()).isEqualTo(1);
 
     // Listing objects from second bucket.
-    objects = Lists.newArrayList(localStorageService.list(secondBucket));
+    objects = Lists.newArrayList(localStorageService.list(secondBucket).getValues());
     assertThat(objects.size()).isEqualTo(1);
   }
 
