@@ -144,16 +144,14 @@ class FakeStorageRpc extends StorageRpcTestBase {
     List<StorageObject> values = new ArrayList<>();
     Map<String, StorageObject> folders = new HashMap<>();
     for (StorageObject so : metadata.values()) {
-      if (!so.getName().startsWith(prefix)) {
+      if (!so.getBucket().equals(bucket) || !so.getName().startsWith(prefix)) {
         continue;
       }
       if (processedAsFolder(so, delimiter, prefix, folders)) {
         continue;
       }
       so.setSize(size(so));
-      if (so.getBucket().equals(bucket)) {
-        values.add(so);
-      }
+      values.add(so);
     }
     values.addAll(folders.values());
 
