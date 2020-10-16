@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/java-storage-nio.git",
-        "sha": "11c83d4e308cb752f518ce831642cb9305ef979b"
+        "sha": "c59cc46fe270080eca7ac56d25c5bb90e7b0841c"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "27e0e916cbfdb3d5ff6639b686cc04f78a0b0386"
+        "sha": "7c5370937dd9ba9dcf9cd7d2af880a58b389b4f1"
       }
     }
   ],
@@ -24,6 +24,7 @@
     ".github/readme/synth.py",
     ".github/release-please.yml",
     ".github/trusted-contribution.yml",
+    ".github/workflows/approve-readme.yaml",
     ".github/workflows/auto-release.yaml",
     ".github/workflows/ci.yaml",
     ".github/workflows/formatting.yaml",
