@@ -1,6 +1,7 @@
 {
   "name": "google-cloud-nio",
   "name_pretty": "NIO Filesystem Provider for Google Cloud Storage",
+  "product_documentation": "https://cloud.google.com/storage/docs",
   "client_documentation": "https://googleapis.dev/java/google-cloud-nio/latest",
   "release_level": "alpha",
   "language": "java",
