@@ -21,14 +21,15 @@ import static com.google.common.truth.Truth.assertThat;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Unit tests for {@link CloudStorageFileSystemProvider}.
- *  Makes sure the NIO system picks it up properly. */
+/**
+ * Unit tests for {@link CloudStorageFileSystemProvider}. Makes sure the NIO system picks it up
+ * properly.
+ */
 @RunWith(JUnit4.class)
 public class NIOTest {
 
@@ -39,21 +40,20 @@ public class NIOTest {
     uriToCloudStorage = URI.create("gs://bucket/file.txt");
   }
 
-  /** We can create a Path object from a gs:// URI. **/
+  /** We can create a Path object from a gs:// URI. * */
   @Test
   public void testCreatePath() {
     // Return value ignored on purpose, we just want to check
     // no exception is thrown.
     Path path = Paths.get(uriToCloudStorage);
     // Truth bug workaround, see https://github.com/google/truth/issues/285
-    assertThat((Object)path).isNotNull();
+    assertThat((Object) path).isNotNull();
   }
 
-  /** The created Path object has the correct scheme. **/
+  /** The created Path object has the correct scheme. * */
   @Test
   public void testCreatedPathIsGS() {
     Path path = Paths.get(uriToCloudStorage);
     assertThat(path.getFileSystem().provider().getScheme()).isEqualTo("gs");
   }
-
 }
