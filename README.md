@@ -13,8 +13,30 @@ Java idiomatic client for [NIO Filesystem Provider for Google Cloud Storage][pro
 
 ## Quickstart
 
+If you are using Maven with [BOM][libraries-bom], add this to your pom.xml file
+```xml
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>libraries-bom</artifactId>
+      <version>15.0.0</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
 
-If you are using Maven, add this to your pom.xml file:
+<dependencies>
+  <dependency>
+    <groupId>com.google.cloud</groupId>
+    <artifactId>google-cloud-nio</artifactId>
+  </dependency>
+</dependencies>
+
+```
+
+If you are using Maven without BOM, add this to your dependencies:
 
 ```xml
 <dependency>
@@ -22,6 +44,7 @@ If you are using Maven, add this to your pom.xml file:
   <artifactId>google-cloud-nio</artifactId>
   <version>0.122.2</version>
 </dependency>
+
 ```
 
 If you are using Gradle, add this to your dependencies
@@ -55,11 +78,92 @@ to add `google-cloud-nio` as a dependency in your code.
 ## About NIO Filesystem Provider for Google Cloud Storage
 
 
-[NIO Filesystem Provider for Google Cloud Storage][product-docs] 
+[NIO Filesystem Provider for Google Cloud Storage][product-docs] provides a Google Cloud Storage extension for Java's NIO Filesystem.
 
 See the [NIO Filesystem Provider for Google Cloud Storage client library docs][javadocs] to learn how to
 use this NIO Filesystem Provider for Google Cloud Storage Client Library.
 
+
+#### About Google Cloud Storage
+
+[Google Cloud Storage](https://cloud.google.com/storage/) is a durable and highly available
+object storage service. Google Cloud Storage is almost infinitely scalable
+and guarantees consistency: when a write succeeds, the latest copy of the
+object will be returned to any GET, globally.
+
+See the [Google Cloud Storage docs](https://cloud.google.com/storage/docs/signup?hl=en) for more details
+on how to activate Cloud Storage for your project.
+
+#### About Java NIO Providers
+
+Java NIO Providers is an extension mechanism that is part of Java and allows
+third parties to extend Java's [normal File API](https://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html) to support
+additional filesystems.
+
+#### Accessing files
+
+The simplest way to get started is with `Paths` and `Files`:
+
+```java
+Path path = Paths.get(URI.create("gs://bucket/lolcat.csv"));
+List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+```
+
+If you know the paths will point to Google Cloud Storage, you can also use the
+direct formulation:
+
+```java
+try (CloudStorageFileSystem fs = CloudStorageFileSystem.forBucket("bucket")) {
+  Path path = fs.getPath("lolcat.csv");
+  List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+}
+```
+
+Once you have a `Path` you can use it as you would a normal file. For example
+you can use `InputStream` and `OutputStream` for streaming:
+
+```java
+try (InputStream input = Files.openInputStream(path)) {
+  // ...
+}
+```
+
+You can also set various attributes using CloudStorageOptions static helpers:
+
+```java
+Files.write(csvPath, csvLines, StandardCharsets.UTF_8,
+    withMimeType(MediaType.CSV_UTF8),
+    withoutCaching());
+```
+
+#### Limitations
+
+This library is usable, but not yet complete. The following features are not
+yet implemented:
+ * Resuming upload or download
+ * Generations
+ * File attributes
+ * (more - list is not exhaustive)
+
+Some features are not on the roadmap: this library would be a poor choice to
+mirror a local filesystem onto the cloud because Google Cloud Storage has a
+different set of features from your local disk. This library, by design,
+does not mask those differences. Rather, it aims to expose the common
+subset via a familiar interface.
+
+**NOTE:** Cloud Storage uses a flat namespace and therefore doesn't support real
+directories. So this library supports what's known as "pseudo-directories". Any
+path that includes a trailing slash, will be considered a directory. It will
+always be assumed to exist, without performing any I/O. Paths without the trailing
+slash will result in an I/O operation to check a file is present in that "directory".
+This allows you to do path manipulation in the same manner as you would with the normal UNIX file
+system implementation. You can disable this feature with
+`CloudStorageConfiguration.usePseudoDirectories()`.
+
+#### Complete source code
+
+There are examples in [google-cloud-nio-examples](google-cloud-nio-examples/src/main/java/com/google/cloud/examples/nio/)
+for your perusal.
 
 
 
@@ -119,7 +223,7 @@ Java 11 | [![Kokoro CI][kokoro-badge-image-5]][kokoro-badge-link-5]
 [kokoro-badge-link-4]: http://storage.googleapis.com/cloud-devrel-public/java/badges/java-storage-nio/java8-win.html
 [kokoro-badge-image-5]: http://storage.googleapis.com/cloud-devrel-public/java/badges/java-storage-nio/java11.svg
 [kokoro-badge-link-5]: http://storage.googleapis.com/cloud-devrel-public/java/badges/java-storage-nio/java11.html
-[stability-image]: https://img.shields.io/badge/stability-alpha-orange
+[stability-image]: https://img.shields.io/badge/stability-beta-yellow
 [maven-version-image]: https://img.shields.io/maven-central/v/com.google.cloud/google-cloud-nio.svg
 [maven-version-link]: https://search.maven.org/search?q=g:com.google.cloud%20AND%20a:google-cloud-nio&core=gav
 [authentication]: https://github.com/googleapis/google-cloud-java#authentication
@@ -131,6 +235,6 @@ Java 11 | [![Kokoro CI][kokoro-badge-image-5]][kokoro-badge-link-5]
 [code-of-conduct]: https://github.com/googleapis/java-storage-nio/blob/master/CODE_OF_CONDUCT.md#contributor-code-of-conduct
 [license]: https://github.com/googleapis/java-storage-nio/blob/master/LICENSE
 
-
+[enable-api]: https://console.cloud.google.com/flows/enableapi?apiid=storage.googleapis.com
 [libraries-bom]: https://github.com/GoogleCloudPlatform/cloud-opensource-java/wiki/The-Google-Cloud-Platform-Libraries-BOM
 [shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
