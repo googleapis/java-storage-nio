@@ -41,9 +41,17 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 /**
- * Google Cloud Storage {@link Path}.
+ * A Google Cloud Storage specific implementation of the {@code java.nio.file.Path} interface. An
+ * instances of this class may be used to locate an object or a "pseudo-directory" in the Storage.
+ * This implementation allows one to use Java's standard file system API to deal with remote objects
+ * as if they are local files.
  *
- * @see UnixPath
+ * <p>Example of using {@code java.nio.file.Files} to read all lines from a remote object:
+ *
+ * <pre>{@code
+ * Path path = Paths.get(URI.create("gs://bucket/lolcat.csv"));
+ * List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+ * }</pre>
  */
 @Immutable
 public final class CloudStoragePath implements Path {
