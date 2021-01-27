@@ -21,7 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.api.gax.paging.Page;
-import com.google.auto.service.AutoService;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
@@ -86,7 +85,6 @@ import javax.inject.Singleton;
  */
 @Singleton
 @ThreadSafe
-@AutoService(FileSystemProvider.class)
 public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
   private Storage storage;
