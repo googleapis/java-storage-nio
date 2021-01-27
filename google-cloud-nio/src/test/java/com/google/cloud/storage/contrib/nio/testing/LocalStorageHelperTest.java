@@ -52,11 +52,8 @@ public class LocalStorageHelperTest {
     BlobId id = BlobId.of(testBucket, sourceFile);
     BlobInfo info = BlobInfo.newBuilder(id).build();
 
-    WriteChannel writer = localStorageService.writer(info);
-    try {
+    try (WriteChannel writer = localStorageService.writer(info)) {
       writer.write(ByteBuffer.wrap(payloadBytes));
-    } finally {
-      writer.close();
     }
   }
 
@@ -104,5 +101,20 @@ public class LocalStorageHelperTest {
     assertThat(copiedContents).isEqualTo(payload);
     assertThat(obj.getGeneration()).isEqualTo(2);
     assertThat(obj.getSize()).isEqualTo(7);
+  }
+
+  @Test
+  public void testWriteNewFileSetsUpdateTime() {
+    Blob obj = localStorageService.get(BlobId.of(testBucket, sourceFile));
+
+    assertThat(obj.getUpdateTime()).isNotNull();
+  }
+
+  @Test
+  public void testCreateNewFileSetsUpdateTime() {
+    BlobInfo info = BlobInfo.newBuilder(BlobId.of(testBucket, "newFile")).build();
+    Blob obj = localStorageService.create(info);
+
+    assertThat(obj.getUpdateTime()).isNotNull();
   }
 }
