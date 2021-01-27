@@ -20,8 +20,13 @@ import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import com.google.api.client.http.HttpResponseException;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.BucketInfo;
@@ -33,8 +38,10 @@ import com.google.cloud.storage.contrib.nio.CloudStorageConfiguration;
 import com.google.cloud.storage.contrib.nio.CloudStorageFileSystem;
 import com.google.cloud.storage.contrib.nio.CloudStorageFileSystemProvider;
 import com.google.cloud.storage.contrib.nio.CloudStoragePath;
+import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
@@ -58,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -96,6 +104,7 @@ public class ITGcsNio {
 
   private static final Logger log = Logger.getLogger(ITGcsNio.class.getName());
   private static final String BUCKET = RemoteStorageHelper.generateBucketName();
+  private static final String TARGET_BUCKET = RemoteStorageHelper.generateBucketName();
   private static final String REQUESTER_PAYS_BUCKET =
       RemoteStorageHelper.generateBucketName() + "_rp";
   private static final String SML_FILE = "tmp-test-small-file.txt";
@@ -119,6 +128,7 @@ public class ITGcsNio {
     storage = storageOptions.getService();
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
+    storage.create(BucketInfo.of(TARGET_BUCKET));
     fillFile(storage, BUCKET, SML_FILE, SML_SIZE);
     fillFile(storage, BUCKET, BIG_FILE, BIG_SIZE);
     BucketInfo requesterPaysBucket =
@@ -1038,6 +1048,60 @@ public class ITGcsNio {
     public ImmutableList<Path> getPaths() {
       return copyOf(paths);
     }
+  }
+
+  @Test
+  public void testCopyWithSameProvider() throws IOException {
+    CloudStorageFileSystem sourceFileSystem = getTestBucket();
+    CloudStorageFileSystem targetFileSystem =
+        CloudStorageFileSystem.forBucket(
+            TARGET_BUCKET, CloudStorageConfiguration.DEFAULT, storageOptions);
+    Path sourceFileSystemPath = sourceFileSystem.getPath(SML_FILE);
+    Path targetFileSystemPath = targetFileSystem.getPath(PREFIX + randomSuffix());
+    Files.copy(sourceFileSystemPath, targetFileSystemPath);
+    assertSame(sourceFileSystem.provider(), targetFileSystem.provider());
+    assertEquals(sourceFileSystem.config(), targetFileSystem.config());
+  }
+
+  @Test
+  public void testCopyWithDifferentProvider() throws IOException {
+    CloudStorageFileSystem sourceFileSystem = getTestBucket();
+    CloudStorageFileSystem targetFileSystem =
+        CloudStorageFileSystem.forBucket(
+            TARGET_BUCKET,
+            CloudStorageConfiguration.builder().permitEmptyPathComponents(true).build(),
+            storageOptions);
+    Path sourceFileSystemPath = sourceFileSystem.getPath(SML_FILE);
+    Path targetFileSystemPath = targetFileSystem.getPath(PREFIX + randomSuffix());
+    Files.copy(sourceFileSystemPath, targetFileSystemPath);
+    assertNotSame(sourceFileSystem.provider(), targetFileSystem.provider());
+    assertNotEquals(sourceFileSystem.config(), targetFileSystem.config());
+  }
+
+  @Test
+  public void testListObject() throws IOException {
+    String firstBucket = "first-bucket-" + UUID.randomUUID().toString();
+    String secondBucket = "second-bucket" + UUID.randomUUID().toString();
+    Storage localStorageService = LocalStorageHelper.customOptions(true).getService();
+    fillFile(localStorageService, firstBucket, "object", SML_SIZE);
+    fillFile(localStorageService, firstBucket, "test-object", SML_SIZE);
+    fillFile(localStorageService, secondBucket, "test-object", SML_SIZE);
+
+    // Listing objects from first bucket without prefix.
+    List<Blob> objects = Lists.newArrayList(localStorageService.list(firstBucket).getValues());
+    assertThat(objects.size()).isEqualTo(2);
+
+    // Listing objects from first bucket with prefix.
+    objects =
+        Lists.newArrayList(
+            localStorageService
+                .list(firstBucket, Storage.BlobListOption.prefix("test-"))
+                .getValues());
+    assertThat(objects.size()).isEqualTo(1);
+
+    // Listing objects from second bucket.
+    objects = Lists.newArrayList(localStorageService.list(secondBucket).getValues());
+    assertThat(objects.size()).isEqualTo(1);
   }
 
   private CloudStorageFileSystem getTestBucket() throws IOException {

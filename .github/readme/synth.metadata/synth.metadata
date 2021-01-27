@@ -1,0 +1,18 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/java-storage-nio.git",
+        "sha": "f9b5ed3025d72731397a8ee162c00ede9a23d2fc"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "b259489b06b25f399768b74b8baa943991f38ea7"
+      }
+    }
+  ]
+}
