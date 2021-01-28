@@ -40,6 +40,7 @@ import com.google.cloud.storage.contrib.nio.CloudStorageFileSystemProvider;
 import com.google.cloud.storage.contrib.nio.CloudStoragePath;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -73,6 +74,7 @@ import java.util.logging.Logger;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -116,6 +118,9 @@ public class ITGcsNio {
   private static String project;
   private static Storage storage;
   private static StorageOptions storageOptions;
+
+  @Rule
+  public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   private final Random rnd = new Random();
 

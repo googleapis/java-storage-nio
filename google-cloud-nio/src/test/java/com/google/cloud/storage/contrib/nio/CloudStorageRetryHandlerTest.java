@@ -19,13 +19,17 @@ package com.google.cloud.storage.contrib.nio;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.cloud.storage.StorageException;
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.ImmutableList;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class CloudStorageRetryHandlerTest {
+  @Rule
+  public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   @Test
   public void testIsRetryable() throws Exception {

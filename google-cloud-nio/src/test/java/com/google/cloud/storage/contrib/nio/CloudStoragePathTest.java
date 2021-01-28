@@ -19,6 +19,7 @@ package com.google.cloud.storage.contrib.nio;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.Iterables;
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
@@ -31,6 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.ProviderMismatchException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -38,6 +40,8 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link CloudStoragePath}. */
 @RunWith(JUnit4.class)
 public class CloudStoragePathTest {
+  @Rule
+  public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   @Before
   public void before() {

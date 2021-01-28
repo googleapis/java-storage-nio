@@ -19,9 +19,11 @@ package com.google.cloud.storage.contrib.nio;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assume.assumeTrue;
 
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -29,6 +31,8 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link UnixPath}. */
 @RunWith(JUnit4.class)
 public class UnixPathTest {
+  @Rule
+  public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   @Test
   public void testNormalize() {
