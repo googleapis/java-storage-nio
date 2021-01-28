@@ -96,16 +96,10 @@
       </dependency>
       <dependency>
         <groupId>com.google.auto.value</groupId>
-        <artifactId>auto-value</artifactId>
+        <artifactId>auto-value-annotations</artifactId>
         <scope>provided</scope> <!-- to leave out of the all-deps jar -->
         <version>${auto-value-annotation.version}</version>
       </dependency>
-      <dependency>
-       <groupId>com.google.auto.value</groupId>
-        <artifactId>auto-value-annotations</artifactId>
-        <version>${auto-value-annotation.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
@@ -120,21 +114,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <configuration>
-            <ignoredUnusedDeclaredDependencies>
-              <ignoredDependency>com.google.auto.value:auto-value-annotations</ignoredDependency>
-            </ignoredUnusedDeclaredDependencies>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+
   <modules>
     <module>google-cloud-nio</module>
     <module>google-cloud-nio-retrofit</module>
@@ -205,18 +185,6 @@
             <link>https://googleapis.dev/java/google-auth-library/latest/</link>
             <link>https://googleapis.dev/java/gax/latest/</link>
           </links>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>com.google.auto.value</groupId>
-              <artifactId>auto-value</artifactId>
-              <version>${auto-value.version}</version>
-            </path>
-          </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>
