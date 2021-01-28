@@ -95,6 +95,12 @@
         <version>v1-rev20201112-1.31.0</version>
       </dependency>
       <dependency>
+        <groupId>com.google.auto.value</groupId>
+        <artifactId>auto-value-annotations</artifactId>
+        <scope>provided</scope> <!-- to leave out of the all-deps jar -->
+        <version>${auto-value-annotation.version}</version>
+      </dependency>
+      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.13.1</version>
