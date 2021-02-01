@@ -119,8 +119,7 @@ public class ITGcsNio {
   private static Storage storage;
   private static StorageOptions storageOptions;
 
-  @Rule
-  public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   private final Random rnd = new Random();
 

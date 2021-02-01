@@ -40,8 +40,7 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link CloudStoragePath}. */
 @RunWith(JUnit4.class)
 public class CloudStoragePathTest {
-  @Rule
-  public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   @Before
   public void before() {
