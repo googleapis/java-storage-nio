@@ -26,12 +26,14 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.cloud.WriteChannel;
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonReadableChannelException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -39,6 +41,7 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link CloudStorageWriteChannel}. */
 @RunWith(JUnit4.class)
 public class CloudStorageWriteChannelTest {
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   private final WriteChannel gcsChannel = mock(WriteChannel.class);
   private final CloudStorageWriteChannel chan = new CloudStorageWriteChannel(gcsChannel);

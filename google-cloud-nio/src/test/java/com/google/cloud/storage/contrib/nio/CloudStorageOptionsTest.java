@@ -21,6 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.testing.NullPointerTester;
 import java.io.IOException;
 import java.net.URI;
@@ -28,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -35,6 +37,7 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link CloudStorageOptions}. */
 @RunWith(JUnit4.class)
 public class CloudStorageOptionsTest {
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   @Before
   public void before() {

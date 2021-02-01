@@ -18,10 +18,12 @@ package com.google.cloud.storage.contrib.nio;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.net.SocketTimeoutException;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -29,6 +31,8 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link CloudStorageConfiguration}. */
 @RunWith(JUnit4.class)
 public class CloudStorageConfigurationTest {
+
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   @Test
   public void testBuilder() {

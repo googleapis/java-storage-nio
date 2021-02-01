@@ -30,6 +30,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
@@ -37,6 +38,7 @@ import java.nio.channels.NonWritableChannelException;
 import javax.net.ssl.SSLHandshakeException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -45,6 +47,7 @@ import org.mockito.ArgumentCaptor;
 /** Unit tests for {@link CloudStorageReadChannel}. */
 @RunWith(JUnit4.class)
 public class CloudStorageReadChannelTest {
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   private CloudStorageReadChannel chan;
 

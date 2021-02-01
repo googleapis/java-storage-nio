@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
 import java.io.IOException;
@@ -31,6 +32,7 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -38,6 +40,7 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link CloudStorageFileAttributeView}. */
 @RunWith(JUnit4.class)
 public class CloudStorageFileAttributeViewTest {
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   private static final byte[] HAPPY = "(✿◕ ‿◕ )ノ".getBytes(UTF_8);
 

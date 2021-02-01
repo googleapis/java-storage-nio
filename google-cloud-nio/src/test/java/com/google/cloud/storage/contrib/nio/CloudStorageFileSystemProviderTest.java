@@ -28,6 +28,7 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.nio.file.StandardOpenOption.WRITE;
 
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.ImmutableList;
 import com.google.common.testing.NullPointerTester;
 import java.io.IOException;
@@ -53,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -60,6 +62,7 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link CloudStorageFileSystemProvider}. */
 @RunWith(JUnit4.class)
 public class CloudStorageFileSystemProviderTest {
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
   private static final List<String> FILE_CONTENTS =
       ImmutableList.of(

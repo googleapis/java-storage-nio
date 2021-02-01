@@ -18,6 +18,7 @@ package com.google.cloud.storage.contrib.nio;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -27,12 +28,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class SeekableByteChannelPrefetcherTest {
+  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
+
   // A file big enough to try seeks on.
   private static Path input;
 
