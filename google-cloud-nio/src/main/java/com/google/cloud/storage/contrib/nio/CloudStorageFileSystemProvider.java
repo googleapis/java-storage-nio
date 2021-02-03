@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.gax.rpc.FixedHeaderProvider;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
@@ -35,6 +36,7 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.net.UrlEscapers;
 import com.google.common.primitives.Ints;
 import java.io.BufferedInputStream;
@@ -70,6 +72,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -86,6 +89,7 @@ import javax.inject.Singleton;
 @Singleton
 @ThreadSafe
 public final class CloudStorageFileSystemProvider extends FileSystemProvider {
+  static final String VERSION = getVersion();
 
   private Storage storage;
   private final StorageOptions storageOptions;
@@ -205,13 +209,8 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   // Initialize this.storage, once. This may throw an exception if default authentication
   // credentials are not available (hence not doing it in the ctor).
   private void initStorage() {
-    if (this.storage != null) {
-      return;
-    }
-    if (storageOptions == null) {
-      this.storage = StorageOptions.getDefaultInstance().getService();
-    } else {
-      this.storage = storageOptions.getService();
+    if (this.storage == null) {
+      doInitStorage();
     }
   }
 
@@ -1037,4 +1036,53 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     }
     return new IOException(oops.getMessage(), oops);
   }
+
+  /**
+   * Resolve the version of google-cloud-nio for inclusion in request meta-data
+   */
+  private static String getVersion() {
+    // attempt to read the library's version from a properties file generated during the build
+    // this value should be read and cached for later use
+    String version = "";
+    try (InputStream inputStream = CloudStorageFileSystemProvider.class.getResourceAsStream("/META-INF/maven/com.google.cloud/google-cloud-nio/pom.properties")) {
+      if (inputStream != null) {
+        final Properties properties = new Properties();
+        properties.load(inputStream);
+        version = properties.getProperty("version");
+      }
+    } catch (IOException e) {
+      // ignore
+    }
+    return version;
+  }
+
+  @VisibleForTesting
+  void doInitStorage() {
+    final StorageOptions so = storageOptions != null ? storageOptions : StorageOptions.getDefaultInstance();
+    final StorageOptions.Builder builder = so.toBuilder();
+    this.storage = builder
+        .setHeaderProvider(getHeaderProvider())
+        .build()
+        .getService();
+  }
+
+  @VisibleForTesting
+  NioUserAgentEntryHeaderProvider getHeaderProvider() {
+    return new NioUserAgentEntryHeaderProvider();
+  }
+
+  @VisibleForTesting
+  private static class NioUserAgentEntryHeaderProvider extends FixedHeaderProvider {
+
+    private final ImmutableMap<String, String> userAgent = ImmutableMap
+        .of("user-agent", String.format("nio/%s", VERSION));
+
+    @Nullable
+    @Override
+    public Map<String, String> getHeaders() {
+      return userAgent;
+    }
+
+  }
+
 }

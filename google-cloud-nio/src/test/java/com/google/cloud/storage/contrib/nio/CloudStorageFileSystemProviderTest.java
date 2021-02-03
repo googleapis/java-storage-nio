@@ -26,6 +26,7 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.nio.file.StandardOpenOption.WRITE;
+import static org.junit.Assert.assertTrue;
 
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
@@ -793,6 +794,22 @@ public class CloudStorageFileSystemProviderTest {
     // getPath does not interpret the string at all.
     Path path4 = provider.getPath("gs://bucket/with/a%20percent");
     assertThat(path4.toString()).isEqualTo("/with/a%20percent");
+  }
+
+  @Test
+  public void testVersion_matchesAcceptablePatterns() {
+    String acceptableVersionPattern =
+        "|(?:\\d+\\.\\d+\\.\\d+(?:-.*?)?(?:-SNAPSHOT)?)";
+    String version = CloudStorageFileSystemProvider.VERSION;
+    assertTrue(
+        String.format("the loaded version '%s' did not match the acceptable pattern", version),
+        version.matches(acceptableVersionPattern)
+    );
+  }
+
+  @Test
+  public void getUserAgentStartsWithCorrectToken() {
+    assertThat(String.format("nio/%s", CloudStorageFileSystemProvider.VERSION)).startsWith("nio/");
   }
 
   private static CloudStorageConfiguration permitEmptyPathComponents(boolean value) {
