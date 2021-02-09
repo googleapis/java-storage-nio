@@ -70,7 +70,7 @@ public final class LocalStorageHelper {
   public static StorageOptions getOptions() {
     instance.reset();
     return StorageOptions.newBuilder()
-        .setProjectId("dummy-project-for-testing")
+        .setProjectId("fake-project-for-testing")
         .setServiceRpcFactory(
             new ServiceRpcFactory<StorageOptions>() {
               @Override
@@ -87,7 +87,7 @@ public final class LocalStorageHelper {
    */
   public static StorageOptions customOptions(final boolean throwIfOptions) {
     return StorageOptions.newBuilder()
-        .setProjectId("dummy-project-for-testing")
+        .setProjectId("fake-project-for-testing")
         .setServiceRpcFactory(
             new ServiceRpcFactory<StorageOptions>() {
               @Override
