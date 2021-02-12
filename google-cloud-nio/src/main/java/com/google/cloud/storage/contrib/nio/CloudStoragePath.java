@@ -103,15 +103,24 @@ public final class CloudStoragePath implements Path {
     if (!prefix.endsWith("/")) {
       prefix += "/";
     }
-    Page<Blob> list =
-        storage.list(
-            this.bucket(),
-            Storage.BlobListOption.prefix(prefix),
-            // we only look at the first result, so no need for a bigger page.
-            Storage.BlobListOption.pageSize(1),
-            fileSystem.provider().getProject() == null
-                ? null
-                : Storage.BlobListOption.userProject(fileSystem.provider().getProject()));
+    String userProject = fileSystem.config().userProject();
+    Page<Blob> list = null;
+    if (userProject != null) {
+      list =
+          storage.list(
+              this.bucket(),
+              Storage.BlobListOption.prefix(prefix),
+              // we only look at the first result, so no need for a bigger page.
+              Storage.BlobListOption.pageSize(1),
+              Storage.BlobListOption.userProject(userProject));
+    } else {
+      list =
+          storage.list(
+              this.bucket(),
+              Storage.BlobListOption.prefix(prefix),
+              // we only look at the first result, so no need for a bigger page.
+              Storage.BlobListOption.pageSize(1));
+    }
     for (Blob b : list.getValues()) {
       // if this blob starts with our prefix and then a slash, then prefix is indeed a folder!
       if (b.getBlobId() == null) {
