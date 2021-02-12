@@ -42,7 +42,7 @@ import javax.annotation.concurrent.Immutable;
 
 /**
  * A Google Cloud Storage specific implementation of the {@code java.nio.file.Path} interface. An
- * instances of this class may be used to locate an object or a "pseudo-directory" in the Storage.
+ * instance of this class locates an object or a "pseudo-directory" in GCS.
  * This implementation allows one to use Java's standard file system API to deal with remote objects
  * as if they are local files.
  *
