@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/java-storage-nio.git",
-        "sha": "75a9374cd64834bf168444f8a720cb303c28766d"
+        "sha": "7e74e1fb24ca9f0bd0a6fe1175582cb52088c970"
       }
     },
     {
