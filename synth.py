@@ -20,4 +20,5 @@ AUTOSYNTH_MULTIPLE_COMMITS = True
 
 java.common_templates(excludes=[
     'README.md',
+    '.kokoro/build.sh',
 ])
