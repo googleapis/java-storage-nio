@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/java-storage-nio.git",
-        "sha": "5507a8ac74d3886e92d639a511ae1c6c0789dcbc"
+        "sha": "400d8b2566a01c0c548504909a633369c7b4a981"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "8b13da943497f75c5303700bff5aabdd85d939e0"
+        "sha": "c84c8f156e09702e1c8946bfb9746e6f5892cf27"
       }
     }
   ]
