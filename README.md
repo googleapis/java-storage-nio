@@ -8,8 +8,11 @@ Java idiomatic client for [NIO Filesystem Provider for Google Cloud Storage][pro
 - [Product Documentation][product-docs]
 - [Client Library Documentation][javadocs]
 
+
 > Note: This client is a work-in-progress, and may occasionally
 > make backwards-incompatible changes.
+
+
 
 ## Quickstart
 
