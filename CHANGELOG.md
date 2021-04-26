@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.122.13](https://www.github.com/googleapis/java-storage-nio/compare/v0.122.12...v0.122.13) (2021-04-26)
+
+
+### Bug Fixes
+
+* release scripts from issuing overlapping phases ([#528](https://www.github.com/googleapis/java-storage-nio/issues/528)) ([e037375](https://www.github.com/googleapis/java-storage-nio/commit/e0373758a003f57b26e2bb6cf0c0cd69549078ba))
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-core to v1.94.7 ([#486](https://www.github.com/googleapis/java-storage-nio/issues/486)) ([42b281d](https://www.github.com/googleapis/java-storage-nio/commit/42b281daf441d9a93cea6b9c29ed27e0e6155908))
+* update dependency com.google.cloud:google-cloud-core to v1.94.8 ([#535](https://www.github.com/googleapis/java-storage-nio/issues/535)) ([cae4e43](https://www.github.com/googleapis/java-storage-nio/commit/cae4e43ec8bb2379fbf266fc1d95885fb6357064))
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v0.21.1 ([#532](https://www.github.com/googleapis/java-storage-nio/issues/532)) ([5250ad7](https://www.github.com/googleapis/java-storage-nio/commit/5250ad79c2b5b8a10ec5e991e9905bcfee2d9be8))
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v1 ([#536](https://www.github.com/googleapis/java-storage-nio/issues/536)) ([f70c1f6](https://www.github.com/googleapis/java-storage-nio/commit/f70c1f6904b51ac1f3e17e2937ca1107b56827ca))
+* update dependency com.google.cloud:google-cloud-storage to v1.113.15 ([#525](https://www.github.com/googleapis/java-storage-nio/issues/525)) ([c3d8486](https://www.github.com/googleapis/java-storage-nio/commit/c3d84864b525eb7f79bef0067df48d6bc77df2d3))
+* update dependency com.google.cloud:google-cloud-storage to v1.113.16 ([#537](https://www.github.com/googleapis/java-storage-nio/issues/537)) ([1107a79](https://www.github.com/googleapis/java-storage-nio/commit/1107a7994967ccda5d588afdf4b6f31a4b8e3a97))
+
 ### [0.122.12](https://www.github.com/googleapis/java-storage-nio/compare/v0.122.11...v0.122.12) (2021-04-12)
 
 
