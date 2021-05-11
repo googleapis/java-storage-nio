@@ -18,6 +18,7 @@ package com.google.cloud.storage.contrib.nio;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import java.net.URI;
 import java.nio.file.Path;
@@ -40,6 +41,7 @@ public class NIOTest {
 
   @Before
   public void setUp() {
+    CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
     uriToCloudStorage = URI.create("gs://bucket/file.txt");
   }
 
