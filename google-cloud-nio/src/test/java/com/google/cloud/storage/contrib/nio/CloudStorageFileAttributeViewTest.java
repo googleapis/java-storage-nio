@@ -30,26 +30,60 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+import java.util.logging.Logger;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link CloudStorageFileAttributeView}. */
 @RunWith(JUnit4.class)
 public class CloudStorageFileAttributeViewTest {
+  private static final Logger logger = Logger.getLogger(CloudStorageFileAttributeViewTest.class.getName());
   @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
+  @Rule public final TestName testName = new TestName();
 
   private static final byte[] HAPPY = "(✿◕ ‿◕ )ノ".getBytes(UTF_8);
 
   private Path path;
 
+  @BeforeClass
+  public static void beforeClass() throws Exception {
+    logger.info("#### Env variables  ############################################################");
+    TreeMap<String, String> env = new TreeMap<>();
+    for (Entry<String, String> e : System.getenv().entrySet()) {
+      env.put(e.getKey(), e.getValue());
+    }
+
+    printMap(env);
+    logger.info("#### Env variables  ############################################################");
+  }
+
   @Before
   public void before() {
+    logger.info(String.format("testName = %s", testName.getMethodName()));
+    logger.info("#### System Properties  ########################################################");
+    TreeMap<String, String> env = new TreeMap<>();
+    for (Entry<Object, Object> e : System.getProperties().entrySet()) {
+      env.put((String) e.getKey(), (String) e.getValue());
+    }
+    printMap(env);
+    
     CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
     path = Paths.get(URI.create("gs://red/water"));
+    logger.info("#### System Properties  ########################################################");
+  }
+
+  private static void printMap(TreeMap<String, String> env) {
+    for (Entry<String, String> e : env.entrySet()) {
+      logger.info(String.format("%s -> %s", e.getKey(), e.getValue()));
+    }
   }
 
   @Test

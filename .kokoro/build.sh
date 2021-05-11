@@ -48,7 +48,7 @@ set +e
 case ${JOB_TYPE} in
 test)
     retry_with_backoff 3 10 \
-      mvn test -B -Dclirr.skip=true -Denforcer.skip=true
+      mvn test -B -Dclirr.skip=true -Denforcer.skip=true -Djava.util.logging.config.file=$(realpath "${scriptDir}/../logging.properties")
     RETURN_CODE=$?
     ;;
 lint)
