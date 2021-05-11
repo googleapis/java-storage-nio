@@ -71,6 +71,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Singleton;
@@ -86,6 +87,7 @@ import javax.inject.Singleton;
 @Singleton
 @ThreadSafe
 public final class CloudStorageFileSystemProvider extends FileSystemProvider {
+  private static final Logger LOGGER = Logger.getLogger(CloudStorageFileSystemProvider.class.getName());
 
   private Storage storage;
   private final StorageOptions storageOptions;
@@ -147,7 +149,16 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
    */
   @VisibleForTesting
   public static void setStorageOptions(@Nullable StorageOptions newStorageOptions) {
+    LOGGER.fine(String.format(">>> setStorageOptions(newStorageOptions : %s)", newStorageOptions));
+    logStorageOptions(newStorageOptions);
     futureStorageOptions = newStorageOptions;
+  }
+
+  private static void logStorageOptions(@Nullable StorageOptions storageOptions) {
+    if (storageOptions != null) {
+      LOGGER.fine(String.format("storageOptions.getProjectId() = %s", storageOptions.getProjectId()));
+      LOGGER.fine(String.format("storageOptions.getRpc() = %s", storageOptions.getRpc()));
+    }
   }
 
   /**
@@ -208,6 +219,9 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     if (this.storage != null) {
       return;
     }
+    logStorageOptions(storageOptions);
+    IllegalStateException e = new IllegalStateException();
+    e.printStackTrace(System.err);
     if (storageOptions == null) {
       this.storage = StorageOptions.getDefaultInstance().getService();
     } else {

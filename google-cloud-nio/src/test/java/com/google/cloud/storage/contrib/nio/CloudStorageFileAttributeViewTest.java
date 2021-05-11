@@ -74,10 +74,10 @@ public class CloudStorageFileAttributeViewTest {
       env.put((String) e.getKey(), (String) e.getValue());
     }
     printMap(env);
-    
+    logger.info("#### System Properties  ########################################################");
+
     CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
     path = Paths.get(URI.create("gs://red/water"));
-    logger.info("#### System Properties  ########################################################");
   }
 
   private static void printMap(TreeMap<String, String> env) {
