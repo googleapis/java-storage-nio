@@ -87,7 +87,8 @@ import javax.inject.Singleton;
 @Singleton
 @ThreadSafe
 public final class CloudStorageFileSystemProvider extends FileSystemProvider {
-  private static final Logger LOGGER = Logger.getLogger(CloudStorageFileSystemProvider.class.getName());
+  private static final Logger LOGGER =
+      Logger.getLogger(CloudStorageFileSystemProvider.class.getName());
 
   private Storage storage;
   private final StorageOptions storageOptions;
@@ -156,7 +157,8 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
   private static void logStorageOptions(@Nullable StorageOptions storageOptions) {
     if (storageOptions != null) {
-      LOGGER.fine(String.format("storageOptions.getProjectId() = %s", storageOptions.getProjectId()));
+      LOGGER.fine(
+          String.format("storageOptions.getProjectId() = %s", storageOptions.getProjectId()));
       LOGGER.fine(String.format("storageOptions.getRpc() = %s", storageOptions.getRpc()));
     }
   }

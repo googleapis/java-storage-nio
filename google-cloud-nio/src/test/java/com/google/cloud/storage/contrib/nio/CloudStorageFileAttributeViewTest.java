@@ -45,7 +45,8 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link CloudStorageFileAttributeView}. */
 @RunWith(JUnit4.class)
 public class CloudStorageFileAttributeViewTest {
-  private static final Logger logger = Logger.getLogger(CloudStorageFileAttributeViewTest.class.getName());
+  private static final Logger logger =
+      Logger.getLogger(CloudStorageFileAttributeViewTest.class.getName());
   @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
   @Rule public final TestName testName = new TestName();
 
