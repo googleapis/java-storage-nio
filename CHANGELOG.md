@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.122.14](https://www.github.com/googleapis/java-storage-nio/compare/v0.122.13...v0.122.14) (2021-05-12)
+
+
+### Bug Fixes
+
+* **test:** update NIOTest to ensure LocalStorageHelper is used ([#552](https://www.github.com/googleapis/java-storage-nio/issues/552)) ([e0cd38d](https://www.github.com/googleapis/java-storage-nio/commit/e0cd38d93d5ca28207540dbdf70151010ed35c47))
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v1.1.0 ([#550](https://www.github.com/googleapis/java-storage-nio/issues/550)) ([bf60a21](https://www.github.com/googleapis/java-storage-nio/commit/bf60a21f3b7f242961eb5d6ed215e49becf3ba9a))
+
 ### [0.122.13](https://www.github.com/googleapis/java-storage-nio/compare/v0.122.12...v0.122.13) (2021-04-26)
 
 
