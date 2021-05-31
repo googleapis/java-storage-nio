@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.123.0](https://www.github.com/googleapis/java-storage-nio/compare/v0.122.14...v0.123.0) (2021-05-31)
+
+
+### Features
+
+* add `gcf-owl-bot[bot]` to `ignoreAuthors` ([#566](https://www.github.com/googleapis/java-storage-nio/issues/566)) ([12db992](https://www.github.com/googleapis/java-storage-nio/commit/12db9929092d36f1fa175b23cb83452477d8fe74))
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v1.2.0 ([#565](https://www.github.com/googleapis/java-storage-nio/issues/565)) ([25f79b4](https://www.github.com/googleapis/java-storage-nio/commit/25f79b4a9bdcb8614bd0145c43675d838c65f96f))
+
 ### [0.122.14](https://www.github.com/googleapis/java-storage-nio/compare/v0.122.13...v0.122.14) (2021-05-12)
 
 
