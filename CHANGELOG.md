@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.123.2](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.1...v0.123.2) (2021-06-15)
+
+
+### Bug Fixes
+
+* Update dependencies.sh to not break on mac ([#588](https://www.github.com/googleapis/java-storage-nio/issues/588)) ([d13d01f](https://www.github.com/googleapis/java-storage-nio/commit/d13d01f20f32fb29366ab8d0b56d77c7e073c546))
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v1.3.0 ([#583](https://www.github.com/googleapis/java-storage-nio/issues/583)) ([cad70f7](https://www.github.com/googleapis/java-storage-nio/commit/cad70f735fbd97efba6639fa637630625c85ca26))
+
 ### [0.123.1](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.0...v0.123.1) (2021-06-02)
 
 
