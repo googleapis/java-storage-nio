@@ -1,5 +1,20 @@
 # Changelog
 
+### [0.123.3](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.2...v0.123.3) (2021-06-30)
+
+
+### Bug Fixes
+
+* Add `shopt -s nullglob` to dependencies script ([#596](https://www.github.com/googleapis/java-storage-nio/issues/596)) ([3017a27](https://www.github.com/googleapis/java-storage-nio/commit/3017a27618cb068d54c64af1abedcb817405d30d))
+
+
+### Dependencies
+
+* update dependency com.google.apis:google-api-services-storage to v1-rev20210127-1.31.5 ([#594](https://www.github.com/googleapis/java-storage-nio/issues/594)) ([8d9ac59](https://www.github.com/googleapis/java-storage-nio/commit/8d9ac598196df954337b98f340ec1ae2afe782d2))
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v1.4.0 ([#601](https://www.github.com/googleapis/java-storage-nio/issues/601)) ([ab08d72](https://www.github.com/googleapis/java-storage-nio/commit/ab08d72a4492f6c23886f26b6bfc5d5d58d78a18))
+* update dependency com.google.cloud:google-cloud-storage to v1.116.0 ([#590](https://www.github.com/googleapis/java-storage-nio/issues/590)) ([c2ed328](https://www.github.com/googleapis/java-storage-nio/commit/c2ed328893e49379666f7016a6944da2455f69d7))
+* update dependency com.google.cloud:google-cloud-storage to v1.117.1 ([#602](https://www.github.com/googleapis/java-storage-nio/issues/602)) ([6717f0d](https://www.github.com/googleapis/java-storage-nio/commit/6717f0d073a3467cdf644d26d03f47d4295603e2))
+
 ### [0.123.2](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.1...v0.123.2) (2021-06-15)
 
 
