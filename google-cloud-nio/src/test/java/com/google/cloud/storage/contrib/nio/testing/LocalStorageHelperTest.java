@@ -139,7 +139,7 @@ public class LocalStorageHelperTest {
       assertThat(ois.readObject()).isEqualTo(storageOptions);
     }
   }
-  
+
   @Test
   public void testStorageOptionIsSerializable_customOptions() throws Exception {
     StorageOptions storageOptions = LocalStorageHelper.customOptions(false);
