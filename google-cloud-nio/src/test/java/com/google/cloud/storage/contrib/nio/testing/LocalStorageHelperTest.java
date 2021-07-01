@@ -139,4 +139,21 @@ public class LocalStorageHelperTest {
       assertThat(ois.readObject()).isEqualTo(storageOptions);
     }
   }
+  
+  @Test
+  public void testStorageOptionIsSerializable_customOptions() throws Exception {
+    StorageOptions storageOptions = LocalStorageHelper.customOptions(false);
+    byte[] bytes;
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+      oos.writeObject(storageOptions);
+      oos.flush();
+      oos.close();
+      bytes = baos.toByteArray();
+    }
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais)) {
+      assertThat(ois.readObject()).isEqualTo(storageOptions);
+    }
+  }
 }

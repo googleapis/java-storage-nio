@@ -19,7 +19,6 @@ package com.google.cloud.storage.contrib.nio.testing;
 import com.google.cloud.ServiceRpc;
 import com.google.cloud.spi.ServiceRpcFactory;
 import com.google.cloud.storage.StorageOptions;
-import com.google.cloud.storage.spi.v1.StorageRpc;
 
 /**
  * Utility to create an in-memory storage configuration for testing. Storage options can be obtained
@@ -83,17 +82,22 @@ public final class LocalStorageHelper {
   public static StorageOptions customOptions(final boolean throwIfOptions) {
     return StorageOptions.newBuilder()
         .setProjectId("fake-project-for-testing")
-        .setServiceRpcFactory(
-            new ServiceRpcFactory<StorageOptions>() {
-              @Override
-              public StorageRpc create(StorageOptions options) {
-                return new FakeStorageRpc(throwIfOptions);
-              }
-            })
+        .setServiceRpcFactory(new FakeStorageRpcFactory(new FakeStorageRpc(throwIfOptions)))
         .build();
   }
 
   public static class FakeStorageRpcFactory implements ServiceRpcFactory<StorageOptions> {
+
+    private final FakeStorageRpc instance;
+
+    public FakeStorageRpcFactory() {
+      this(LocalStorageHelper.instance);
+    }
+
+    public FakeStorageRpcFactory(FakeStorageRpc instance) {
+      this.instance = instance;
+    }
+
     @Override
     public ServiceRpc create(StorageOptions storageOptions) {
       return instance;
