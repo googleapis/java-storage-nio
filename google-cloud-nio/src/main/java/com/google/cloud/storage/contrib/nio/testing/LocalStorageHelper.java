@@ -16,6 +16,7 @@
 
 package com.google.cloud.storage.contrib.nio.testing;
 
+import com.google.cloud.ServiceRpc;
 import com.google.cloud.spi.ServiceRpcFactory;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.spi.v1.StorageRpc;
@@ -71,13 +72,7 @@ public final class LocalStorageHelper {
     instance.reset();
     return StorageOptions.newBuilder()
         .setProjectId("fake-project-for-testing")
-        .setServiceRpcFactory(
-            new ServiceRpcFactory<StorageOptions>() {
-              @Override
-              public StorageRpc create(StorageOptions options) {
-                return instance;
-              }
-            })
+        .setServiceRpcFactory(new FakeStorageRpcFactory())
         .build();
   }
 
@@ -96,5 +91,12 @@ public final class LocalStorageHelper {
               }
             })
         .build();
+  }
+
+  public static class FakeStorageRpcFactory implements ServiceRpcFactory<StorageOptions> {
+    @Override
+    public ServiceRpc create(StorageOptions storageOptions) {
+      return instance;
+    }
   }
 }
