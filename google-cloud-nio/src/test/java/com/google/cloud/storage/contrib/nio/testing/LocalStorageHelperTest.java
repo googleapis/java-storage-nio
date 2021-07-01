@@ -23,8 +23,13 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import org.junit.After;
@@ -116,5 +121,39 @@ public class LocalStorageHelperTest {
     Blob obj = localStorageService.create(info);
 
     assertThat(obj.getUpdateTime()).isNotNull();
+  }
+
+  @Test
+  public void testStorageOptionIsSerializable() throws Exception {
+    StorageOptions storageOptions = LocalStorageHelper.getOptions();
+    byte[] bytes;
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+      oos.writeObject(storageOptions);
+      oos.flush();
+      oos.close();
+      bytes = baos.toByteArray();
+    }
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais)) {
+      assertThat(ois.readObject()).isEqualTo(storageOptions);
+    }
+  }
+
+  @Test
+  public void testStorageOptionIsSerializable_customOptions() throws Exception {
+    StorageOptions storageOptions = LocalStorageHelper.customOptions(false);
+    byte[] bytes;
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+      oos.writeObject(storageOptions);
+      oos.flush();
+      oos.close();
+      bytes = baos.toByteArray();
+    }
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais)) {
+      assertThat(ois.readObject()).isEqualTo(storageOptions);
+    }
   }
 }
