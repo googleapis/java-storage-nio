@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.123.4](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.3...v0.123.4) (2021-07-27)
+
+
+### Bug Fixes
+
+* Make the StorageOption returned by LocalStorageHelper.getOptions() serializable ([#606](https://www.github.com/googleapis/java-storage-nio/issues/606)) ([12e872b](https://www.github.com/googleapis/java-storage-nio/commit/12e872b00cfefc0949e09918bcdbcd5517c750d9))
+
+
+### Dependencies
+
+* update dependency com.google.apis:google-api-services-storage to v1-rev20210127-1.32.1 ([#608](https://www.github.com/googleapis/java-storage-nio/issues/608)) ([efae4cd](https://www.github.com/googleapis/java-storage-nio/commit/efae4cd411259c9e8a5c0cd465475c4994448659))
+* update dependency com.google.cloud:google-cloud-storage to v1.118.0 ([#615](https://www.github.com/googleapis/java-storage-nio/issues/615)) ([797b10c](https://www.github.com/googleapis/java-storage-nio/commit/797b10cd7aee58bae8a50e45a43975e3040e6025))
+
 ### [0.123.3](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.2...v0.123.3) (2021-06-30)
 
 
