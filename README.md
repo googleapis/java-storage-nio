@@ -60,13 +60,13 @@ compile 'com.google.cloud:google-cloud-nio'
 If you are using Gradle without BOM, add this to your dependencies
 
 ```Groovy
-compile 'com.google.cloud:google-cloud-nio:0.123.3'
+compile 'com.google.cloud:google-cloud-nio:0.123.4'
 ```
 
 If you are using SBT, add this to your dependencies
 
 ```Scala
-libraryDependencies += "com.google.cloud" % "google-cloud-nio" % "0.123.3"
+libraryDependencies += "com.google.cloud" % "google-cloud-nio" % "0.123.4"
 ```
 
 ## Authentication
