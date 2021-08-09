@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.124.0](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.4...v0.124.0) (2021-08-09)
+
+
+### Features
+
+* configure initial sp version ([#630](https://www.github.com/googleapis/java-storage-nio/issues/630)) ([d3a3cdb](https://www.github.com/googleapis/java-storage-nio/commit/d3a3cdb1201fe8619b825ca5f1f719b5d82d8da1))
+
 ### [0.123.4](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.3...v0.123.4) (2021-07-27)
 
 
