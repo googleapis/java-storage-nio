@@ -45,7 +45,7 @@ If you are using Maven without BOM, add this to your dependencies:
 <dependency>
   <groupId>com.google.cloud</groupId>
   <artifactId>google-cloud-nio</artifactId>
-  <version>0.123.6</version>
+  <version>0.123.7</version>
 </dependency>
 
 ```
@@ -60,13 +60,13 @@ compile 'com.google.cloud:google-cloud-nio'
 If you are using Gradle without BOM, add this to your dependencies
 
 ```Groovy
-compile 'com.google.cloud:google-cloud-nio:0.123.6'
+compile 'com.google.cloud:google-cloud-nio:0.123.7'
 ```
 
 If you are using SBT, add this to your dependencies
 
 ```Scala
-libraryDependencies += "com.google.cloud" % "google-cloud-nio" % "0.123.6"
+libraryDependencies += "com.google.cloud" % "google-cloud-nio" % "0.123.7"
 ```
 
 ## Authentication
