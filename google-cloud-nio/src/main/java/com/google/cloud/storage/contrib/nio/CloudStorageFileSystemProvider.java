@@ -73,6 +73,7 @@ import java.util.Objects;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
+import javax.inject.Singleton;
 
 /**
  * Google Cloud Storage {@link FileSystemProvider} implementation.
@@ -82,6 +83,7 @@ import javax.annotation.concurrent.ThreadSafe;
  * the javadocs in this class serve as useful documentation for the behavior of the Google Cloud
  * Storage NIO library.
  */
+@Singleton
 @ThreadSafe
 public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
