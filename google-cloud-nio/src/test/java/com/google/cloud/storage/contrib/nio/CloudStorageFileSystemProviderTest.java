@@ -27,15 +27,14 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.nio.file.StandardOpenOption.WRITE;
 
+import com.google.api.gax.rpc.internal.QuotaProjectIdHidingCredentials;
 import com.google.auth.Credentials;
-import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.NoCredentials;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.ImmutableList;
 import com.google.common.testing.NullPointerTester;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -814,10 +813,7 @@ public class CloudStorageFileSystemProviderTest {
             .build();
 
     Credentials noCredentials = NoCredentials.getInstance();
-    FileInputStream fileInputStream =
-        new FileInputStream(System.getenv("GOOGLE_APPLICATION_CREDENTIALS"));
-    Credentials saCredentials = ServiceAccountCredentials.fromStream(fileInputStream);
-    fileInputStream.close();
+    Credentials saCredentials = new QuotaProjectIdHidingCredentials(noCredentials);
 
     StorageOptions noOptions =
         StorageOptions.newBuilder()
