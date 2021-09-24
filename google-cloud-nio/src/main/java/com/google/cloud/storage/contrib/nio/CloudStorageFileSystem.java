@@ -70,13 +70,13 @@ public final class CloudStorageFileSystem extends FileSystem {
   private final CloudStorageFileSystemProvider provider;
   private final String bucket;
   private final CloudStorageConfiguration config;
-  private static final LoadingCache<ConfigTuple, CloudStorageFileSystemProvider>
+  private static final LoadingCache<ProviderCacheKey, CloudStorageFileSystemProvider>
       PROVIDER_CACHE_BY_CONFIG =
           CacheBuilder.newBuilder()
               .build(
-                  new CacheLoader<ConfigTuple, CloudStorageFileSystemProvider>() {
+                  new CacheLoader<ProviderCacheKey, CloudStorageFileSystemProvider>() {
                     @Override
-                    public CloudStorageFileSystemProvider load(ConfigTuple key) {
+                    public CloudStorageFileSystemProvider load(ProviderCacheKey key) {
                       CloudStorageConfiguration config = key.cloudStorageConfiguration;
                       StorageOptions storageOptions = key.storageOptions;
                       String userProject = config.userProject();
@@ -186,14 +186,14 @@ public final class CloudStorageFileSystem extends FileSystem {
         !bucket.startsWith(URI_SCHEME + ":"), "Bucket name must not have schema: %s", bucket);
     checkNotNull(config);
     CloudStorageFileSystemProvider result;
-    ConfigTuple configTuple = new ConfigTuple(config, storageOptions);
+    ProviderCacheKey providerCacheKey = new ProviderCacheKey(config, storageOptions);
     try {
-      result = PROVIDER_CACHE_BY_CONFIG.get(configTuple);
+      result = PROVIDER_CACHE_BY_CONFIG.get(providerCacheKey);
     } catch (ExecutionException | UncheckedExecutionException e) {
       throw new IllegalStateException(
           "Unable to resolve CloudStorageFileSystemProvider for the provided configuration", e);
     }
-    return new CloudStorageFileSystem(result, bucket, checkNotNull(config));
+    return new CloudStorageFileSystem(result, bucket, config);
   }
 
   CloudStorageFileSystem(
@@ -336,11 +336,16 @@ public final class CloudStorageFileSystem extends FileSystem {
     }
   }
 
-  private static final class ConfigTuple {
+  /**
+   * In order to cache a {@link CloudStorageFileSystemProvider} we track the config used to
+   * instantiate that provider. This class creates an immutable key encapsulating the config
+   * to allow reliable resolution from the cache.
+   */
+  private static final class ProviderCacheKey {
     private final CloudStorageConfiguration cloudStorageConfiguration;
     @Nullable private final StorageOptions storageOptions;
 
-    public ConfigTuple(
+    public ProviderCacheKey(
         CloudStorageConfiguration cloudStorageConfiguration,
         @Nullable StorageOptions storageOptions) {
       this.cloudStorageConfiguration =
@@ -353,10 +358,10 @@ public final class CloudStorageFileSystem extends FileSystem {
       if (this == o) {
         return true;
       }
-      if (!(o instanceof ConfigTuple)) {
+      if (!(o instanceof ProviderCacheKey)) {
         return false;
       }
-      ConfigTuple that = (ConfigTuple) o;
+      ProviderCacheKey that = (ProviderCacheKey) o;
       return cloudStorageConfiguration.equals(that.cloudStorageConfiguration)
           && Objects.equals(storageOptions, that.storageOptions);
     }

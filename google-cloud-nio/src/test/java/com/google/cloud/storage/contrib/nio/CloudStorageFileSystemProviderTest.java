@@ -803,7 +803,7 @@ public class CloudStorageFileSystemProviderTest {
   // port of test from
   // https://github.com/broadinstitute/cromwell/pull/6491/files#diff-758dbbe823e71cc26fee7bc89cd5c434dfb76e604d51005b8327db59aab96068R300-R336
   @Test
-  public void cromwell6491() throws Exception {
+  public void ensureMultipleInstancesDoNotCorruptCredentials() throws Exception {
 
     CloudStorageConfiguration config =
         CloudStorageConfiguration.builder()
