@@ -338,8 +338,8 @@ public final class CloudStorageFileSystem extends FileSystem {
 
   /**
    * In order to cache a {@link CloudStorageFileSystemProvider} we track the config used to
-   * instantiate that provider. This class creates an immutable key encapsulating the config
-   * to allow reliable resolution from the cache.
+   * instantiate that provider. This class creates an immutable key encapsulating the config to
+   * allow reliable resolution from the cache.
    */
   private static final class ProviderCacheKey {
     private final CloudStorageConfiguration cloudStorageConfiguration;

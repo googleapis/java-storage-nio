@@ -27,10 +27,6 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.nio.file.StandardOpenOption.WRITE;
 
-import com.google.api.gax.rpc.internal.QuotaProjectIdHidingCredentials;
-import com.google.auth.Credentials;
-import com.google.cloud.NoCredentials;
-import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.ImmutableList;
@@ -38,7 +34,6 @@ import com.google.common.testing.NullPointerTester;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
@@ -800,65 +795,11 @@ public class CloudStorageFileSystemProviderTest {
     assertThat(path4.toString()).isEqualTo("/with/a%20percent");
   }
 
-  // port of test from
-  // https://github.com/broadinstitute/cromwell/pull/6491/files#diff-758dbbe823e71cc26fee7bc89cd5c434dfb76e604d51005b8327db59aab96068R300-R336
-  @Test
-  public void ensureMultipleInstancesDoNotCorruptCredentials() throws Exception {
-
-    CloudStorageConfiguration config =
-        CloudStorageConfiguration.builder()
-            .permitEmptyPathComponents(true)
-            .stripPrefixSlash(true)
-            .usePseudoDirectories(true)
-            .build();
-
-    Credentials noCredentials = NoCredentials.getInstance();
-    Credentials saCredentials = new QuotaProjectIdHidingCredentials(noCredentials);
-
-    StorageOptions noOptions =
-        StorageOptions.newBuilder()
-            .setProjectId("public-project")
-            .setCredentials(noCredentials)
-            .build();
-
-    StorageOptions saOptions =
-        StorageOptions.newBuilder()
-            .setProjectId("private-project")
-            .setCredentials(saCredentials)
-            .build();
-
-    CloudStorageFileSystem noFs =
-        CloudStorageFileSystem.forBucket("public-bucket", config, noOptions);
-    CloudStorageFileSystem saFs =
-        CloudStorageFileSystem.forBucket("private-bucket", config, saOptions);
-
-    CloudStoragePath noPath = noFs.getPath("public-file");
-    CloudStoragePath saPath = saFs.getPath("private-file");
-
-    assertThat(credentialsForPath(noPath)).isEqualTo(noCredentials);
-    assertThat(credentialsForPath(saPath)).isEqualTo(saCredentials);
-  }
-
   private static CloudStorageConfiguration permitEmptyPathComponents(boolean value) {
     return CloudStorageConfiguration.builder().permitEmptyPathComponents(value).build();
   }
 
   private static CloudStorageConfiguration usePseudoDirectories(boolean value) {
     return CloudStorageConfiguration.builder().usePseudoDirectories(value).build();
-  }
-
-  private static Credentials credentialsForPath(Path p)
-      throws NoSuchFieldException, IllegalAccessException {
-    CloudStorageFileSystemProvider cloudFilesystemProvider =
-        (CloudStorageFileSystemProvider) p.getFileSystem().provider();
-    Field storageOptionsField =
-        cloudFilesystemProvider.getClass().getDeclaredField("storageOptions");
-    storageOptionsField.setAccessible(true);
-    StorageOptions storageOptions =
-        (StorageOptions) storageOptionsField.get(cloudFilesystemProvider);
-    Field credentialsField =
-        storageOptions.getClass().getSuperclass().getDeclaredField("credentials");
-    credentialsField.setAccessible(true);
-    return (Credentials) credentialsField.get(storageOptions);
   }
 }
