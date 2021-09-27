@@ -32,6 +32,7 @@ import java.nio.file.Files;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -40,12 +41,17 @@ import org.junit.runners.JUnit4;
 public class CloudStorageIsDirectoryTest {
   @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
+  @Rule public final TestName testName = new TestName();
+
   private StorageOptions mockOptions;
   private Storage mockStorage;
 
   @Before
   public void before() {
-    mockOptions = mock(StorageOptions.class);
+    mockOptions =
+        mock(
+            StorageOptions.class,
+            String.format("storage-options-mock_%s", testName.getMethodName()));
     mockStorage = mock(Storage.class);
     when(mockOptions.getService()).thenReturn(mockStorage);
     CloudStorageFileSystemProvider.setStorageOptions(mockOptions);
@@ -54,7 +60,7 @@ public class CloudStorageIsDirectoryTest {
   @Test
   public void testIsDirectoryNoUserProject() {
     CloudStorageFileSystem fs =
-        CloudStorageFileSystem.forBucket("bucket", CloudStorageConfiguration.DEFAULT);
+        CloudStorageFileSystem.forBucket("bucket", CloudStorageConfiguration.DEFAULT, mockOptions);
     when(mockStorage.get(BlobId.of("bucket", "test", null)))
         .thenThrow(new IllegalArgumentException());
     Page<Blob> pages = mock(Page.class);
@@ -74,7 +80,9 @@ public class CloudStorageIsDirectoryTest {
   public void testIsDirectoryWithUserProject() {
     CloudStorageFileSystem fs =
         CloudStorageFileSystem.forBucket(
-            "bucket", CloudStorageConfiguration.builder().userProject("project-id").build());
+            "bucket",
+            CloudStorageConfiguration.builder().userProject("project-id").build(),
+            mockOptions);
     when(mockStorage.get(BlobId.of("bucket", "test", null)))
         .thenThrow(new IllegalArgumentException());
     Page<Blob> pages = mock(Page.class);

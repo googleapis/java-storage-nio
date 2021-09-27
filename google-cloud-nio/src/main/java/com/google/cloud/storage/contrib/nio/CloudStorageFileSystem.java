@@ -18,6 +18,7 @@ package com.google.cloud.storage.contrib.nio;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Bucket;
@@ -25,7 +26,11 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import com.google.common.base.Strings;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,10 +43,9 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -66,8 +70,21 @@ public final class CloudStorageFileSystem extends FileSystem {
   private final CloudStorageFileSystemProvider provider;
   private final String bucket;
   private final CloudStorageConfiguration config;
-  private static final Map<CloudStorageConfiguration, Set<CloudStorageFileSystemProvider>>
-      CONFIG_TO_PROVIDERS_MAP = new HashMap<>();
+  private static final LoadingCache<ProviderCacheKey, CloudStorageFileSystemProvider>
+      PROVIDER_CACHE_BY_CONFIG =
+          CacheBuilder.newBuilder()
+              .build(
+                  new CacheLoader<ProviderCacheKey, CloudStorageFileSystemProvider>() {
+                    @Override
+                    public CloudStorageFileSystemProvider load(ProviderCacheKey key) {
+                      CloudStorageConfiguration config = key.cloudStorageConfiguration;
+                      StorageOptions storageOptions = key.storageOptions;
+                      String userProject = config.userProject();
+                      return (storageOptions == null)
+                          ? new CloudStorageFileSystemProvider(userProject)
+                          : new CloudStorageFileSystemProvider(userProject, storageOptions);
+                    }
+                  });
 
   // Users can change this: then this affects every filesystem object created
   // later, including via SPI. This is meant to be done only once, at the beginning
@@ -144,32 +161,7 @@ public final class CloudStorageFileSystem extends FileSystem {
    */
   @CheckReturnValue
   public static CloudStorageFileSystem forBucket(String bucket, CloudStorageConfiguration config) {
-    checkArgument(
-        !bucket.startsWith(URI_SCHEME + ":"), "Bucket name must not have schema: %s", bucket);
-    checkNotNull(config);
-    return new CloudStorageFileSystem(
-        getCloudStorageFileSystemProvider(config, null), bucket, config);
-  }
-
-  private static CloudStorageFileSystemProvider getCloudStorageFileSystemProvider(
-      CloudStorageConfiguration config, StorageOptions storageOptions) {
-    CloudStorageFileSystemProvider newProvider =
-        (storageOptions == null)
-            ? new CloudStorageFileSystemProvider(config.userProject())
-            : new CloudStorageFileSystemProvider(config.userProject(), storageOptions);
-    Set<CloudStorageFileSystemProvider> existingProviders = CONFIG_TO_PROVIDERS_MAP.get(config);
-    if (existingProviders == null) {
-      existingProviders = new HashSet<>();
-    } else {
-      for (CloudStorageFileSystemProvider existiningProvider : existingProviders) {
-        if (existiningProvider.equals(newProvider)) {
-          return existiningProvider;
-        }
-      }
-    }
-    existingProviders.add(newProvider);
-    CONFIG_TO_PROVIDERS_MAP.put(config, existingProviders);
-    return newProvider;
+    return forBucket(bucket, config, null);
   }
 
   /**
@@ -192,8 +184,16 @@ public final class CloudStorageFileSystem extends FileSystem {
       String bucket, CloudStorageConfiguration config, @Nullable StorageOptions storageOptions) {
     checkArgument(
         !bucket.startsWith(URI_SCHEME + ":"), "Bucket name must not have schema: %s", bucket);
-    return new CloudStorageFileSystem(
-        getCloudStorageFileSystemProvider(config, storageOptions), bucket, checkNotNull(config));
+    checkNotNull(config);
+    CloudStorageFileSystemProvider result;
+    ProviderCacheKey providerCacheKey = new ProviderCacheKey(config, storageOptions);
+    try {
+      result = PROVIDER_CACHE_BY_CONFIG.get(providerCacheKey);
+    } catch (ExecutionException | UncheckedExecutionException e) {
+      throw new IllegalStateException(
+          "Unable to resolve CloudStorageFileSystemProvider for the provided configuration", e);
+    }
+    return new CloudStorageFileSystem(result, bucket, config);
   }
 
   CloudStorageFileSystem(
@@ -333,6 +333,52 @@ public final class CloudStorageFileSystem extends FileSystem {
       return new URI(URI_SCHEME, bucket, null, null).toString();
     } catch (URISyntaxException e) {
       throw new AssertionError(e);
+    }
+  }
+
+  /**
+   * In order to cache a {@link CloudStorageFileSystemProvider} we track the config used to
+   * instantiate that provider. This class creates an immutable key encapsulating the config to
+   * allow reliable resolution from the cache.
+   */
+  private static final class ProviderCacheKey {
+    private final CloudStorageConfiguration cloudStorageConfiguration;
+    @Nullable private final StorageOptions storageOptions;
+
+    public ProviderCacheKey(
+        CloudStorageConfiguration cloudStorageConfiguration,
+        @Nullable StorageOptions storageOptions) {
+      this.cloudStorageConfiguration =
+          requireNonNull(cloudStorageConfiguration, "cloudStorageConfiguration must be non null");
+      this.storageOptions = storageOptions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (!(o instanceof ProviderCacheKey)) {
+        return false;
+      }
+      ProviderCacheKey that = (ProviderCacheKey) o;
+      return cloudStorageConfiguration.equals(that.cloudStorageConfiguration)
+          && Objects.equals(storageOptions, that.storageOptions);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(cloudStorageConfiguration, storageOptions);
+    }
+
+    @Override
+    public String toString() {
+      return "ConfigTuple{"
+          + "cloudStorageConfiguration="
+          + cloudStorageConfiguration
+          + ", storageOptions="
+          + storageOptions
+          + '}';
     }
   }
 }
