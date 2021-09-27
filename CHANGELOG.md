@@ -1,5 +1,20 @@
 # Changelog
 
+### [0.123.13](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.12...v0.123.13) (2021-09-27)
+
+
+### Bug Fixes
+
+* make CloudStorageFileSystem#forBucket thread safe ([#719](https://www.github.com/googleapis/java-storage-nio/issues/719)) ([ac8bfee](https://www.github.com/googleapis/java-storage-nio/commit/ac8bfeee367269a06d67c7a81adc770fb5bd83e4)), closes [#691](https://www.github.com/googleapis/java-storage-nio/issues/691) [#698](https://www.github.com/googleapis/java-storage-nio/issues/698)
+
+
+### Dependencies
+
+* update dependency com.google.apis:google-api-services-storage to v1-rev20210914-1.32.1 ([#711](https://www.github.com/googleapis/java-storage-nio/issues/711)) ([1b6e324](https://www.github.com/googleapis/java-storage-nio/commit/1b6e3241c8950ba9255074efa3356b81818f514f))
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v2.3.0 ([#715](https://www.github.com/googleapis/java-storage-nio/issues/715)) ([2f42aa8](https://www.github.com/googleapis/java-storage-nio/commit/2f42aa8cf29af5d593285ba0c69902771b60c393))
+* update dependency com.google.cloud:google-cloud-storage to v2.1.4 ([#713](https://www.github.com/googleapis/java-storage-nio/issues/713)) ([7ae21d0](https://www.github.com/googleapis/java-storage-nio/commit/7ae21d0032c5c1b65f07c45b4c9d631dd19bedf8))
+* update dependency com.google.cloud:google-cloud-storage to v2.1.5 ([#716](https://www.github.com/googleapis/java-storage-nio/issues/716)) ([f3f2037](https://www.github.com/googleapis/java-storage-nio/commit/f3f2037af5b889d0e70afff730848cbd073e21e4))
+
 ### [0.123.12](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.11...v0.123.12) (2021-09-15)
 
 
