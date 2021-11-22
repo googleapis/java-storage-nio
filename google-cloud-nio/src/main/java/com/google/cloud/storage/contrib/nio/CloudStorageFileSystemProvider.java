@@ -468,7 +468,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
               infoBuilder.build(),
               writeOptions.toArray(new Storage.BlobWriteOption[writeOptions.size()])));
     } catch (StorageException oops) {
-      throw asIoException(oops);
+      throw asIoException(oops, false);
     }
   }
 
@@ -688,7 +688,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
           retryHandler.handleStorageException(oops);
           // we're being aggressive by retrying even on scenarios where we'd normally reopen.
         } catch (StorageException retriesExhaustedException) {
-          throw asIoException(retriesExhaustedException);
+          throw asIoException(retriesExhaustedException, true);
         }
       }
     }
@@ -1013,12 +1013,18 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     return storage.list(options);
   }
 
-  private IOException asIoException(StorageException oops) {
+  private IOException asIoException(StorageException oops, boolean operationWasCopy) {
     // RPC API can only throw StorageException, but CloudStorageFileSystemProvider
     // can only throw IOException. Square peg, round hole.
     // TODO(#810): Research if other codes should be translated similarly.
     if (oops.getCode() == 404) {
       return new NoSuchFileException(oops.getReason());
+    } else if (operationWasCopy && oops.getCode() == 412) {
+      return new FileAlreadyExistsException(
+          String.format(
+              "Copy failed for reason '%s'. This most likely means the destination already exists"
+                  + " and java.nio.file.StandardCopyOption.REPLACE_EXISTING was not specified.",
+              oops.getReason()));
     }
 
     Throwable cause = oops.getCause();

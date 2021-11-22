@@ -53,6 +53,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -1106,6 +1107,48 @@ public class ITGcsNio {
     // Listing objects from second bucket.
     objects = Lists.newArrayList(localStorageService.list(secondBucket).getValues());
     assertThat(objects.size()).isEqualTo(1);
+  }
+
+  @Test(expected = FileAlreadyExistsException.class)
+  public void testCopy_replaceFile_withoutOption() throws IOException {
+    CloudStorageFileSystem fs = getTestBucket();
+    String uuid = UUID.randomUUID().toString();
+
+    CloudStoragePath foo = fs.getPath(uuid, "foo.txt");
+    CloudStoragePath bar = fs.getPath(uuid, "bar.txt");
+
+    Files.createFile(foo);
+    Files.createFile(bar);
+
+    Files.copy(foo, bar);
+  }
+
+  @Test
+  public void testCopy_replaceFile_withOption() throws IOException {
+    CloudStorageFileSystem fs = getTestBucket();
+    String uuid = UUID.randomUUID().toString();
+
+    CloudStoragePath foo = fs.getPath(uuid, "foo.txt");
+    CloudStoragePath bar = fs.getPath(uuid, "bar.txt");
+
+    Files.createFile(foo);
+    Files.createFile(bar);
+
+    Files.copy(foo, bar, StandardCopyOption.REPLACE_EXISTING);
+  }
+
+  @Test(expected = NoSuchFileException.class)
+  public void testCopy_replaceFile_withOption_srcDoesNotExist() throws IOException {
+    CloudStorageFileSystem fs = getTestBucket();
+    String uuid = UUID.randomUUID().toString();
+
+    CloudStoragePath foo = fs.getPath(uuid, "foo.txt");
+    CloudStoragePath bar = fs.getPath(uuid, "bar.txt");
+
+    // explicitly do not create foo
+    Files.createFile(bar);
+
+    Files.copy(foo, bar);
   }
 
   private CloudStorageFileSystem getTestBucket() throws IOException {
