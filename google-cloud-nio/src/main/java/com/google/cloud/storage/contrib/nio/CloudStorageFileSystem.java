@@ -203,7 +203,8 @@ public final class CloudStorageFileSystem extends FileSystem {
     if (config.useUserProjectOnlyForRequesterPaysBuckets()) {
       if (Strings.isNullOrEmpty(config.userProject())) {
         throw new IllegalArgumentException(
-            "If useUserProjectOnlyForRequesterPaysBuckets is set, then userProject must be set too.");
+            "If useUserProjectOnlyForRequesterPaysBuckets is set, then userProject must be set"
+                + " too.");
       }
       // detect whether we want to pay for these accesses or not.
       if (!provider.requesterPays(bucket)) {

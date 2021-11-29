@@ -97,7 +97,8 @@ public class CloudStorageReadChannelTest {
                 new IOException(
                     "outer",
                     new IOException(
-                        "Connection closed prematurely: bytesRead = 33554432, Content-Length = 41943040"))))
+                        "Connection closed prematurely: bytesRead = 33554432, Content-Length ="
+                            + " 41943040"))))
         .thenReturn(1);
     assertThat(chan.position()).isEqualTo(0L);
     assertThat(chan.read(buffer)).isEqualTo(1);
@@ -131,11 +132,13 @@ public class CloudStorageReadChannelTest {
           .thenThrow(
               new StorageException(
                   new IOException(
-                      "Connection closed prematurely: bytesRead = 33554432, Content-Length = 41943040")))
+                      "Connection closed prematurely: bytesRead = 33554432, Content-Length ="
+                          + " 41943040")))
           .thenThrow(
               new StorageException(
                   new IOException(
-                      "Connection closed prematurely: bytesRead = 33554432, Content-Length = 41943040")))
+                      "Connection closed prematurely: bytesRead = 33554432, Content-Length ="
+                          + " 41943040")))
           .thenReturn(1);
       assertThat(chan.position()).isEqualTo(0L);
       chan.read(buffer);
