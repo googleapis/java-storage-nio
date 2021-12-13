@@ -33,8 +33,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class CloudStorageLateInitializationTest {
   @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
-  @Spy
-  private final CloudStorageFileSystemProvider provider = new CloudStorageFileSystemProvider();
+  @Spy private final CloudStorageFileSystemProvider provider = new CloudStorageFileSystemProvider();
 
   @Test
   public void ctorDoesNotCreateStorage() {

@@ -798,13 +798,11 @@ public class CloudStorageFileSystemProviderTest {
 
   @Test
   public void testVersion_matchesAcceptablePatterns() {
-    String acceptableVersionPattern =
-        "|(?:\\d+\\.\\d+\\.\\d+(?:-.*?)?(?:-SNAPSHOT)?)";
+    String acceptableVersionPattern = "|(?:\\d+\\.\\d+\\.\\d+(?:-.*?)?(?:-SNAPSHOT)?)";
     String version = CloudStorageFileSystemProvider.VERSION;
     assertTrue(
         String.format("the loaded version '%s' did not match the acceptable pattern", version),
-        version.matches(acceptableVersionPattern)
-    );
+        version.matches(acceptableVersionPattern));
   }
 
   @Test

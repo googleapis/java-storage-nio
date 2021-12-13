@@ -1037,14 +1037,14 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     return new IOException(oops.getMessage(), oops);
   }
 
-  /**
-   * Resolve the version of google-cloud-nio for inclusion in request meta-data
-   */
+  /** Resolve the version of google-cloud-nio for inclusion in request meta-data */
   private static String getVersion() {
     // attempt to read the library's version from a properties file generated during the build
     // this value should be read and cached for later use
     String version = "";
-    try (InputStream inputStream = CloudStorageFileSystemProvider.class.getResourceAsStream("/META-INF/maven/com.google.cloud/google-cloud-nio/pom.properties")) {
+    try (InputStream inputStream =
+        CloudStorageFileSystemProvider.class.getResourceAsStream(
+            "/META-INF/maven/com.google.cloud/google-cloud-nio/pom.properties")) {
       if (inputStream != null) {
         final Properties properties = new Properties();
         properties.load(inputStream);
@@ -1058,12 +1058,10 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
   @VisibleForTesting
   void doInitStorage() {
-    final StorageOptions so = storageOptions != null ? storageOptions : StorageOptions.getDefaultInstance();
+    final StorageOptions so =
+        storageOptions != null ? storageOptions : StorageOptions.getDefaultInstance();
     final StorageOptions.Builder builder = so.toBuilder();
-    this.storage = builder
-        .setHeaderProvider(getHeaderProvider())
-        .build()
-        .getService();
+    this.storage = builder.setHeaderProvider(getHeaderProvider()).build().getService();
   }
 
   @VisibleForTesting
@@ -1074,15 +1072,13 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   @VisibleForTesting
   private static class NioUserAgentEntryHeaderProvider extends FixedHeaderProvider {
 
-    private final ImmutableMap<String, String> userAgent = ImmutableMap
-        .of("user-agent", String.format("nio/%s", VERSION));
+    private final ImmutableMap<String, String> userAgent =
+        ImmutableMap.of("user-agent", String.format("nio/%s", VERSION));
 
     @Nullable
     @Override
     public Map<String, String> getHeaders() {
       return userAgent;
     }
-
   }
-
 }
