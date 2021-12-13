@@ -1073,7 +1073,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   private static class NioUserAgentEntryHeaderProvider extends FixedHeaderProvider {
 
     private final ImmutableMap<String, String> userAgent =
-        ImmutableMap.of("user-agent", String.format("nio/%s", VERSION));
+        ImmutableMap.of("user-agent", String.format("gcloud-java-nio/%s", VERSION));
 
     @Nullable
     @Override
