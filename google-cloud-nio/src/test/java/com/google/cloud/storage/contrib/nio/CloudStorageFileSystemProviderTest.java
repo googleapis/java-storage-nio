@@ -807,7 +807,8 @@ public class CloudStorageFileSystemProviderTest {
 
   @Test
   public void getUserAgentStartsWithCorrectToken() {
-    assertThat(String.format("nio/%s", CloudStorageFileSystemProvider.VERSION)).startsWith("nio/");
+    assertThat(String.format("gcloud-java-nio/%s", CloudStorageFileSystemProvider.VERSION))
+        .startsWith("gcloud-java-nio/");
   }
 
   private static CloudStorageConfiguration permitEmptyPathComponents(boolean value) {
