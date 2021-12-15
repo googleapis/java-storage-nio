@@ -51,7 +51,6 @@ import javax.annotation.concurrent.NotThreadSafe;
  *         <li>object get
  *         <li>object delete
  *         <li>list the contents of a bucket
- *         <li>generations
  *       </ul>
  *   <li>Unsupported
  *       <ul>
@@ -59,6 +58,7 @@ import javax.annotation.concurrent.NotThreadSafe;
  *         <li>bucket get
  *         <li>bucket delete
  *         <li>list all buckets
+ *         <li>generations
  *         <li>file attributes
  *         <li>patch
  *         <li>continueRewrite
