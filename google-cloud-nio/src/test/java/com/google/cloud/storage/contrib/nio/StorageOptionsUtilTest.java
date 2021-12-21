@@ -24,10 +24,11 @@ public final class StorageOptionsUtilTest {
 
   @Test
   public void ensureUserAgentEntryAddedIfUserAgentSpecified() {
-    StorageOptions defaultInstance = defaults()
-        .toBuilder()
-        .setHeaderProvider(FixedHeaderProvider.create("user-agent", "asdf/ gcloud-java-nio/"))
-        .build();
+    StorageOptions defaultInstance =
+        defaults()
+            .toBuilder()
+            .setHeaderProvider(FixedHeaderProvider.create("user-agent", "asdf/ gcloud-java-nio/"))
+            .build();
     StorageOptions merged = StorageOptionsUtil.mergeOptionsWithUserAgent(defaultInstance);
 
     String mergedUserAgent = merged.getUserAgent();
@@ -47,11 +48,14 @@ public final class StorageOptionsUtilTest {
 
   @Test
   public void ensureAddingUserAgentEntryDoesNotClobberAnyProvidedHeaders() {
-    StorageOptions base = defaults().toBuilder()
-        .setHeaderProvider(FixedHeaderProvider.create(
-            "user-agent", "custom/",
-            "x-custom-header", "value"))
-        .build();
+    StorageOptions base =
+        defaults()
+            .toBuilder()
+            .setHeaderProvider(
+                FixedHeaderProvider.create(
+                    "user-agent", "custom/",
+                    "x-custom-header", "value"))
+            .build();
     StorageOptions merged = StorageOptionsUtil.mergeOptionsWithUserAgent(base);
 
     String mergedUserAgent = merged.getUserAgent();
