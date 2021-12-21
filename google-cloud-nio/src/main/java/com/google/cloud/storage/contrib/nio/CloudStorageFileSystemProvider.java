@@ -93,7 +93,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   private final @Nullable String userProject;
 
   // used only when we create a new instance of CloudStorageFileSystemProvider.
-  private static StorageOptions futureStorageOptions;
+  private static StorageOptions futureStorageOptions = StorageOptionsUtil.getDefaultInstance();
 
   private static class LazyPathIterator extends AbstractIterator<Path> {
     private final Iterator<Blob> blobIterator;
@@ -198,20 +198,18 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
    */
   CloudStorageFileSystemProvider(
       @Nullable String userProject, @Nullable StorageOptions gcsStorageOptions) {
-    this.storageOptions = gcsStorageOptions;
+    this.storageOptions =
+        gcsStorageOptions != null
+            ? StorageOptionsUtil.mergeOptionsWithUserAgent(gcsStorageOptions)
+            : StorageOptionsUtil.getDefaultInstance();
     this.userProject = userProject;
   }
 
   // Initialize this.storage, once. This may throw an exception if default authentication
   // credentials are not available (hence not doing it in the ctor).
   private void initStorage() {
-    if (this.storage != null) {
-      return;
-    }
-    if (storageOptions == null) {
-      this.storage = StorageOptions.getDefaultInstance().getService();
-    } else {
-      this.storage = storageOptions.getService();
+    if (this.storage == null) {
+      doInitStorage();
     }
   }
 
@@ -1036,5 +1034,10 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
       return okEx;
     }
     return new IOException(oops.getMessage(), oops);
+  }
+
+  @VisibleForTesting
+  void doInitStorage() {
+    this.storage = storageOptions.getService();
   }
 }

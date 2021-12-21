@@ -23,6 +23,7 @@ import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,6 +44,11 @@ public class NIOTest {
   public void setUp() {
     CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
     uriToCloudStorage = URI.create("gs://bucket/file.txt");
+  }
+
+  @After
+  public void after() {
+    CloudStorageFileSystemProvider.setStorageOptions(StorageOptionsUtil.getDefaultInstance());
   }
 
   /** We can create a Path object from a gs:// URI. * */

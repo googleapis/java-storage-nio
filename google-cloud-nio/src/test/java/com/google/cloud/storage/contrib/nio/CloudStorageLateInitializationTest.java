@@ -16,56 +16,41 @@
 
 package com.google.cloud.storage.contrib.nio;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import java.net.URI;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /** Unit tests for {@link CloudStorageFileSystemProvider} late initialization. */
-@RunWith(JUnit4.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CloudStorageLateInitializationTest {
   @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
 
-  private StorageOptions mockOptions;
-
-  @Before
-  public void before() {
-    mockOptions = mock(StorageOptions.class);
-    Storage mockStorage = mock(Storage.class);
-    when(mockOptions.getService()).thenReturn(mockStorage);
-    CloudStorageFileSystemProvider.setStorageOptions(mockOptions);
-  }
+  @Spy private final CloudStorageFileSystemProvider provider = new CloudStorageFileSystemProvider();
 
   @Test
   public void ctorDoesNotCreateStorage() {
-    new CloudStorageFileSystemProvider();
-    verify(mockOptions, never()).getService();
+    verify(provider, never()).doInitStorage();
   }
 
   @Test
   public void getPathCreatesStorageOnce() {
-    CloudStorageFileSystemProvider provider = new CloudStorageFileSystemProvider();
     provider.getPath(URI.create("gs://bucket1/wat"));
     provider.getPath(URI.create("gs://bucket2/wat"));
-    verify(mockOptions, times(1)).getService();
+    verify(provider, times(1)).doInitStorage();
   }
 
   @Test
   public void getFileSystemCreatesStorageOnce() {
-    CloudStorageFileSystemProvider provider = new CloudStorageFileSystemProvider();
     provider.getFileSystem(URI.create("gs://bucket1"));
     provider.getFileSystem(URI.create("gs://bucket2"));
-    verify(mockOptions, times(1)).getService();
+    verify(provider, times(1)).doInitStorage();
   }
 }

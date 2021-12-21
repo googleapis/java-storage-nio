@@ -29,6 +29,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,6 +52,11 @@ public class CloudStorageFileAttributesTest {
     CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
     path = Paths.get(URI.create("gs://bucket/randompath"));
     dir = Paths.get(URI.create("gs://bucket/randompath/"));
+  }
+
+  @After
+  public void after() {
+    CloudStorageFileSystemProvider.setStorageOptions(StorageOptionsUtil.getDefaultInstance());
   }
 
   @Test
