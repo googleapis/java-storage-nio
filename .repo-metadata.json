@@ -10,5 +10,6 @@
   "repo_short": "java-storage-nio",
   "distribution_name": "com.google.cloud:google-cloud-nio",
   "api_id": "storage.googleapis.com",
+  "library_type": "OTHER",
   "codeowner_team": "@googleapis/cloud-storage-dpe"
 }
