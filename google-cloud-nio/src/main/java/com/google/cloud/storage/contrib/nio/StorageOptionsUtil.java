@@ -31,15 +31,15 @@ import java.util.Properties;
 final class StorageOptionsUtil {
   static final String USER_AGENT_ENTRY_NAME = "gcloud-java-nio";
   static final String USER_AGENT_ENTRY_VERSION = getVersion();
-  private static final String USER_AGENT_ENTRY = String.format("%s/%s", USER_AGENT_ENTRY_NAME,
-      USER_AGENT_ENTRY_VERSION);
-  private static final FixedHeaderProvider DEFAULT_HEADER_PROVIDER = FixedHeaderProvider.create(
-      "user-agent", USER_AGENT_ENTRY);
+  private static final String USER_AGENT_ENTRY =
+      String.format("%s/%s", USER_AGENT_ENTRY_NAME, USER_AGENT_ENTRY_VERSION);
+  private static final FixedHeaderProvider DEFAULT_HEADER_PROVIDER =
+      FixedHeaderProvider.create("user-agent", USER_AGENT_ENTRY);
 
   private static final StorageOptions DEFAULT_STORAGE_OPTIONS_INSTANCE =
       StorageOptions.newBuilder().setHeaderProvider(DEFAULT_HEADER_PROVIDER).build();
-  private static final FixedHeaderProvider EMTPY_HEADER_PROVIDER = FixedHeaderProvider.create(
-      Collections.emptyMap());
+  private static final FixedHeaderProvider EMTPY_HEADER_PROVIDER =
+      FixedHeaderProvider.create(Collections.emptyMap());
 
   private StorageOptionsUtil() {}
 
@@ -60,8 +60,8 @@ final class StorageOptionsUtil {
         HeaderProvider providedHeaderProvider = getHeaderProvider(providedStorageOptions);
         Map<String, String> newHeaders = new HashMap<>(providedHeaderProvider.getHeaders());
         newHeaders.put("user-agent", String.format("%s %s", userAgent, USER_AGENT_ENTRY));
-        FixedHeaderProvider headerProvider = FixedHeaderProvider.create(
-            ImmutableMap.copyOf(newHeaders));
+        FixedHeaderProvider headerProvider =
+            FixedHeaderProvider.create(ImmutableMap.copyOf(newHeaders));
         return nullSafeSet(providedStorageOptions, headerProvider);
       } else {
         return providedStorageOptions;
@@ -71,21 +71,21 @@ final class StorageOptionsUtil {
 
   /**
    * Due to some complex interactions between init and mocking, it's possible that the builder
-   * instance returned from {@link StorageOptions#toBuilder()} can be null. This utility method
-   * will attempt to create the builder and set the new header provider. If however the builder
-   * instance is null, the orignal options will be returned without setting the header provider.
+   * instance returned from {@link StorageOptions#toBuilder()} can be null. This utility method will
+   * attempt to create the builder and set the new header provider. If however the builder instance
+   * is null, the orignal options will be returned without setting the header provider.
    *
-   * Since this method is only every called by us trying to add our user-agent entry to the headers
-   * this makes our attempt effectively a no-op, which is much better than failing customer code.
+   * <p>Since this method is only every called by us trying to add our user-agent entry to the
+   * headers this makes our attempt effectively a no-op, which is much better than failing customer
+   * code.
    */
-  private static StorageOptions nullSafeSet(StorageOptions storageOptions, HeaderProvider headerProvider) {
+  private static StorageOptions nullSafeSet(
+      StorageOptions storageOptions, HeaderProvider headerProvider) {
     StorageOptions.Builder builder = storageOptions.toBuilder();
     if (builder == null) {
       return storageOptions;
     } else {
-      return builder
-          .setHeaderProvider(headerProvider)
-          .build();
+      return builder.setHeaderProvider(headerProvider).build();
     }
   }
 
@@ -116,5 +116,4 @@ final class StorageOptionsUtil {
   static HeaderProvider getHeaderProvider(StorageOptions options) {
     return options.getMergedHeaderProvider(EMTPY_HEADER_PROVIDER);
   }
-
 }
