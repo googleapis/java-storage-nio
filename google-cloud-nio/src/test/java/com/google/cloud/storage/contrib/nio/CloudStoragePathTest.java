@@ -30,6 +30,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.ProviderMismatchException;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,6 +46,11 @@ public class CloudStoragePathTest {
   @Before
   public void before() {
     CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
+  }
+
+  @After
+  public void after() {
+    CloudStorageFileSystemProvider.setStorageOptions(StorageOptionsUtil.getDefaultInstance());
   }
 
   @Test

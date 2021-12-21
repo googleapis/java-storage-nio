@@ -28,6 +28,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -42,6 +43,11 @@ public class CloudStorageOptionsTest {
   @Before
   public void before() {
     CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
+  }
+
+  @After
+  public void after() {
+    CloudStorageFileSystemProvider.setStorageOptions(StorageOptionsUtil.getDefaultInstance());
   }
 
   @Test

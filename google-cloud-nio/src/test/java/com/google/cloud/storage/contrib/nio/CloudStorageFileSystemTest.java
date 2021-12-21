@@ -46,6 +46,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -71,6 +72,11 @@ public class CloudStorageFileSystemTest {
   @Before
   public void before() {
     CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
+  }
+
+  @After
+  public void after() {
+    CloudStorageFileSystemProvider.setStorageOptions(StorageOptionsUtil.getDefaultInstance());
   }
 
   @Test

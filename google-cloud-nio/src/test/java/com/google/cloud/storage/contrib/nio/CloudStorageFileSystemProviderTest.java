@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -98,6 +99,11 @@ public class CloudStorageFileSystemProviderTest {
   @Before
   public void before() {
     CloudStorageFileSystemProvider.setStorageOptions(LocalStorageHelper.getOptions());
+  }
+
+  @After
+  public void after() {
+    CloudStorageFileSystemProvider.setStorageOptions(StorageOptionsUtil.getDefaultInstance());
   }
 
   @Test
@@ -799,7 +805,7 @@ public class CloudStorageFileSystemProviderTest {
   @Test
   public void testVersion_matchesAcceptablePatterns() {
     String acceptableVersionPattern = "|(?:\\d+\\.\\d+\\.\\d+(?:-.*?)?(?:-SNAPSHOT)?)";
-    String version = CloudStorageFileSystemProvider.VERSION;
+    String version = StorageOptionsUtil.USER_AGENT_ENTRY_VERSION;
     assertTrue(
         String.format("the loaded version '%s' did not match the acceptable pattern", version),
         version.matches(acceptableVersionPattern));
@@ -807,7 +813,7 @@ public class CloudStorageFileSystemProviderTest {
 
   @Test
   public void getUserAgentStartsWithCorrectToken() {
-    assertThat(String.format("gcloud-java-nio/%s", CloudStorageFileSystemProvider.VERSION))
+    assertThat(String.format("gcloud-java-nio/%s", StorageOptionsUtil.USER_AGENT_ENTRY_VERSION))
         .startsWith("gcloud-java-nio/");
   }
 

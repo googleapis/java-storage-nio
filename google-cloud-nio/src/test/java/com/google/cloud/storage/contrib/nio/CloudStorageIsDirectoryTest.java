@@ -29,6 +29,7 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.Lists;
 import java.nio.file.Files;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,6 +56,11 @@ public class CloudStorageIsDirectoryTest {
     mockStorage = mock(Storage.class);
     when(mockOptions.getService()).thenReturn(mockStorage);
     CloudStorageFileSystemProvider.setStorageOptions(mockOptions);
+  }
+
+  @After
+  public void after() {
+    CloudStorageFileSystemProvider.setStorageOptions(StorageOptionsUtil.getDefaultInstance());
   }
 
   @Test

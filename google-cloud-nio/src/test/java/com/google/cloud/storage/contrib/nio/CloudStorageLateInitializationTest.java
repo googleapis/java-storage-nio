@@ -53,11 +53,4 @@ public class CloudStorageLateInitializationTest {
     provider.getFileSystem(URI.create("gs://bucket2"));
     verify(provider, times(1)).doInitStorage();
   }
-
-  @Test
-  public void headerProviderRegistered() {
-    provider.getProject();
-    verify(provider, times(1)).doInitStorage();
-    verify(provider, times(1)).getHeaderProvider();
-  }
 }
