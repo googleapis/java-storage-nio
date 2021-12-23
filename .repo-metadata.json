@@ -1,5 +1,5 @@
 {
-  "name": "storage_nio",
+  "api_shortname": "storage_nio",
   "name_pretty": "NIO Filesystem Provider for Google Cloud Storage",
   "api_description": "provides a Google Cloud Storage extension for Java's NIO Filesystem.",
   "product_documentation": "https://cloud.google.com/storage/docs",
