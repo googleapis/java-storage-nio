@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.123.18](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.17...v0.123.18) (2022-01-07)
+
+
+### Bug Fixes
+
+* add nio entry to user-agent ([#774](https://www.github.com/googleapis/java-storage-nio/issues/774)) ([2d30f78](https://www.github.com/googleapis/java-storage-nio/commit/2d30f789e475afe8d2b0cd70bba05f3cbf105caf))
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v2.6.0 ([#783](https://www.github.com/googleapis/java-storage-nio/issues/783)) ([55f2e8d](https://www.github.com/googleapis/java-storage-nio/commit/55f2e8d0c49d506261e3839003b4dd652e6301fc))
+
 ### [0.123.17](https://www.github.com/googleapis/java-storage-nio/compare/v0.123.16...v0.123.17) (2021-12-06)
 
 
