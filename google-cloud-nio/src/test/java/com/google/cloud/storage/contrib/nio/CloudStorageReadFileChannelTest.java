@@ -15,14 +15,11 @@
  */
 package com.google.cloud.storage.contrib.nio;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
 import org.junit.Before;
 import org.junit.Rule;
@@ -122,67 +119,67 @@ public class CloudStorageReadFileChannelTest {
   @Test
   public void testRead() throws IOException {
     ByteBuffer buffer = ByteBuffer.allocate(1);
-    assertThat(fileChannel.position(), is(equalTo(0L)));
-    assertThat(fileChannel.read(buffer), is(equalTo(1)));
-    assertThat(fileChannel.position(), is(equalTo(1L)));
-    assertThat(buffer.get(0), is(equalTo((byte) 1)));
+    assertThat(fileChannel.position()).isEqualTo(0L);
+    assertThat(fileChannel.read(buffer)).isEqualTo(1);
+    assertThat(fileChannel.position()).isEqualTo(1L);
+    assertThat(buffer.get(0)).isEqualTo((byte) 1);
   }
 
   @Test
   public void testReadArray() throws IOException {
     ByteBuffer[] buffers =
         new ByteBuffer[] {ByteBuffer.allocate(1), ByteBuffer.allocate(1), ByteBuffer.allocate(1)};
-    assertThat(fileChannel.position(), is(equalTo(0L)));
-    assertThat(fileChannel.read(buffers), is(equalTo(3L)));
-    assertThat(fileChannel.position(), is(equalTo(3L)));
-    assertThat(buffers[0].get(0), is(equalTo((byte) 1)));
-    assertThat(buffers[1].get(0), is(equalTo((byte) 2)));
-    assertThat(buffers[2].get(0), is(equalTo((byte) 3)));
+    assertThat(fileChannel.position()).isEqualTo(0L);
+    assertThat(fileChannel.read(buffers)).isEqualTo(3L);
+    assertThat(fileChannel.position()).isEqualTo(3L);
+    assertThat(buffers[0].get(0)).isEqualTo((byte) 1);
+    assertThat(buffers[1].get(0)).isEqualTo((byte) 2);
+    assertThat(buffers[2].get(0)).isEqualTo((byte) 3);
   }
 
   @Test
   public void testPosition() throws IOException {
-    assertThat(fileChannel.position(), is(equalTo(0L)));
-    assertThat(fileChannel.position(1L), is(equalTo((FileChannel) fileChannel)));
-    assertThat(fileChannel.position(), is(equalTo(1L)));
-    assertThat(fileChannel.position(0L), is(equalTo((FileChannel) fileChannel)));
-    assertThat(fileChannel.position(), is(equalTo(0L)));
-    assertThat(fileChannel.position(100L), is(equalTo((FileChannel) fileChannel)));
-    assertThat(fileChannel.position(), is(equalTo(100L)));
+    assertThat(fileChannel.position()).isEqualTo(0L);
+    assertThat(fileChannel.position(1L)).isEqualTo(fileChannel);
+    assertThat(fileChannel.position()).isEqualTo(1L);
+    assertThat(fileChannel.position(0L)).isEqualTo(fileChannel);
+    assertThat(fileChannel.position()).isEqualTo(0L);
+    assertThat(fileChannel.position(100L)).isEqualTo(fileChannel);
+    assertThat(fileChannel.position()).isEqualTo(100L);
   }
 
   @Test
   public void testSize() throws IOException {
-    assertThat(fileChannel.size(), is(equalTo(3L)));
+    assertThat(fileChannel.size()).isEqualTo(3L);
   }
 
   @Test
   public void testTransferTo() throws IOException {
     SeekableByteChannelImpl target = new SeekableByteChannelImpl(ByteBuffer.allocate(100));
-    assertThat(fileChannel.transferTo(0L, 3L, target), is(equalTo(3L)));
-    assertThat(target.position(), is(equalTo(3L)));
+    assertThat(fileChannel.transferTo(0L, 3L, target)).isEqualTo(3L);
+    assertThat(target.position()).isEqualTo(3L);
     ByteBuffer dst = ByteBuffer.allocate(3);
     target.position(0L);
     target.read(dst);
-    assertThat(dst.get(0), is(equalTo((byte) 1)));
-    assertThat(dst.get(1), is(equalTo((byte) 2)));
-    assertThat(dst.get(2), is(equalTo((byte) 3)));
+    assertThat(dst.get(0)).isEqualTo((byte) 1);
+    assertThat(dst.get(1)).isEqualTo((byte) 2);
+    assertThat(dst.get(2)).isEqualTo((byte) 3);
   }
 
   @Test
   public void testReadOnPosition() throws IOException {
     ByteBuffer buffer = ByteBuffer.allocate(1);
-    assertThat(fileChannel.position(), is(equalTo(0L)));
-    assertThat(fileChannel.read(buffer, 1L), is(equalTo(1)));
-    assertThat(fileChannel.position(), is(equalTo(0L)));
-    assertThat(buffer.get(0), is(equalTo((byte) 2)));
+    assertThat(fileChannel.position()).isEqualTo(0L);
+    assertThat(fileChannel.read(buffer, 1L)).isEqualTo(1);
+    assertThat(fileChannel.position()).isEqualTo(0L);
+    assertThat(buffer.get(0)).isEqualTo((byte) 2);
   }
 
   @Test
   public void testReadBeyondEnd() throws IOException {
     fileChannel.position(3L);
-    assertThat(fileChannel.read(ByteBuffer.allocate(1)), is(equalTo(-1)));
+    assertThat(fileChannel.read(ByteBuffer.allocate(1))).isEqualTo(-1);
     fileChannel.position(2L);
-    assertThat(fileChannel.read(ByteBuffer.allocate(2)), is(equalTo(1)));
+    assertThat(fileChannel.read(ByteBuffer.allocate(2))).isEqualTo(1);
   }
 }
