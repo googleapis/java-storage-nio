@@ -1117,10 +1117,15 @@ public class ITGcsNio {
     CloudStoragePath foo = fs.getPath(uuid, "foo.txt");
     CloudStoragePath bar = fs.getPath(uuid, "bar.txt");
 
-    Files.createFile(foo);
-    Files.createFile(bar);
+    try {
+      Files.createFile(foo);
+      Files.createFile(bar);
 
-    Files.copy(foo, bar);
+      Files.copy(foo, bar);
+    } finally {
+      Files.deleteIfExists(foo);
+      Files.deleteIfExists(bar);
+    }
   }
 
   @Test
@@ -1131,10 +1136,15 @@ public class ITGcsNio {
     CloudStoragePath foo = fs.getPath(uuid, "foo.txt");
     CloudStoragePath bar = fs.getPath(uuid, "bar.txt");
 
-    Files.createFile(foo);
-    Files.createFile(bar);
+    try {
+      Files.createFile(foo);
+      Files.createFile(bar);
 
-    Files.copy(foo, bar, StandardCopyOption.REPLACE_EXISTING);
+      Files.copy(foo, bar, StandardCopyOption.REPLACE_EXISTING);
+    } finally {
+      Files.deleteIfExists(foo);
+      Files.deleteIfExists(bar);
+    }
   }
 
   @Test(expected = NoSuchFileException.class)
@@ -1145,10 +1155,15 @@ public class ITGcsNio {
     CloudStoragePath foo = fs.getPath(uuid, "foo.txt");
     CloudStoragePath bar = fs.getPath(uuid, "bar.txt");
 
-    // explicitly do not create foo
-    Files.createFile(bar);
+    try {
+      // explicitly do not create foo
+      Files.createFile(bar);
 
-    Files.copy(foo, bar);
+      Files.copy(foo, bar);
+    } finally {
+      Files.deleteIfExists(foo);
+      Files.deleteIfExists(bar);
+    }
   }
 
   private CloudStorageFileSystem getTestBucket() throws IOException {
