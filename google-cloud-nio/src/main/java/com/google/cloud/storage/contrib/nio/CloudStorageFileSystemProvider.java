@@ -87,6 +87,8 @@ import javax.inject.Singleton;
 @ThreadSafe
 public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
+  public static final String BUCKET_IS_REQUESTER_PAYS_ERROR_MESSAGE =
+      "Bucket is a requester pays bucket but no user project provided";
   private Storage storage;
   private final StorageOptions storageOptions;
   // if non-null, we pay via this project.
@@ -967,7 +969,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
       Boolean isRP = storage.get(bucketName).requesterPays();
       return isRP != null && isRP.booleanValue();
     } catch (StorageException ex) {
-      if (ex.getCode() == 400 && ex.getMessage().contains("Bucket is requester pays")) {
+      if (ex.getCode() == 400 && ex.getMessage().contains(BUCKET_IS_REQUESTER_PAYS_ERROR_MESSAGE)) {
         return true;
       }
       throw ex;

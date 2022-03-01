@@ -288,7 +288,7 @@ public class ITGcsNio {
       Assert.assertTrue(
           description,
           hex.getMessage()
-              .contains("Bucket is requester pays bucket but no user project provided"));
+              .contains(CloudStorageFileSystemProvider.BUCKET_IS_REQUESTER_PAYS_ERROR_MESSAGE));
     } catch (StorageException ex) {
       assertIsRequesterPaysException(description, ex);
     }
@@ -342,14 +342,16 @@ public class ITGcsNio {
     Assert.assertEquals(message, ex.getCode(), 400);
     Assert.assertTrue(
         message,
-        ex.getMessage().contains("Bucket is requester pays bucket but no user project provided"));
+        ex.getMessage()
+            .contains(CloudStorageFileSystemProvider.BUCKET_IS_REQUESTER_PAYS_ERROR_MESSAGE));
   }
 
   private void assertIsRequesterPaysException(String message, IOException ioex) {
     Assert.assertTrue(message, ioex.getMessage().startsWith("400"));
     Assert.assertTrue(
         message,
-        ioex.getMessage().contains("Bucket is requester pays bucket but no user project provided"));
+        ioex.getMessage()
+            .contains(CloudStorageFileSystemProvider.BUCKET_IS_REQUESTER_PAYS_ERROR_MESSAGE));
   }
   // End of tests related to the "requester pays" feature
 
