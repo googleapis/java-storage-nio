@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.123.21](https://github.com/googleapis/java-storage-nio/compare/v0.123.20...v0.123.21) (2022-03-01)
+
+
+### Bug Fixes
+
+* change CloudStorageFileSystemProvider to throw a FileAlreadyExistsException if copy receives a 412 ([#815](https://github.com/googleapis/java-storage-nio/issues/815)) ([33889c3](https://github.com/googleapis/java-storage-nio/commit/33889c352d1a0fcebe4613615907f01fbca04186))
+
+
+### Dependencies
+
+* update actions/github-script action to v6 ([#818](https://github.com/googleapis/java-storage-nio/issues/818)) ([59c9baf](https://github.com/googleapis/java-storage-nio/commit/59c9baf28ceda12d0926124d137f792e940c153e))
+* update dependency com.google.apis:google-api-services-storage to v1-rev20220210-1.32.1 ([#823](https://github.com/googleapis/java-storage-nio/issues/823)) ([6c94667](https://github.com/googleapis/java-storage-nio/commit/6c946674931d6f5e88bba7cc93bfb1849480ce0d))
+* update dependency com.google.cloud:google-cloud-storage to v2.4.1 ([#817](https://github.com/googleapis/java-storage-nio/issues/817)) ([2ebe674](https://github.com/googleapis/java-storage-nio/commit/2ebe67495be0b2e71eed4a5c0d6aed5954c32593))
+* update dependency com.google.cloud:google-cloud-storage to v2.4.2 ([#820](https://github.com/googleapis/java-storage-nio/issues/820)) ([397ee84](https://github.com/googleapis/java-storage-nio/commit/397ee84b7530607665c725eb8392d12429f6b6a7))
+* update dependency com.google.cloud:google-cloud-storage to v2.4.4 ([#830](https://github.com/googleapis/java-storage-nio/issues/830)) ([2b3f88f](https://github.com/googleapis/java-storage-nio/commit/2b3f88f967f7fcf0a1475dae5dfc74f3e3f0cb6c))
+* update dependency com.google.guava:guava to v31.1-android ([#829](https://github.com/googleapis/java-storage-nio/issues/829)) ([70c1983](https://github.com/googleapis/java-storage-nio/commit/70c198347c8709d1302915bddda49d2402566ea7))
+
 ### [0.123.20](https://github.com/googleapis/java-storage-nio/compare/v0.123.19...v0.123.20) (2022-02-08)
 
 
