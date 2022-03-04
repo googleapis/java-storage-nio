@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.123.23](https://github.com/googleapis/java-storage-nio/compare/v0.123.22...v0.123.23) (2022-03-04)
+
+
+### Bug Fixes
+
+* Requester pays to check reason and fallback to error message validation ([#841](https://github.com/googleapis/java-storage-nio/issues/841)) ([9f30db3](https://github.com/googleapis/java-storage-nio/commit/9f30db3ccca16121fc5260334d603f8d272af2d9))
+
 ### [0.123.22](https://github.com/googleapis/java-storage-nio/compare/v0.123.21...v0.123.22) (2022-03-02)
 
 
