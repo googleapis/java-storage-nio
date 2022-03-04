@@ -75,7 +75,6 @@ import java.util.logging.Logger;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -279,10 +278,7 @@ public class ITGcsNio {
       // normal StorageException.
     } catch (HttpResponseException hex) {
       Assert.assertEquals(description, hex.getStatusCode(), 400);
-      Assert.assertTrue(
-          description,
-          hex.getMessage()
-              .contains("requester pays"));
+      Assert.assertTrue(description, hex.getMessage().contains("requester pays"));
     } catch (StorageException ex) {
       assertIsRequesterPaysException(description, ex);
     }
@@ -339,16 +335,12 @@ public class ITGcsNio {
 
   private void assertIsRequesterPaysException(String message, StorageException ex) {
     Assert.assertEquals(message, ex.getCode(), 400);
-    Assert.assertTrue(
-        message,
-        ex.getMessage().contains("requester pays"));
+    Assert.assertTrue(message, ex.getMessage().contains("requester pays"));
   }
 
   private void assertIsRequesterPaysException(String message, IOException ioex) {
     Assert.assertTrue(message, ioex.getMessage().startsWith("400"));
-    Assert.assertTrue(
-        message,
-        ioex.getMessage().contains("requester pays"));
+    Assert.assertTrue(message, ioex.getMessage().contains("requester pays"));
   }
   // End of tests related to the "requester pays" feature
 
