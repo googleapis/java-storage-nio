@@ -176,7 +176,6 @@ public class ITGcsNio {
 
   // Start of tests related to the "requester pays" feature
   @Test
-  @Ignore("TODO: https://github.com/googleapis/java-storage-nio/issues/824")
   public void testFileExistsRequesterPaysNoUserProject() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
     Path path = testBucket.getPath(SML_FILE);
@@ -190,7 +189,6 @@ public class ITGcsNio {
   }
 
   @Test
-  @Ignore("TODO: https://github.com/googleapis/java-storage-nio/issues/824")
   public void testFileExistsRequesterPays() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, project);
     Path path = testBucket.getPath(SML_FILE);
@@ -199,7 +197,6 @@ public class ITGcsNio {
   }
 
   @Test
-  @Ignore("TODO: https://github.com/googleapis/java-storage-nio/issues/824")
   public void testFileExistsRequesterPaysWithAutodetect() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(true, project);
     Path path = testBucket.getPath(SML_FILE);
@@ -208,7 +205,6 @@ public class ITGcsNio {
   }
 
   @Test
-  @Ignore("TODO: https://github.com/googleapis/java-storage-nio/issues/824")
   public void testCantCreateWithoutUserProject() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
     Path path = testBucket.getPath(TMP_FILE);
@@ -230,7 +226,6 @@ public class ITGcsNio {
   }
 
   @Test
-  @Ignore("TODO: https://github.com/googleapis/java-storage-nio/issues/824")
   public void testCantReadWithoutUserProject() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
     Path path = testBucket.getPath(SML_FILE);
@@ -252,7 +247,6 @@ public class ITGcsNio {
   }
 
   @Test
-  @Ignore("TODO: https://github.com/googleapis/java-storage-nio/issues/824")
   public void testCantCopyWithoutUserProject() throws IOException {
     CloudStorageFileSystem testRPBucket = getRequesterPaysBucket(false, "");
     CloudStorageFileSystem testBucket = getTestBucket();
@@ -288,7 +282,7 @@ public class ITGcsNio {
       Assert.assertTrue(
           description,
           hex.getMessage()
-              .contains("Bucket is requester pays bucket but no user project provided"));
+              .contains("requester pays"));
     } catch (StorageException ex) {
       assertIsRequesterPaysException(description, ex);
     }
@@ -314,7 +308,6 @@ public class ITGcsNio {
   }
 
   @Test
-  @Ignore("TODO: https://github.com/googleapis/java-storage-nio/issues/824")
   public void testAutodetectWhenRequesterPays() throws IOException {
     CloudStorageFileSystem testRPBucket = getRequesterPaysBucket(true, project);
     Assert.assertEquals(
@@ -338,18 +331,24 @@ public class ITGcsNio {
         "");
   }
 
+  @Test
+  public void testAutoDetectNoUserProject() throws IOException {
+    CloudStorageFileSystem testBucket = getRequesterPaysBucket(true, "");
+    Assert.assertTrue(testBucket.provider().requesterPays(testBucket.bucket()));
+  }
+
   private void assertIsRequesterPaysException(String message, StorageException ex) {
     Assert.assertEquals(message, ex.getCode(), 400);
     Assert.assertTrue(
         message,
-        ex.getMessage().contains("Bucket is requester pays bucket but no user project provided"));
+        ex.getMessage().contains("requester pays"));
   }
 
   private void assertIsRequesterPaysException(String message, IOException ioex) {
     Assert.assertTrue(message, ioex.getMessage().startsWith("400"));
     Assert.assertTrue(
         message,
-        ioex.getMessage().contains("Bucket is requester pays bucket but no user project provided"));
+        ioex.getMessage().contains("requester pays"));
   }
   // End of tests related to the "requester pays" feature
 
