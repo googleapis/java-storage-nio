@@ -333,7 +333,7 @@ public class ITGcsNio {
 
   @Test
   public void testAutoDetectNoUserProject() throws IOException {
-    CloudStorageFileSystem testBucket = getRequesterPaysBucket(true, "");
+    CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
     Assert.assertTrue(testBucket.provider().requesterPays(testBucket.bucket()));
   }
 
