@@ -967,10 +967,12 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
       Boolean isRP = storage.get(bucketName).requesterPays();
       return isRP != null && isRP.booleanValue();
     } catch (StorageException ex) {
-      if (ex.getReason().equals("userProjectMissing")) {
+      if ("userProjectMissing".equals(ex.getReason())) {
         return true;
         // fallback to checking the error code and error message.
-      } else if (ex.getCode() == 400 && ex.getMessage().contains("requester pays")) {
+      } else if (ex.getCode() == 400
+          && ex.getMessage() != null
+          && ex.getMessage().contains("requester pays")) {
         return true;
       }
       throw ex;
