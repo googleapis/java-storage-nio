@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.123.24](https://github.com/googleapis/java-storage-nio/compare/v0.123.23...v0.123.24) (2022-03-09)
+
+
+### Bug Fixes
+
+* prevent NPE when checking requester pays status ([#850](https://github.com/googleapis/java-storage-nio/issues/850)) ([ce50209](https://github.com/googleapis/java-storage-nio/commit/ce502094f0d983e136a60569424992acbd126041))
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-storage to v2.4.5 ([#852](https://github.com/googleapis/java-storage-nio/issues/852)) ([0163189](https://github.com/googleapis/java-storage-nio/commit/01631891d1f6477d9021b57d097d0d6fbcccab1e))
+
 ### [0.123.23](https://github.com/googleapis/java-storage-nio/compare/v0.123.22...v0.123.23) (2022-03-04)
 
 
