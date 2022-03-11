@@ -123,7 +123,7 @@ public abstract class CloudStorageConfiguration {
     private int blockSize = CloudStorageFileSystem.BLOCK_SIZE_DEFAULT;
     private int maxChannelReopens = 0;
     private @Nullable String userProject = null;
-    // This of this as "clear userProject if not RequesterPays"
+    // Think of this as "clear userProject if not RequesterPays"
     private boolean useUserProjectOnlyForRequesterPaysBuckets = false;
     private ImmutableList<Integer> retryableHttpCodes = ImmutableList.of(500, 502, 503);
     private ImmutableList<Class<? extends Exception>> reopenableExceptions =

@@ -23,6 +23,7 @@ import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Storage;
+import com.google.common.base.Strings;
 import com.google.common.collect.UnmodifiableIterator;
 import java.io.File;
 import java.net.URI;
@@ -113,7 +114,7 @@ public final class CloudStoragePath implements Path {
     }
     String userProject = fileSystem.config().userProject();
     Page<Blob> list = null;
-    if (userProject != null) {
+    if (!Strings.isNullOrEmpty(userProject)) {
       list =
           storage.list(
               this.bucket(),
