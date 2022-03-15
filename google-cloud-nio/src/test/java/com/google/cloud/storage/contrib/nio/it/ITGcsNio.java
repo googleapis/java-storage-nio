@@ -49,6 +49,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -59,6 +61,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
@@ -1187,5 +1190,13 @@ public class ITGcsNio {
             .userProject(userProject)
             .build();
     return CloudStorageFileSystem.forBucket(REQUESTER_PAYS_BUCKET, config, storageOptions);
+  }
+
+  @Test
+  public void testBucketsThatDontExistDontExist() throws URISyntaxException {
+    Assert.assertFalse(Files.exists(Paths.get(new URI("gs://bucketthatdoesntexist"))));
+    Assert.assertFalse(Files.exists(Paths.get(new URI("gs://bucketthatdoesntexist/"))));
+    Assert.assertFalse(Files.exists(Paths.get(new URI("gs://bucketthatdoesntexist/a"))));
+    Assert.assertFalse(Files.exists(Paths.get(new URI("gs://bucketthatdoesntexist/a/"))));
   }
 }

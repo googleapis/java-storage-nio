@@ -726,6 +726,11 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     // Loop will terminate via an exception if all retries are exhausted
     while (true) {
       try {
+        // first check that the bucket exists
+        if (!bucketExists(cloudPath.bucket())) {
+          throw new NoSuchFileException(path.toString());
+        }
+
         boolean nullId;
         if (isNullOrEmpty(userProject)) {
           nullId =
@@ -762,6 +767,15 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
         throw exs;
       }
     }
+  }
+
+  // This helper method does not perform it's own retries
+  private boolean bucketExists(final String bucketName) {
+    final Bucket bucket =
+        isNullOrEmpty(userProject)
+            ? storage.get(bucketName)
+            : storage.get(bucketName, Storage.BucketGetOption.userProject(userProject));
+    return bucket != null;
   }
 
   @Override
