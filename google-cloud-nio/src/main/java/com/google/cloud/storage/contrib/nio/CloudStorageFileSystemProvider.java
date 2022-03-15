@@ -963,8 +963,13 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   public boolean requesterPays(String bucketName) {
     initStorage();
     try {
-      // instead of true/false, this method returns true/null.
-      Boolean isRP = storage.get(bucketName).requesterPays();
+      final Bucket bucket = storage.get(bucketName);
+      // If the bucket doesn't exist it can't be requester pays.
+      if (bucket == null) {
+        return false;
+      }
+      // instead of true/false, this method returns true/null
+      Boolean isRP = bucket.requesterPays();
       return isRP != null && isRP.booleanValue();
     } catch (StorageException ex) {
       if ("userProjectMissing".equals(ex.getReason())) {

@@ -49,6 +49,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -325,6 +326,24 @@ public class ITGcsNio {
         "Autodetect should have detected the bucket is not RP",
         testBucket.config().userProject(),
         "");
+  }
+
+  @Test
+  public void assertNoCrashWhenBucketDoesntExist() throws URISyntaxException {
+    CloudStorageConfiguration config =
+        CloudStorageConfiguration.builder()
+            .autoDetectRequesterPays(true)
+            .userProject(project)
+            .usePseudoDirectories(true)
+            .build();
+
+    final String bucketThatDoesntExist = "abuckethatdoesntexist";
+    final String subPath = "hello";
+    CloudStorageFileSystem testBucket =
+        CloudStorageFileSystem.forBucket(bucketThatDoesntExist, config, storageOptions);
+    final CloudStoragePath aPathThatDoesntExist = testBucket.getPath(subPath);
+    Assert.assertEquals(
+        aPathThatDoesntExist.toUri().toString(), "gs://" + bucketThatDoesntExist + "/" + subPath);
   }
 
   @Test
