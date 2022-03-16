@@ -344,7 +344,6 @@ public class ITGcsNio {
     Assert.assertEquals(
         aPathThatDoesntExist.toUri().toString(), "gs://" + bucketThatDoesntExist + "/" + subPath);
     Assert.assertFalse(testBucket.provider().requesterPays(bucketThatDoesntExist));
-
   }
 
   @Test
