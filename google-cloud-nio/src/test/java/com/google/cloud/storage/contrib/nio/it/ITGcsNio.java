@@ -329,7 +329,7 @@ public class ITGcsNio {
   }
 
   @Test
-  public void assertNoCrashWhenBucketDoesntExist() throws URISyntaxException {
+  public void testRequesterPaysOnNonexistentBucket() {
     CloudStorageConfiguration config =
         CloudStorageConfiguration.builder()
             .autoDetectRequesterPays(true)
@@ -344,6 +344,7 @@ public class ITGcsNio {
     final CloudStoragePath aPathThatDoesntExist = testBucket.getPath(subPath);
     Assert.assertEquals(
         aPathThatDoesntExist.toUri().toString(), "gs://" + bucketThatDoesntExist + "/" + subPath);
+    Assert.assertFalse(testBucket.provider().requesterPays(bucketThatDoesntExist));
   }
 
   @Test
