@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.123.25](https://github.com/googleapis/java-storage-nio/compare/v0.123.24...v0.123.25) (2022-03-17)
+
+
+### Bug Fixes
+
+* prevent crash when checking if a missing file exists [#856](https://github.com/googleapis/java-storage-nio/issues/856) ([#858](https://github.com/googleapis/java-storage-nio/issues/858)) ([d6b7b5e](https://github.com/googleapis/java-storage-nio/commit/d6b7b5e5e7ca243583e8852edfcf83d57021c9e6))
+* Prevent NPE when bucket doesn't exist [#857](https://github.com/googleapis/java-storage-nio/issues/857) ([#860](https://github.com/googleapis/java-storage-nio/issues/860)) ([69cab9e](https://github.com/googleapis/java-storage-nio/commit/69cab9ef10072bbf504f5afe0817937bb38aef11))
+
 ### [0.123.24](https://github.com/googleapis/java-storage-nio/compare/v0.123.23...v0.123.24) (2022-03-09)
 
 
