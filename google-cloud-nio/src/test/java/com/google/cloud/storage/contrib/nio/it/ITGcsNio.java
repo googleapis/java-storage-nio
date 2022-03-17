@@ -328,7 +328,26 @@ public class ITGcsNio {
   }
 
   @Test
-  public void testFilesExistDoesntCrashWhenRequesterPays() throws IOException {
+  public void testRequesterPaysOnNonexistentBucket() {
+    CloudStorageConfiguration config =
+        CloudStorageConfiguration.builder()
+            .autoDetectRequesterPays(true)
+            .userProject(project)
+            .usePseudoDirectories(true)
+            .build();
+
+    final String bucketThatDoesntExist = "abuckethatdoesntexist";
+    final String subPath = "hello";
+    CloudStorageFileSystem testBucket =
+        CloudStorageFileSystem.forBucket(bucketThatDoesntExist, config, storageOptions);
+    final CloudStoragePath aPathThatDoesntExist = testBucket.getPath(subPath);
+    Assert.assertEquals(
+        aPathThatDoesntExist.toUri().toString(), "gs://" + bucketThatDoesntExist + "/" + subPath);
+    Assert.assertFalse(testBucket.provider().requesterPays(bucketThatDoesntExist));
+  }
+
+  @Test
+  public void testFilesExistBehaviorRequesterPays() {
     CloudStorageConfiguration config =
         CloudStorageConfiguration.builder()
             .autoDetectRequesterPays(true)
