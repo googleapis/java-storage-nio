@@ -347,6 +347,18 @@ public class ITGcsNio {
   }
 
   @Test
+  public void testFilesExistBehaviorRequesterPays() {
+    CloudStorageConfiguration config =
+        CloudStorageConfiguration.builder()
+            .autoDetectRequesterPays(true)
+            .userProject(project)
+            .build();
+    CloudStorageFileSystem testBucket =
+        CloudStorageFileSystem.forBucket(BUCKET, config, storageOptions);
+    Assert.assertFalse(Files.exists(testBucket.getPath("path")));
+  }
+
+  @Test
   public void testAutoDetectNoUserProject() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
     Assert.assertTrue(testBucket.provider().requesterPays(testBucket.bucket()));
