@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.concurrent.NotThreadSafe;
 
 /**
@@ -77,11 +78,11 @@ class FakeStorageRpc extends StorageRpcTestBase {
       new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
   // fullname -> metadata
-  Map<String, StorageObject> metadata = new HashMap<>();
+  Map<String, StorageObject> metadata = new ConcurrentHashMap<>();
   // fullname -> contents
-  Map<String, byte[]> contents = new HashMap<>();
+  Map<String, byte[]> contents = new ConcurrentHashMap<>();
   // fullname -> future contents that will be visible on close.
-  Map<String, byte[]> futureContents = new HashMap<>();
+  Map<String, byte[]> futureContents = new ConcurrentHashMap<>();
 
   private final boolean throwIfOption;
 
@@ -92,8 +93,8 @@ class FakeStorageRpc extends StorageRpcTestBase {
 
   // remove all files
   void reset() {
-    metadata = new HashMap<>();
-    contents = new HashMap<>();
+    metadata = new ConcurrentHashMap<>();
+    contents = new ConcurrentHashMap<>();
   }
 
   @Override
@@ -149,7 +150,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
     final String prefix = preprefix;
 
     List<StorageObject> values = new ArrayList<>();
-    Map<String, StorageObject> folders = new HashMap<>();
+    Map<String, StorageObject> folders = new ConcurrentHashMap<>();
     for (StorageObject so : metadata.values()) {
       if (!so.getBucket().equals(bucket) || !so.getName().startsWith(prefix)) {
         continue;
