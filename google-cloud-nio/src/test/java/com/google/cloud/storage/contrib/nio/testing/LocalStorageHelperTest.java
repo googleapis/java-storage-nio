@@ -156,4 +156,26 @@ public class LocalStorageHelperTest {
       assertThat(ois.readObject()).isEqualTo(storageOptions);
     }
   }
+
+  @Test
+  public void testCopyOperationOverwritesExistingFile() {
+    String bucket = "bucket";
+    String original = "original";
+    String replacement = "replacement";
+    byte[] originalContent = "original content".getBytes();
+    byte[] replacementContent = "replacement content".getBytes();
+
+    localStorageService.create(BlobInfo.newBuilder(bucket, original).build(), originalContent);
+    localStorageService.create(BlobInfo.newBuilder(bucket, replacement).build(), replacementContent);
+
+    final Storage.CopyRequest request = Storage.CopyRequest.newBuilder()
+        .setSource(BlobId.of(bucket, replacement))
+        .setTarget(BlobId.of(bucket, original))
+        .build();
+
+    localStorageService.copy(request)
+        .getResult();
+
+    assertThat(localStorageService.readAllBytes(BlobId.of(bucket, original))).isEqualTo(replacementContent);
+  }
 }
