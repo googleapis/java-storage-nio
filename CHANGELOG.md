@@ -1,5 +1,21 @@
 # Changelog
 
+### [0.123.28](https://github.com/googleapis/java-storage-nio/compare/v0.123.27...v0.123.28) (2022-04-18)
+
+
+### Bug Fixes
+
+* **native:** initialize classes at build-time to fix Native Image compilation ([#874](https://github.com/googleapis/java-storage-nio/issues/874)) ([df905cb](https://github.com/googleapis/java-storage-nio/commit/df905cbb615f2a6f57d45397423556357b23fa38))
+* **test:** replace HashMap with ConcurrentHashMap to avoid ConcurrentModificatio… ([#883](https://github.com/googleapis/java-storage-nio/issues/883)) ([d2fe2a0](https://github.com/googleapis/java-storage-nio/commit/d2fe2a09de6881ce6ce949c8e99bec7825c5c833))
+
+
+### Dependencies
+
+* update dependency com.google.apis:google-api-services-storage to v1-rev20220401-1.32.1 ([#881](https://github.com/googleapis/java-storage-nio/issues/881)) ([a598199](https://github.com/googleapis/java-storage-nio/commit/a598199247e5d29712aeba0b709ce9f37e641154))
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v2.10.0 ([#884](https://github.com/googleapis/java-storage-nio/issues/884)) ([c08f115](https://github.com/googleapis/java-storage-nio/commit/c08f11569e4337127960b69a315f255ef08a035a))
+* update dependency com.google.cloud:google-cloud-storage to v2.6.0 ([#878](https://github.com/googleapis/java-storage-nio/issues/878)) ([0bd1985](https://github.com/googleapis/java-storage-nio/commit/0bd19858569d4181be49e60525d9ad5736b9e1ab))
+* update dependency com.google.cloud:google-cloud-storage to v2.6.1 ([#885](https://github.com/googleapis/java-storage-nio/issues/885)) ([cf24525](https://github.com/googleapis/java-storage-nio/commit/cf24525d52ea45da50e5152041d25d6ad6246cfc))
+
 ### [0.123.27](https://github.com/googleapis/java-storage-nio/compare/v0.123.26...v0.123.27) (2022-03-29)
 
 
