@@ -166,16 +166,18 @@ public class LocalStorageHelperTest {
     byte[] replacementContent = "replacement content".getBytes();
 
     localStorageService.create(BlobInfo.newBuilder(bucket, original).build(), originalContent);
-    localStorageService.create(BlobInfo.newBuilder(bucket, replacement).build(), replacementContent);
+    localStorageService.create(
+        BlobInfo.newBuilder(bucket, replacement).build(), replacementContent);
 
-    final Storage.CopyRequest request = Storage.CopyRequest.newBuilder()
-        .setSource(BlobId.of(bucket, replacement))
-        .setTarget(BlobId.of(bucket, original))
-        .build();
+    final Storage.CopyRequest request =
+        Storage.CopyRequest.newBuilder()
+            .setSource(BlobId.of(bucket, replacement))
+            .setTarget(BlobId.of(bucket, original))
+            .build();
 
-    localStorageService.copy(request)
-        .getResult();
+    localStorageService.copy(request).getResult();
 
-    assertThat(localStorageService.readAllBytes(BlobId.of(bucket, original))).isEqualTo(replacementContent);
+    assertThat(localStorageService.readAllBytes(BlobId.of(bucket, original)))
+        .isEqualTo(replacementContent);
   }
 }
