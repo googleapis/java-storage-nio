@@ -413,7 +413,10 @@ class FakeStorageRpc extends StorageRpcTestBase {
     // if this is a new file, set generation to 1, else increment the existing generation
     long generation = 1;
     if (metadata.containsKey(destKey)) {
-      generation = metadata.get(destKey).getGeneration() + 1;
+      Long storedGeneration = metadata.get(destKey).getGeneration();
+      if (null != storedGeneration) {
+        generation = storedGeneration + 1;
+      }
     }
 
     checkGeneration(destKey, generationMatch);
