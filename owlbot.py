@@ -21,4 +21,4 @@ for library in s.get_staging_dirs():
     s.move(library)
 
 s.remove_staging_dirs()
-java.common_templates(excludes=["README.md", ".kokoro/build.sh"])
+java.common_templates(excludes=["README.md", ".kokoro/build.sh", "renovate.json"])
