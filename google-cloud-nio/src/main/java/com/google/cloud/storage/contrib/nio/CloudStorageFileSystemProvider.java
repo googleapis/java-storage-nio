@@ -51,6 +51,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.DirectoryStream.Filter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileStore;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
@@ -267,8 +268,13 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   @Override
   public CloudStoragePath getPath(URI uri) {
     initStorage();
-    return CloudStoragePath.getPath(
+    CloudStoragePath cloudStoragePath = CloudStoragePath.getPath(
         getFileSystem(CloudStorageUtil.stripPathFromUri(uri)), uri.getPath());
+    if(storage.get(cloudStoragePath.bucket()) == null) {
+      throw new FileSystemNotFoundException(
+          "Bucket " + cloudStoragePath.bucket() + "does not exist");
+    }
+    return cloudStoragePath;
   }
 
   /** Convenience method: replaces spaces with "%20", builds a URI, and calls getPath(uri). */

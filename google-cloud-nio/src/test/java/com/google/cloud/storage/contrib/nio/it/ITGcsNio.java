@@ -49,16 +49,20 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
@@ -1174,6 +1178,42 @@ public class ITGcsNio {
     } finally {
       Files.deleteIfExists(foo);
       Files.deleteIfExists(bar);
+    }
+  }
+
+  @Test
+  public void testNonexistantBucketFileExistsBlob() throws URISyntaxException {
+    try {
+      Files.exists(Paths.get(new URI("gs://bucketthatdoesntexist/thing")));
+      Assert.fail("It should have thrown an exception.");
+    } catch (FileSystemNotFoundException ex) {
+      // What we want
+    } catch (Exception e) {
+      Assert.fail("Should have been a FileSystemNotFoundException");
+    }
+  }
+
+  @Test
+  public void testNonexistantBucketFileExistsDirectory() throws URISyntaxException {
+    try {
+      Files.exists(Paths.get(new URI("gs://bucketthatdoesntexist/thing/")));
+      Assert.fail("It should have thrown an exception.");
+    } catch (FileSystemNotFoundException ex) {
+      // What we want
+    } catch (Exception e) {
+      Assert.fail("Should have been a FileSystemNotFoundException");
+    }
+  }
+
+  @Test
+  public void testNonexistantBucketFileExistsRoot() throws URISyntaxException {
+    try {
+      Files.exists(Paths.get(new URI("gs://bucketthatdoesntexist")));
+      Assert.fail("It should have thrown an exception.");
+    } catch (FileSystemNotFoundException ex) {
+      // What we want
+    } catch (Exception e) {
+      Assert.fail("Should have been a FileSystemNotFoundException");
     }
   }
 
