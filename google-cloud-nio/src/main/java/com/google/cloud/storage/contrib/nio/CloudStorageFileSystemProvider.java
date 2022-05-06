@@ -268,9 +268,10 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   @Override
   public CloudStoragePath getPath(URI uri) {
     initStorage();
-    CloudStoragePath cloudStoragePath = CloudStoragePath.getPath(
-        getFileSystem(CloudStorageUtil.stripPathFromUri(uri)), uri.getPath());
-    if(storage.get(cloudStoragePath.bucket()) == null) {
+    CloudStoragePath cloudStoragePath =
+        CloudStoragePath.getPath(
+            getFileSystem(CloudStorageUtil.stripPathFromUri(uri)), uri.getPath());
+    if (storage.get(cloudStoragePath.bucket()) == null) {
       throw new FileSystemNotFoundException(
           "Bucket " + cloudStoragePath.bucket() + "does not exist");
     }
