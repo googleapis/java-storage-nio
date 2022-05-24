@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.124.0](https://github.com/googleapis/java-storage-nio/compare/v0.123.28...v0.124.0) (2022-05-24)
+
+
+### Features
+
+* add build scripts for native image testing in Java 17 ([#1440](https://github.com/googleapis/java-storage-nio/issues/1440)) ([#902](https://github.com/googleapis/java-storage-nio/issues/902)) ([a21ed71](https://github.com/googleapis/java-storage-nio/commit/a21ed71257853b2a1c7549c36fd0dda8ef806b82))
+
+
+### Bug Fixes
+
+* **build:** revert maven-shade-plugin 3.3.0 ([533c6dd](https://github.com/googleapis/java-storage-nio/commit/533c6dd510327bff310fbd6ddb2ceb72b2afcbce))
+* check generation for nullability before incrementing it ([#888](https://github.com/googleapis/java-storage-nio/issues/888)) ([cadf081](https://github.com/googleapis/java-storage-nio/commit/cadf081c4ba35b33307c38cddd08959b142edf23))
+
+
+### Dependencies
+
+* update dependency com.google.apis:google-api-services-storage to v1-rev20220509-1.32.1 ([#899](https://github.com/googleapis/java-storage-nio/issues/899)) ([52d2969](https://github.com/googleapis/java-storage-nio/commit/52d2969e1089072a86ac4f458c93932adfbf89d9))
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v2.11.0 ([#901](https://github.com/googleapis/java-storage-nio/issues/901)) ([847afcb](https://github.com/googleapis/java-storage-nio/commit/847afcbe6c0e6d214677f2d408e429aaf330bf6d))
+* update dependency com.google.cloud:google-cloud-shared-dependencies to v2.12.0 ([#903](https://github.com/googleapis/java-storage-nio/issues/903)) ([d11b6c5](https://github.com/googleapis/java-storage-nio/commit/d11b6c5dc8b500d705c230ac712571a44bbf2df7))
+* update dependency com.google.cloud:google-cloud-storage to v2.7.0 ([#904](https://github.com/googleapis/java-storage-nio/issues/904)) ([6ef8605](https://github.com/googleapis/java-storage-nio/commit/6ef8605590f4ab835e3adfce2e602bcf2fe4376c))
+
 ### [0.123.28](https://github.com/googleapis/java-storage-nio/compare/v0.123.27...v0.123.28) (2022-04-18)
 
 
