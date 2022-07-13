@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.124.9](https://github.com/googleapis/java-storage-nio/compare/v0.124.8...v0.124.9) (2022-07-13)
+
+
+### Bug Fixes
+
+* enable longpaths support for windows test ([#1485](https://github.com/googleapis/java-storage-nio/issues/1485)) ([#951](https://github.com/googleapis/java-storage-nio/issues/951)) ([aa3f827](https://github.com/googleapis/java-storage-nio/commit/aa3f827744f97d03de46ea18a122ac10fbb2d900))
+
 ## [0.124.8](https://github.com/googleapis/java-storage-nio/compare/v0.124.7...v0.124.8) (2022-07-11)
 
 
