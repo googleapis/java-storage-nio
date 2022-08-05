@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.124.13](https://github.com/googleapis/java-storage-nio/compare/v0.124.12...v0.124.13) (2022-08-05)
+
+
+### Dependencies
+
+* update dependency com.google.cloud:google-cloud-storage to v2.11.2 ([#973](https://github.com/googleapis/java-storage-nio/issues/973)) ([ab3cd7f](https://github.com/googleapis/java-storage-nio/commit/ab3cd7f6756899072cc6f54df98cb25d12e9835c))
+
 ## [0.124.12](https://github.com/googleapis/java-storage-nio/compare/v0.124.11...v0.124.12) (2022-08-04)
 
 
