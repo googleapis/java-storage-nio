@@ -175,7 +175,7 @@ always be assumed to exist, without performing any I/O. Paths without the traili
 slash will result in an I/O operation to check a file is present in that "directory".
 This allows you to do path manipulation in the same manner as you would with the normal UNIX file
 system implementation. Using this feature with buckets or "directory" paths that do not exist
-is not recommended as at the time I/O is performed the failure may not be handled gracefully.
+is not recommended, as at the time I/O is performed the failure may not be handled gracefully.
 You can disable this feature with `CloudStorageConfiguration.usePseudoDirectories()`.
 
 #### Complete source code
