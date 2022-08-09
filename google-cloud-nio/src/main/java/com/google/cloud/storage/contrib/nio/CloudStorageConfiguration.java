@@ -56,8 +56,8 @@ public abstract class CloudStorageConfiguration {
    * directories.
    *
    * <p>With this feature, if file "foo/bar.txt" exists then both "foo" and "foo/" will be treated
-   * as if they were existing directories. On path construction no I/O will be performed,
-   * bucket and "directory" will treated as if they exist.
+   * as if they were existing directories. On path construction no I/O will be performed, bucket and
+   * "directory" will treated as if they exist.
    */
   public abstract boolean usePseudoDirectories();
 
