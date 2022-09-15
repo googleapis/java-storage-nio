@@ -72,7 +72,7 @@
       "packagePatterns": [
         "^org.apache.maven.plugins:maven-shade-plugin"
       ],
-      "allowedVersions": "(,3.3.0),(3.3.0,)"
+      "allowedVersions": "(,3.3.0),(3.4.0,)"
     }
   ],
   "semanticCommits": true,
