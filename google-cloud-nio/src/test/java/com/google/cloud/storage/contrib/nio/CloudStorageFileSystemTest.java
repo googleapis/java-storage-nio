@@ -26,6 +26,7 @@ import static org.junit.Assert.assertSame;
 import com.google.api.gax.rpc.internal.QuotaProjectIdHidingCredentials;
 import com.google.auth.Credentials;
 import com.google.cloud.NoCredentials;
+import com.google.cloud.ServiceOptions;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
@@ -462,8 +463,7 @@ public class CloudStorageFileSystemTest {
     storageOptionsField.setAccessible(true);
     StorageOptions storageOptions =
         (StorageOptions) storageOptionsField.get(cloudFilesystemProvider);
-    Field credentialsField =
-        storageOptions.getClass().getSuperclass().getDeclaredField("credentials");
+    Field credentialsField = ServiceOptions.class.getDeclaredField("credentials");
     credentialsField.setAccessible(true);
     return (Credentials) credentialsField.get(storageOptions);
   }
