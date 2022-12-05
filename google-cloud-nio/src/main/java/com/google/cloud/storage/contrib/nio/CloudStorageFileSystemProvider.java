@@ -728,6 +728,11 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     // Loop will terminate via an exception if all retries are exhausted
     while (true) {
       try {
+        // Edge case is the root directory which triggers the storage.get to throw a
+        // StorageException.
+        if (cloudPath.normalize().equals(cloudPath.getRoot())) {
+          return;
+        }
         boolean nullId;
         if (isNullOrEmpty(userProject)) {
           nullId =
