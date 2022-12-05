@@ -59,6 +59,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -906,7 +908,51 @@ public class CloudStorageFileSystemProviderTest {
     assertEquals(
         expectedSpecific,
         fileSystemProvider.readAttributes(
-            path1, "basic:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl"));
+            path1, "basic:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl,owner,group"));
+
+    // Add the attributes that are only known in posix view
+    // These are all fake values
+    expectedSpecific.put(
+        "owner",
+        new UserPrincipal() {
+          @Override
+          public String getName() {
+            return "fakeowner";
+          }
+
+          @Override
+          public String toString() {
+            return "fakeowner";
+          }
+        });
+
+    expectedSpecific.put(
+        "group",
+        new GroupPrincipal() {
+          @Override
+          public String getName() {
+            return "fakegroup";
+          }
+
+          @Override
+          public String toString() {
+            return "fakegroup";
+          }
+        });
+
+    // The equals between two anonymous classes (the UserPrincipal and GroupPrincipal) is always
+    // false
+    // so we compare the toString() instead.
+    assertEquals(
+        expectedSpecific.toString(),
+        fileSystemProvider
+            .readAttributes(
+                path1,
+                "posix:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl,owner,group")
+            .toString());
+
+    expectedSpecific.remove("owner");
+    expectedSpecific.remove("group");
 
     // Add the attributes that are only known in gcs view
     expectedSpecific.put("etag", Optional.of("TheEtag"));
@@ -915,7 +961,7 @@ public class CloudStorageFileSystemProviderTest {
     assertEquals(
         expectedSpecific,
         fileSystemProvider.readAttributes(
-            path1, "gcs:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl"));
+            path1, "gcs:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl,owner,group"));
   }
 
   private static CloudStorageConfiguration permitEmptyPathComponents(boolean value) {
