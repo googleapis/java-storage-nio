@@ -34,7 +34,6 @@ import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.net.UrlEscapers;
 import com.google.common.primitives.Ints;
@@ -63,16 +62,10 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
-import java.nio.file.attribute.FileTime;
-import java.nio.file.attribute.GroupPrincipal;
-import java.nio.file.attribute.PosixFileAttributes;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -848,7 +841,8 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   }
 
   @Override
-  public Map<String, Object> readAttributes(Path path, String attributes, LinkOption... options) throws IOException {
+  public Map<String, Object> readAttributes(Path path, String attributes, LinkOption... options)
+      throws IOException {
     // TODO(#811): Java 7 NIO defines at least eleven string attributes we'd want to support
     //             (eg. BasicFileAttributeView and PosixFileAttributeView), so rather than a partial
     //             implementation we rely on the other overload for now.
@@ -908,7 +902,8 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
     // CloudStorageFileAttributes
     if (fileAttributes instanceof CloudStorageFileAttributes) {
-      CloudStorageFileAttributes cloudStorageFileAttributes = (CloudStorageFileAttributes) fileAttributes;
+      CloudStorageFileAttributes cloudStorageFileAttributes =
+          (CloudStorageFileAttributes) fileAttributes;
       if (allAttributes || attributeNames.contains("etag")) {
         results.put("etag", cloudStorageFileAttributes.etag());
       }

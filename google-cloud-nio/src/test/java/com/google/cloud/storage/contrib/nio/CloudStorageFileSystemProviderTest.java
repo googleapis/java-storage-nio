@@ -64,7 +64,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -836,81 +835,87 @@ public class CloudStorageFileSystemProviderTest {
 
     BasicFileAttributes attributesBasic = mock(BasicFileAttributes.class);
     // BasicFileAttributes
-    when(attributesBasic.creationTime())        .thenReturn(FileTime.fromMillis(1L));
-    when(attributesBasic.lastModifiedTime())    .thenReturn(FileTime.fromMillis(2L));
-    when(attributesBasic.lastAccessTime())      .thenReturn(FileTime.fromMillis(3L));
-    when(attributesBasic.isRegularFile())       .thenReturn(true);
-    when(attributesBasic.isDirectory())         .thenReturn(true);
-    when(attributesBasic.isSymbolicLink())      .thenReturn(true);
-    when(attributesBasic.isOther())             .thenReturn(true);
-    when(attributesBasic.size())                .thenReturn(42L);
+    when(attributesBasic.creationTime()).thenReturn(FileTime.fromMillis(1L));
+    when(attributesBasic.lastModifiedTime()).thenReturn(FileTime.fromMillis(2L));
+    when(attributesBasic.lastAccessTime()).thenReturn(FileTime.fromMillis(3L));
+    when(attributesBasic.isRegularFile()).thenReturn(true);
+    when(attributesBasic.isDirectory()).thenReturn(true);
+    when(attributesBasic.isSymbolicLink()).thenReturn(true);
+    when(attributesBasic.isOther()).thenReturn(true);
+    when(attributesBasic.size()).thenReturn(42L);
 
     CloudStorageFileAttributes attributesGcs = mock(CloudStorageFileAttributes.class);
     // BasicFileAttributes
-    when(attributesGcs.creationTime())        .thenReturn(FileTime.fromMillis(1L));
-    when(attributesGcs.lastModifiedTime())    .thenReturn(FileTime.fromMillis(2L));
-    when(attributesGcs.lastAccessTime())      .thenReturn(FileTime.fromMillis(3L));
-    when(attributesGcs.isRegularFile())       .thenReturn(true);
-    when(attributesGcs.isDirectory())         .thenReturn(true);
-    when(attributesGcs.isSymbolicLink())      .thenReturn(true);
-    when(attributesGcs.isOther())             .thenReturn(true);
-    when(attributesGcs.size())                .thenReturn(42L);
+    when(attributesGcs.creationTime()).thenReturn(FileTime.fromMillis(1L));
+    when(attributesGcs.lastModifiedTime()).thenReturn(FileTime.fromMillis(2L));
+    when(attributesGcs.lastAccessTime()).thenReturn(FileTime.fromMillis(3L));
+    when(attributesGcs.isRegularFile()).thenReturn(true);
+    when(attributesGcs.isDirectory()).thenReturn(true);
+    when(attributesGcs.isSymbolicLink()).thenReturn(true);
+    when(attributesGcs.isOther()).thenReturn(true);
+    when(attributesGcs.size()).thenReturn(42L);
 
     List<Acl> acls = ImmutableList.of(Acl.newBuilder(new User("Foo"), OWNER).build());
 
     // CloudStorageFileAttributes
-    when(attributesGcs.etag())                .thenReturn(Optional.of("TheEtag"));
-    when(attributesGcs.mimeType())            .thenReturn(Optional.of("TheMimeType"));
-    when(attributesGcs.acl())                 .thenReturn(Optional.of(acls));
-    when(attributesGcs.cacheControl())        .thenReturn(Optional.of("TheCacheControl"));
-    when(attributesGcs.contentEncoding())     .thenReturn(Optional.of("TheContentEncoding"));
-    when(attributesGcs.contentDisposition())  .thenReturn(Optional.of("TheContentDisposition"));
-    when(attributesGcs.userMetadata())        .thenReturn(new TreeMap<>());
+    when(attributesGcs.etag()).thenReturn(Optional.of("TheEtag"));
+    when(attributesGcs.mimeType()).thenReturn(Optional.of("TheMimeType"));
+    when(attributesGcs.acl()).thenReturn(Optional.of(acls));
+    when(attributesGcs.cacheControl()).thenReturn(Optional.of("TheCacheControl"));
+    when(attributesGcs.contentEncoding()).thenReturn(Optional.of("TheContentEncoding"));
+    when(attributesGcs.contentDisposition()).thenReturn(Optional.of("TheContentDisposition"));
+    when(attributesGcs.userMetadata()).thenReturn(new TreeMap<>());
 
     CloudStoragePath path1 = CloudStoragePath.getPath(fileSystem, "/");
-    when(fileSystemProvider.readAttributes(path1, BasicFileAttributes.class))       .thenReturn(attributesBasic);
-    when(fileSystemProvider.readAttributes(path1, CloudStorageFileAttributes.class)).thenReturn(attributesGcs);
+    when(fileSystemProvider.readAttributes(path1, BasicFileAttributes.class))
+        .thenReturn(attributesBasic);
+    when(fileSystemProvider.readAttributes(path1, CloudStorageFileAttributes.class))
+        .thenReturn(attributesGcs);
 
     Map<String, Object> expectedBasic = new TreeMap<>();
     // BasicFileAttributes
-    expectedBasic.put("creationTime",       FileTime.fromMillis(1L));
-    expectedBasic.put("lastModifiedTime",   FileTime.fromMillis(2L));
-    expectedBasic.put("lastAccessTime",     FileTime.fromMillis(3L));
-    expectedBasic.put("isRegularFile",      true);
-    expectedBasic.put("isDirectory",        true);
-    expectedBasic.put("isSymbolicLink",     true);
-    expectedBasic.put("isOther",            true);
-    expectedBasic.put("size",               42L);
+    expectedBasic.put("creationTime", FileTime.fromMillis(1L));
+    expectedBasic.put("lastModifiedTime", FileTime.fromMillis(2L));
+    expectedBasic.put("lastAccessTime", FileTime.fromMillis(3L));
+    expectedBasic.put("isRegularFile", true);
+    expectedBasic.put("isDirectory", true);
+    expectedBasic.put("isSymbolicLink", true);
+    expectedBasic.put("isOther", true);
+    expectedBasic.put("size", 42L);
 
     assertEquals(expectedBasic, fileSystemProvider.readAttributes(path1, "basic:*"));
 
     Map<String, Object> expectedGcs = new TreeMap<>(expectedBasic);
     // CloudStorageFileAttributes
-    expectedGcs.put("etag",                 Optional.of("TheEtag"));
-    expectedGcs.put("mimeType",             Optional.of("TheMimeType"));
-    expectedGcs.put("acl",                  Optional.of(acls));
-    expectedGcs.put("cacheControl",         Optional.of("TheCacheControl"));
-    expectedGcs.put("contentEncoding",      Optional.of("TheContentEncoding"));
-    expectedGcs.put("contentDisposition",   Optional.of("TheContentDisposition"));
-    expectedGcs.put("userMetadata",         new TreeMap<>());
+    expectedGcs.put("etag", Optional.of("TheEtag"));
+    expectedGcs.put("mimeType", Optional.of("TheMimeType"));
+    expectedGcs.put("acl", Optional.of(acls));
+    expectedGcs.put("cacheControl", Optional.of("TheCacheControl"));
+    expectedGcs.put("contentEncoding", Optional.of("TheContentEncoding"));
+    expectedGcs.put("contentDisposition", Optional.of("TheContentDisposition"));
+    expectedGcs.put("userMetadata", new TreeMap<>());
 
     assertEquals(expectedGcs, fileSystemProvider.readAttributes(path1, "gcs:*"));
 
     Map<String, Object> expectedSpecific = new TreeMap<>();
-    expectedSpecific.put("lastModifiedTime",      FileTime.fromMillis(2L));
-    expectedSpecific.put("isSymbolicLink",        true);
-    expectedSpecific.put("isOther",               true);
+    expectedSpecific.put("lastModifiedTime", FileTime.fromMillis(2L));
+    expectedSpecific.put("isSymbolicLink", true);
+    expectedSpecific.put("isOther", true);
 
     // Asking for attributes that should NOT be known because we ask for basic view !
-    assertEquals(expectedSpecific, fileSystemProvider.readAttributes(path1,
-            "basic:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl"));
+    assertEquals(
+        expectedSpecific,
+        fileSystemProvider.readAttributes(
+            path1, "basic:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl"));
 
     // Add the attributes that are only known in gcs view
-    expectedSpecific.put("etag",                  Optional.of("TheEtag"));
-    expectedSpecific.put("cacheControl",          Optional.of("TheCacheControl"));
+    expectedSpecific.put("etag", Optional.of("TheEtag"));
+    expectedSpecific.put("cacheControl", Optional.of("TheCacheControl"));
 
-    assertEquals(expectedSpecific, fileSystemProvider.readAttributes(path1,
-            "gcs:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl"));
+    assertEquals(
+        expectedSpecific,
+        fileSystemProvider.readAttributes(
+            path1, "gcs:lastModifiedTime,isSymbolicLink,isOther,etag,cacheControl"));
   }
 
   private static CloudStorageConfiguration permitEmptyPathComponents(boolean value) {
