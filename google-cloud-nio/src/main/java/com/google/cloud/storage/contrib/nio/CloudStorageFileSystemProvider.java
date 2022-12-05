@@ -64,6 +64,7 @@ import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -71,6 +72,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Singleton;
@@ -839,11 +841,93 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   }
 
   @Override
-  public Map<String, Object> readAttributes(Path path, String attributes, LinkOption... options) {
+  public Map<String, Object> readAttributes(Path path, String attributes, LinkOption... options)
+      throws IOException {
     // TODO(#811): Java 7 NIO defines at least eleven string attributes we'd want to support
     //             (eg. BasicFileAttributeView and PosixFileAttributeView), so rather than a partial
     //             implementation we rely on the other overload for now.
-    throw new UnsupportedOperationException();
+
+    // Partial implementation for a few commonly used ones: basic, gcs
+    String[] split = attributes.split(":", 2);
+    if (split.length != 2) {
+      throw new UnsupportedOperationException();
+    }
+    String view = split[0];
+    List<String> attributeNames = Arrays.asList(split[1].split(","));
+    boolean allAttributes = attributeNames.size() == 1 && attributeNames.get(0).equals("*");
+
+    BasicFileAttributes fileAttributes;
+
+    Map<String, Object> results = new TreeMap<>();
+    switch (view) {
+      case "gcs":
+        fileAttributes = readAttributes(path, CloudStorageFileAttributes.class, options);
+        break;
+      case "basic":
+        fileAttributes = readAttributes(path, BasicFileAttributes.class, options);
+        break;
+      default:
+        throw new UnsupportedOperationException();
+    }
+
+    if (fileAttributes == null) {
+      throw new UnsupportedOperationException();
+    }
+
+    // BasicFileAttributes
+    if (allAttributes || attributeNames.contains("lastModifiedTime")) {
+      results.put("lastModifiedTime", fileAttributes.lastModifiedTime());
+    }
+    if (allAttributes || attributeNames.contains("lastAccessTime")) {
+      results.put("lastAccessTime", fileAttributes.lastAccessTime());
+    }
+    if (allAttributes || attributeNames.contains("creationTime")) {
+      results.put("creationTime", fileAttributes.creationTime());
+    }
+    if (allAttributes || attributeNames.contains("isRegularFile")) {
+      results.put("isRegularFile", fileAttributes.isRegularFile());
+    }
+    if (allAttributes || attributeNames.contains("isDirectory")) {
+      results.put("isDirectory", fileAttributes.isDirectory());
+    }
+    if (allAttributes || attributeNames.contains("isSymbolicLink")) {
+      results.put("isSymbolicLink", fileAttributes.isSymbolicLink());
+    }
+    if (allAttributes || attributeNames.contains("isOther")) {
+      results.put("isOther", fileAttributes.isOther());
+    }
+    if (allAttributes || attributeNames.contains("size")) {
+      results.put("size", fileAttributes.size());
+    }
+
+    // CloudStorageFileAttributes
+    if (fileAttributes instanceof CloudStorageFileAttributes) {
+      CloudStorageFileAttributes cloudStorageFileAttributes =
+          (CloudStorageFileAttributes) fileAttributes;
+      if (allAttributes || attributeNames.contains("etag")) {
+        results.put("etag", cloudStorageFileAttributes.etag());
+      }
+      if (allAttributes || attributeNames.contains("mimeType")) {
+        results.put("mimeType", cloudStorageFileAttributes.mimeType());
+      }
+      if (allAttributes || attributeNames.contains("acl")) {
+        results.put("acl", cloudStorageFileAttributes.acl());
+      }
+      if (allAttributes || attributeNames.contains("cacheControl")) {
+        results.put("cacheControl", cloudStorageFileAttributes.cacheControl());
+      }
+      if (allAttributes || attributeNames.contains("contentEncoding")) {
+        results.put("contentEncoding", cloudStorageFileAttributes.contentEncoding());
+      }
+      if (allAttributes || attributeNames.contains("contentDisposition")) {
+        results.put("contentDisposition", cloudStorageFileAttributes.contentDisposition());
+      }
+      if (allAttributes || attributeNames.contains("userMetadata")) {
+        results.put("userMetadata", cloudStorageFileAttributes.userMetadata());
+      }
+    }
+
+    return results;
   }
 
   @Override
