@@ -53,6 +53,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.file.AccessMode;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileVisitResult;
@@ -63,6 +64,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1194,6 +1196,16 @@ public class ITGcsNio {
       Files.deleteIfExists(foo);
       Files.deleteIfExists(bar);
     }
+  }
+
+  @Test
+  public void testCheckAccessRoot() throws Exception {
+    FileSystem fileSystem = getTestBucket();
+    Path path = fileSystem.getPath("/");
+    FileSystemProvider provider = fileSystem.provider();
+
+    // Against the real cloud storage this used to throw a StorageException.
+    provider.checkAccess(path, AccessMode.READ, AccessMode.WRITE);
   }
 
   private CloudStorageFileSystem getTestBucket() throws IOException {
