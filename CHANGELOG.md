@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.125.0](https://github.com/googleapis/java-storage-nio/compare/v0.124.21...v0.125.0) (2022-12-07)
+
+
+### Features
+
+* FileSystemProvider::readAttributes for basic and gcs views ([#1066](https://github.com/googleapis/java-storage-nio/issues/1066)) ([2f13792](https://github.com/googleapis/java-storage-nio/commit/2f13792040302899b6d7db00aa9c673dd470d460))
+
+
+### Bug Fixes
+
+* FileSystemProvider::checkAccess fails on '/' with StorageException ([d287cf5](https://github.com/googleapis/java-storage-nio/commit/d287cf5a9292221db251c987ff3a3ec736a815ac))
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:google-cloud-shared-dependencies to v3.1.0 ([#1070](https://github.com/googleapis/java-storage-nio/issues/1070)) ([a6e55e7](https://github.com/googleapis/java-storage-nio/commit/a6e55e77d06eba990b81400e4973a9a4098175cb))
+* Update dependency com.google.cloud:google-cloud-storage to v2.16.0 ([#1071](https://github.com/googleapis/java-storage-nio/issues/1071)) ([882e06b](https://github.com/googleapis/java-storage-nio/commit/882e06b13630259bd5254e8b4f10b6ab9dddbf84))
+
 ## [0.124.21](https://github.com/googleapis/java-storage-nio/compare/v0.124.20...v0.124.21) (2022-11-18)
 
 
