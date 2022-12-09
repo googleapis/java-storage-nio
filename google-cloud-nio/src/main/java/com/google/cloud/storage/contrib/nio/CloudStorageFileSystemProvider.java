@@ -19,6 +19,12 @@ package com.google.cloud.storage.contrib.nio;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_EXECUTE;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_READ;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_WRITE;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Acl;
@@ -62,10 +68,13 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -852,7 +861,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     //             (eg. BasicFileAttributeView and PosixFileAttributeView), so rather than a partial
     //             implementation we rely on the other overload for now.
 
-    // Partial implementation for a few commonly used ones: basic, gcs
+    // Partial implementation for a few commonly used ones: basic, gcs, posix
     String[] split = attributes.split(":", 2);
     if (split.length != 2) {
       throw new UnsupportedOperationException();
@@ -868,6 +877,9 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
       case "gcs":
         fileAttributes = readAttributes(path, CloudStorageFileAttributes.class, options);
         break;
+      case "posix":
+        // There is no real support for posix.
+        // Some systems expect Posix support for everything so these attributes are faked.
       case "basic":
         fileAttributes = readAttributes(path, BasicFileAttributes.class, options);
         break;
@@ -903,6 +915,53 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     }
     if (allAttributes || attributeNames.contains("size")) {
       results.put("size", fileAttributes.size());
+    }
+
+    // There is no real support for posix.
+    // Some systems fail if there is no posix support at all.
+    // To let these systems use this FileSystem these attributes are faked.
+    if (view.equals("posix")) {
+      if (allAttributes || attributeNames.contains("owner")) {
+        results.put(
+            "owner",
+            new UserPrincipal() {
+              @Override
+              public String getName() {
+                return "fakeowner";
+              }
+
+              @Override
+              public String toString() {
+                return "fakeowner";
+              }
+            });
+      }
+      if (allAttributes || attributeNames.contains("group")) {
+        results.put(
+            "group",
+            new GroupPrincipal() {
+              @Override
+              public String getName() {
+                return "fakegroup";
+              }
+
+              @Override
+              public String toString() {
+                return "fakegroup";
+              }
+            });
+      }
+      if (allAttributes || attributeNames.contains("permissions")) {
+        if (fileAttributes.isRegularFile()) {
+          results.put("permissions", EnumSet.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
+        } else {
+          // Directories, Symlinks and Other:
+          results.put(
+              "permissions",
+              EnumSet.of(
+                  OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_WRITE, GROUP_EXECUTE));
+        }
+      }
     }
 
     // CloudStorageFileAttributes

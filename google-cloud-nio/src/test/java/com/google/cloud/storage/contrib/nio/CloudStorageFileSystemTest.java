@@ -179,7 +179,7 @@ public class CloudStorageFileSystemTest {
       assertThat(fs.getRootDirectories()).containsExactly(fs.getPath("/"));
       assertThat(fs.getFileStores()).isEmpty();
       assertThat(fs.getSeparator()).isEqualTo("/");
-      assertThat(fs.supportedFileAttributeViews()).containsExactly("basic", "gcs");
+      assertThat(fs.supportedFileAttributeViews()).containsExactly("basic", "gcs", "posix");
     }
   }
 
