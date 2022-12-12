@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.126.0](https://github.com/googleapis/java-storage-nio/compare/v0.125.0...v0.126.0) (2022-12-09)
+
+
+### Features
+
+* FileSystemProvider::readAttributes faked posix support ([#1067](https://github.com/googleapis/java-storage-nio/issues/1067)) ([b813ccc](https://github.com/googleapis/java-storage-nio/commit/b813ccc87ecff40f56fccf2ce981f16422c190f1))
+
 ## [0.125.0](https://github.com/googleapis/java-storage-nio/compare/v0.124.21...v0.125.0) (2022-12-07)
 
 
