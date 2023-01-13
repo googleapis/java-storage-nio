@@ -415,6 +415,7 @@ public class ITGcsNio {
     ByteBuffer buf = ByteBuffer.allocate(SML_SIZE);
     int read = 0;
     while (chan.isOpen()) {
+      buf.clear();
       int rc = chan.read(buf);
       assertThat(chan.size()).isEqualTo(size);
       if (rc < 0) {
@@ -794,6 +795,7 @@ public class ITGcsNio {
     ByteBuffer buf = ByteBuffer.allocate(SML_SIZE);
     int read = 0;
     while (chan.isOpen()) {
+      buf.clear();
       int rc = chan.read(buf);
       assertThat(chan.size()).isEqualTo(size);
       if (rc < 0) {
@@ -954,6 +956,7 @@ public class ITGcsNio {
       ByteBuffer buf = ByteBuffer.allocate(SML_SIZE);
       int read = 0;
       while (source.isOpen()) {
+        buf.clear();
         int rc = source.read(buf);
         assertThat(source.size()).isEqualTo(size);
         if (rc < 0) {
@@ -997,6 +1000,7 @@ public class ITGcsNio {
       ByteBuffer buf = ByteBuffer.allocate(SML_SIZE);
       int read = 0;
       while (source.isOpen()) {
+        buf.clear();
         int rc = source.read(buf);
         assertThat(source.size()).isEqualTo(size);
         if (rc < 0) {
