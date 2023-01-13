@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-nio</artifactId>
-      <version>0.126.1</version>
+      <version>0.126.2-SNAPSHOT</version>
     </dependency>
     <!-- {x-version-update-end} -->
 
