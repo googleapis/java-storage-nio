@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.126.17](https://github.com/googleapis/java-storage-nio/compare/v0.126.16...v0.126.17) (2023-06-08)
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:google-cloud-shared-dependencies to v3.11.0 ([#1191](https://github.com/googleapis/java-storage-nio/issues/1191)) ([db3cf28](https://github.com/googleapis/java-storage-nio/commit/db3cf2898027be6169fb109b4d64866f24d74fb4))
+* Update dependency com.google.cloud:google-cloud-storage to v2.22.4 ([#1193](https://github.com/googleapis/java-storage-nio/issues/1193)) ([6018385](https://github.com/googleapis/java-storage-nio/commit/6018385114a0e190026a19826a8ff85d994c40c3))
+
 ## [0.126.16](https://github.com/googleapis/java-storage-nio/compare/v0.126.15...v0.126.16) (2023-05-30)
 
 
