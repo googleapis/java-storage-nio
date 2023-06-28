@@ -20,7 +20,7 @@
  * <p>This client library allows you to easily interact with Google Cloud Storage, using Java's
  * standard file system API, introduced in Java 7.
  *
- * <h3>How It Works</h3>
+ * <h2>How It Works</h2>
  *
  * The simplest way to get started is with {@code Paths} and {@code Files}:
  *
