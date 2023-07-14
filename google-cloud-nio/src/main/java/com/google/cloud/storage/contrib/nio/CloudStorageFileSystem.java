@@ -332,7 +332,9 @@ public final class CloudStorageFileSystem extends FileSystem {
   @Override
   public String toString() {
     try {
-      return new URI(URI_SCHEME, bucket, null, null).toString();
+      // Store GCS bucket name in the URI authority, see
+      // https://github.com/googleapis/java-storage-nio/issues/1218
+      return new URI(URI_SCHEME, bucket, null, null, null).toString();
     } catch (URISyntaxException e) {
       throw new AssertionError(e);
     }

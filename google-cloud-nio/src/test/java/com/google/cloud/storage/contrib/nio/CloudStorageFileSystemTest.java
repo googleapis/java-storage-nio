@@ -140,6 +140,48 @@ public class CloudStorageFileSystemTest {
   }
 
   @Test
+  public void testGetHost_valid_dns() throws IOException {
+    try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket-with-host")) {
+      assertThat(fs.getPath("/angel").toUri().getHost()).isEqualTo("bucket-with-host");
+    }
+  }
+
+  @Test
+  public void testGetHost_invalid_dns() throws IOException {
+    try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket_with_authority")) {
+      assertThat(fs.getPath("/angel").toUri().getHost()).isNull();
+    }
+  }
+
+  @Test
+  public void testGetAuthority_valid_dns() throws IOException {
+    try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket-with-host")) {
+      assertThat(fs.getPath("/angel").toUri().getAuthority()).isEqualTo("bucket-with-host");
+    }
+  }
+
+  @Test
+  public void testGetAuthority_invalid_dns() throws IOException {
+    try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket_with_authority")) {
+      assertThat(fs.getPath("/angel").toUri().getAuthority()).isEqualTo("bucket_with_authority");
+    }
+  }
+
+  @Test
+  public void testToString_valid_dns() throws IOException {
+    try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket-with-host")) {
+      assertThat(fs.toString()).isEqualTo("gs://bucket-with-host");
+    }
+  }
+
+  @Test
+  public void testToString_invalid_dns() throws IOException {
+    try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket_with_authority")) {
+      assertThat(fs.toString()).isEqualTo("gs://bucket_with_authority");
+    }
+  }
+
+  @Test
   public void testWrite() throws IOException {
     try (FileSystem fs = CloudStorageFileSystem.forBucket("bucket")) {
       Files.write(fs.getPath("/angel"), ALONE.getBytes(UTF_8));

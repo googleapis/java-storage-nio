@@ -816,6 +816,50 @@ public class CloudStorageFileSystemProviderTest {
   }
 
   @Test
+  public void testBucketWithHost() {
+    // User should be able to create buckets whose name contains a host name.
+    Path path1 = Paths.get(URI.create("gs://bucket-with-host/path"));
+    CloudStorageFileSystemProvider provider =
+        (CloudStorageFileSystemProvider) path1.getFileSystem().provider();
+
+    Path path2 = provider.getPath("gs://bucket-with-host/path");
+    // Both approaches should be equivalent
+    assertThat(path1.getFileSystem().provider()).isEqualTo(path2.getFileSystem().provider());
+    assertThat(path1.toUri()).isEqualTo(path2.toUri());
+    assertThat(path1.toUri().getHost()).isEqualTo("bucket-with-host");
+    assertThat(path1.toUri().getAuthority()).isEqualTo("bucket-with-host");
+  }
+
+  @Test
+  public void testBucketWithAuthority() {
+    // User should be able to create buckets whose name contains an authority that is not a host.
+    Path path1 = Paths.get(URI.create("gs://bucket_with_authority/path"));
+    CloudStorageFileSystemProvider provider =
+        (CloudStorageFileSystemProvider) path1.getFileSystem().provider();
+
+    Path path2 = provider.getPath("gs://bucket_with_authority/path");
+    // Both approaches should be equivalent
+    assertThat(path1.getFileSystem().provider()).isEqualTo(path2.getFileSystem().provider());
+    assertThat(path1.toUri()).isEqualTo(path2.toUri());
+    assertThat(path1.toUri().getHost()).isNull();
+    assertThat(path1.toUri().getAuthority()).isEqualTo("bucket_with_authority");
+  }
+
+  @Test
+  public void testBucketWithoutAuthority() {
+    Path path1 = Paths.get(URI.create("gs://bucket_with_authority/path"));
+    CloudStorageFileSystemProvider provider =
+        (CloudStorageFileSystemProvider) path1.getFileSystem().provider();
+
+    try {
+      provider.getFileSystem(URI.create("gs:///path"));
+      Assert.fail();
+    } catch (IllegalArgumentException e) {
+      assertThat(e.getMessage()).isEqualTo("gs:// URIs must have a host: gs:///path");
+    }
+  }
+
+  @Test
   public void testVersion_matchesAcceptablePatterns() {
     String acceptableVersionPattern = "|(?:\\d+\\.\\d+\\.\\d+(?:-.*?)?(?:-SNAPSHOT)?)";
     String version = StorageOptionsUtil.USER_AGENT_ENTRY_VERSION;
