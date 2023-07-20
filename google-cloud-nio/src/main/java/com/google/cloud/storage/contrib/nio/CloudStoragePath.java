@@ -368,10 +368,22 @@ public final class CloudStoragePath implements Path {
   @Override
   public URI toUri() {
     try {
+      // First try storing GCS bucket name in the hostname for compatibility with earlier behavior.
       return new URI(
           CloudStorageFileSystem.URI_SCHEME, bucket(), path.toAbsolutePath().toString(), null);
     } catch (URISyntaxException e) {
-      throw new AssertionError(e);
+      try {
+        // Store GCS bucket name in the URI authority, see
+        // https://github.com/googleapis/java-storage-nio/issues/1218
+        return new URI(
+            CloudStorageFileSystem.URI_SCHEME,
+            bucket(),
+            path.toAbsolutePath().toString(),
+            null,
+            null);
+      } catch (URISyntaxException unused) {
+        throw new AssertionError(e);
+      }
     }
   }
 

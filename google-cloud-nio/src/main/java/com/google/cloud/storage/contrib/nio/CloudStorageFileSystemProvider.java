@@ -254,8 +254,12 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
         "Cloud Storage URIs must have '%s' scheme: %s",
         CloudStorageFileSystem.URI_SCHEME,
         uri);
+    // Bucket names may not be compatible with getHost(), see
+    // https://github.com/googleapis/java-storage-nio/issues/1218
+    // However, there may be existing code expecting the exception message to refer to the bucket
+    // name as the "host".
     checkArgument(
-        !isNullOrEmpty(uri.getHost()),
+        !isNullOrEmpty(uri.getAuthority()),
         "%s:// URIs must have a host: %s",
         CloudStorageFileSystem.URI_SCHEME,
         uri);
@@ -266,11 +270,11 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
             && isNullOrEmpty(uri.getUserInfo()),
         "GCS FileSystem URIs mustn't have: port, userinfo, query, or fragment: %s",
         uri);
-    CloudStorageUtil.checkBucket(uri.getHost());
+    CloudStorageUtil.checkBucket(uri.getAuthority());
     initStorage();
     return new CloudStorageFileSystem(
         this,
-        uri.getHost(),
+        uri.getAuthority(),
         CloudStorageConfiguration.fromMap(
             CloudStorageFileSystem.getDefaultCloudStorageConfiguration(), env));
   }

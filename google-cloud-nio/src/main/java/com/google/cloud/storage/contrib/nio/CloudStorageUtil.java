@@ -62,7 +62,14 @@ final class CloudStorageUtil {
           uri.getQuery(),
           uri.getFragment());
     } catch (URISyntaxException e) {
-      throw new IllegalArgumentException(e.getMessage());
+      try {
+        // Store GCS bucket name in the URI authority, see
+        // https://github.com/googleapis/java-storage-nio/issues/1218
+        return new URI(
+            uri.getScheme(), uri.getAuthority(), null, uri.getQuery(), uri.getFragment());
+      } catch (URISyntaxException unused) {
+        throw new IllegalArgumentException(e.getMessage());
+      }
     }
   }
 
