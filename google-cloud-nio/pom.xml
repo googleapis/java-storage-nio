@@ -112,6 +112,23 @@
         <artifactId>maven-shade-plugin</artifactId>
         <!-- MSHADE-419: 3.3.0 Shade plugin causes pom to be created without compile dependencies -->
         <version>3.2.4</version>
+        <dependencies>
+          <!-- MSHADE-419: 3.3.0
+          Shade plugin specified old asm which fails builds with classes under META-INF/versions/*
+          Manually override the version of ASM to be a newer one.
+          https://github.com/apache/maven-shade-plugin/commit/57edc03162557d052deec762d6b87f1a4c24d653
+          -->
+          <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.5</version>
+          </dependency>
+          <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>9.5</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <shadedArtifactAttached>true</shadedArtifactAttached>
           <relocations>
