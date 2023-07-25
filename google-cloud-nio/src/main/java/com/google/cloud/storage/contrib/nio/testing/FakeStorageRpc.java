@@ -21,6 +21,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.LowLevelHttpRequest;
 import com.google.api.client.http.LowLevelHttpResponse;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.testing.http.MockHttpTransport;
 import com.google.api.client.testing.http.MockLowLevelHttpRequest;
 import com.google.api.client.testing.http.MockLowLevelHttpResponse;
 import com.google.api.client.util.DateTime;
@@ -34,12 +35,14 @@ import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.cloud.storage.testing.StorageRpcTestBase;
 import com.google.common.base.Preconditions;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLDecoder;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.text.SimpleDateFormat;
@@ -48,6 +51,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -547,13 +551,13 @@ class FakeStorageRpc extends StorageRpcTestBase {
   }
 
   private static String fullname(String bucket, String object) {
-    return String.format("%s/%s", bucket, object);
+    return String.format("http://localhost:65555/b/%s/o/%s", bucket, object);
   }
 
   private static final String KEY_PATTERN_DEFINITION = "^.*?/b/(.*?)/o/(.*?)(?:[?].*|$)";
   private static final Pattern KEY_PATTERN = Pattern.compile(KEY_PATTERN_DEFINITION);
 
-  MyMockLowLevelHttpRequest create(String url) {
+  MyMockLowLevelHttpRequest create(String method, String url) {
     Matcher m = KEY_PATTERN.matcher(url);
     Preconditions.checkArgument(
         m.matches(),
@@ -566,7 +570,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
 
     String decode = urlDecode(object);
     String key = fullname(bucket, decode);
-    return new MyMockLowLevelHttpRequest(url, key);
+    return new MyMockLowLevelHttpRequest(method, url, key);
   }
 
   private static String urlDecode(String object) {
@@ -579,10 +583,12 @@ class FakeStorageRpc extends StorageRpcTestBase {
 
   private class MyMockLowLevelHttpRequest extends MockLowLevelHttpRequest {
 
+    private final String method;
     private final String key;
 
-    private MyMockLowLevelHttpRequest(String url, String key) {
+    private MyMockLowLevelHttpRequest(String method, String url, String key) {
       super(url);
+      this.method = method;
       this.key = key;
     }
 
@@ -600,8 +606,46 @@ class FakeStorageRpc extends StorageRpcTestBase {
 
       MockLowLevelHttpResponse resp = new MockLowLevelHttpResponse();
       byte[] bytes = contents.get(key);
-      if (bytes == null) {
+      StorageObject storageObject = metadata.get(key);
+      if (bytes == null && storageObject == null) {
         resp.setStatusCode(NOT_FOUND);
+      } else if (storageObject != null && method.equals("PUT")) {
+        try {
+          ByteArrayOutputStream baos = new ByteArrayOutputStream();
+          this.getStreamingContent().writeTo(baos);
+          byte[] byteArray = baos.toByteArray();
+          if (storageObject.getGeneration() != null) {
+            contents.put(key, concat(bytes, byteArray));
+          } else {
+            contents.put(key, byteArray);
+          }
+
+          List<String> contentRanges = getHeaders().get("content-range");
+          if (contentRanges != null && !contentRanges.isEmpty()) {
+            String contentRange = contentRanges.get(0);
+            // finalization PUT
+            // Pattern matches both froms of begin-end/size, */size
+            Pattern pattern = Pattern.compile("bytes (?:\\d+-\\d+|\\*)/(\\d+)");
+            Matcher matcher = pattern.matcher(contentRange);
+            if (matcher.matches()) {
+              storageObject.setSize(new BigInteger(matcher.group(1), 10));
+              storageObject.setGeneration(System.currentTimeMillis());
+              DateTime now = now();
+              storageObject.setTimeCreated(now);
+              storageObject.setUpdated(now);
+              String string = GsonFactory.getDefaultInstance().toPrettyString(storageObject);
+              resp.addHeader("Content-Type", "application/json;charset=utf-8");
+              resp.addHeader("Content-Length", String.valueOf(string.length()));
+              resp.setContent(string);
+            } else {
+              resp.setStatusCode(NOT_FOUND);
+            }
+          } else {
+            resp.setStatusCode(NOT_FOUND);
+          }
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
       } else {
         int length = bytes.length;
         Map<String, List<String>> headers = getHeaders();
@@ -661,16 +705,21 @@ class FakeStorageRpc extends StorageRpcTestBase {
     }
   }
 
-  private class FakeStorageRpcHttpTransport extends HttpTransport {
+  private static byte[] concat(byte[]... arrays) {
+    int total = Arrays.stream(arrays).filter(Objects::nonNull).mapToInt(a -> a.length).sum();
+    byte[] retVal = new byte[total];
 
-    @Override
-    public boolean supportsMethod(String method) {
-      return "GET".equals(method);
-    }
+    ByteBuffer wrap = ByteBuffer.wrap(retVal);
+    Arrays.stream(arrays).filter(Objects::nonNull).forEach(wrap::put);
+
+    return retVal;
+  }
+
+  private class FakeStorageRpcHttpTransport extends MockHttpTransport {
 
     @Override
     public LowLevelHttpRequest buildRequest(String method, String url) {
-      return create(url);
+      return create(method, url);
     }
   }
 }
