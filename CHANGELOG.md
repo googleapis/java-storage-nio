@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.127.0](https://github.com/googleapis/java-storage-nio/compare/v0.126.19...v0.127.0) (2023-07-26)
+
+
+### Features
+
+* Store bucket name in URI authority ([#1218](https://github.com/googleapis/java-storage-nio/issues/1218)) ([#1219](https://github.com/googleapis/java-storage-nio/issues/1219)) ([99179e8](https://github.com/googleapis/java-storage-nio/commit/99179e822421e5280040f7baa95ada91b52c9f04))
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:google-cloud-shared-dependencies to v3.13.1 ([#1223](https://github.com/googleapis/java-storage-nio/issues/1223)) ([7f5921d](https://github.com/googleapis/java-storage-nio/commit/7f5921d185a2bc5876be8511d80716c982de9c16))
+* Update dependency com.google.cloud:google-cloud-storage to v2.25.0 ([#1215](https://github.com/googleapis/java-storage-nio/issues/1215)) ([1fe262d](https://github.com/googleapis/java-storage-nio/commit/1fe262d683a6a6976bbb3ab34f5fcafb1d158a7e))
+
 ## [0.126.19](https://github.com/googleapis/java-storage-nio/compare/v0.126.18...v0.126.19) (2023-07-10)
 
 
