@@ -520,7 +520,11 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
     BlobId idWithGeneration = cloudPath.getBlobId();
     if (idWithGeneration.getGeneration() == null) {
-      Blob blob = storage.get(idWithGeneration);
+      Storage.BlobGetOption[] options = new BlobGetOption[0];
+      if (!isNullOrEmpty(userProject)) {
+        options = new BlobGetOption[] {Storage.BlobGetOption.userProject(userProject)};
+      }
+      Blob blob = storage.get(idWithGeneration, options);
       if (blob == null) {
         // not found
         return false;
