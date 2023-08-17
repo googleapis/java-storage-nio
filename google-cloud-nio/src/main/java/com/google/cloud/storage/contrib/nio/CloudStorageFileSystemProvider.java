@@ -518,16 +518,32 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
       throw new CloudStoragePseudoDirectoryException(cloudPath);
     }
 
+    BlobId idWithGeneration = cloudPath.getBlobId();
+    if (idWithGeneration.getGeneration() == null) {
+      Storage.BlobGetOption[] options = new BlobGetOption[0];
+      if (!isNullOrEmpty(userProject)) {
+        options = new BlobGetOption[] {Storage.BlobGetOption.userProject(userProject)};
+      }
+      Blob blob = storage.get(idWithGeneration, options);
+      if (blob == null) {
+        // not found
+        return false;
+      }
+      idWithGeneration = blob.getBlobId();
+    }
+
     final CloudStorageRetryHandler retryHandler =
         new CloudStorageRetryHandler(cloudPath.getFileSystem().config());
     // Loop will terminate via an exception if all retries are exhausted
     while (true) {
       try {
         if (isNullOrEmpty(userProject)) {
-          return storage.delete(cloudPath.getBlobId());
+          return storage.delete(idWithGeneration, Storage.BlobSourceOption.generationMatch());
         } else {
           return storage.delete(
-              cloudPath.getBlobId(), Storage.BlobSourceOption.userProject(userProject));
+              idWithGeneration,
+              Storage.BlobSourceOption.generationMatch(),
+              Storage.BlobSourceOption.userProject(userProject));
         }
       } catch (StorageException exs) {
         // Will rethrow a StorageException if all retries/reopens are exhausted
