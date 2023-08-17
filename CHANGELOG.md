@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.127.2](https://github.com/googleapis/java-storage-nio/compare/v0.127.1...v0.127.2) (2023-08-17)
+
+
+### Bug Fixes
+
+* Add precondition to delete operations ([#1240](https://github.com/googleapis/java-storage-nio/issues/1240)) ([57c65c6](https://github.com/googleapis/java-storage-nio/commit/57c65c6a90106e1de384ac38d8b16cce1730894a))
+
 ## [0.127.1](https://github.com/googleapis/java-storage-nio/compare/v0.127.0...v0.127.1) (2023-08-08)
 
 
