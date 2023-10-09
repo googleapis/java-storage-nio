@@ -358,8 +358,8 @@ public final class SeekableByteChannelPrefetcher implements SeekableByteChannel 
       ensureFetching(blockIndex);
       candidate = fetching;
       if (candidate != null) {
-          buf = candidate.getBuf();
-          full.add(candidate);
+        buf = candidate.getBuf();
+        full.add(candidate);
       }
       fetching = null;
       ensureFetching(blockIndex + 1);
