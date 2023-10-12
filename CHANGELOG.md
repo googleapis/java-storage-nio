@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.127.5](https://github.com/googleapis/java-storage-nio/compare/v0.127.4...v0.127.5) (2023-10-12)
+
+
+### Bug Fixes
+
+* Add protection against a possible null dereference issue ([#1258](https://github.com/googleapis/java-storage-nio/issues/1258)) ([ade173b](https://github.com/googleapis/java-storage-nio/commit/ade173bdc762d0fe8ac97a5e189f6802156231a7))
+
+
+### Dependencies
+
+* Update dependency com.google.apis:google-api-services-storage to v1-rev20230926-2.0.0 ([#1266](https://github.com/googleapis/java-storage-nio/issues/1266)) ([1cf28cb](https://github.com/googleapis/java-storage-nio/commit/1cf28cb0b86914a1a8ad9e46f31d9372796de038))
+* Update dependency com.google.cloud:google-cloud-shared-dependencies to v3.17.0 ([#1272](https://github.com/googleapis/java-storage-nio/issues/1272)) ([876c4b5](https://github.com/googleapis/java-storage-nio/commit/876c4b531f86f0b5af01cb850a9e7116c7b1e181))
+* Update dependency com.google.cloud:google-cloud-storage to v2.28.0 ([#1275](https://github.com/googleapis/java-storage-nio/issues/1275)) ([cc93df1](https://github.com/googleapis/java-storage-nio/commit/cc93df1cda79fb3faf5dc786df01bb1b8fc2897a))
+* Update dependency org.ow2.asm:asm to v9.6 ([#1268](https://github.com/googleapis/java-storage-nio/issues/1268)) ([b216dc9](https://github.com/googleapis/java-storage-nio/commit/b216dc9606297ff430f234d922a44161175daf41))
+* Update dependency org.ow2.asm:asm-commons to v9.6 ([#1267](https://github.com/googleapis/java-storage-nio/issues/1267)) ([bfa0f30](https://github.com/googleapis/java-storage-nio/commit/bfa0f3022065c2e3c071b98c4be37c63548e97fc))
+
 ## [0.127.4](https://github.com/googleapis/java-storage-nio/compare/v0.127.3...v0.127.4) (2023-09-26)
 
 
