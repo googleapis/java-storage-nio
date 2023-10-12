@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.google.cloud</groupId>
     <artifactId>google-cloud-shared-config</artifactId>
-    <version>1.5.7</version>
+    <version>1.5.8</version>
   </parent>
 
   <developers>
@@ -84,12 +84,6 @@
         <groupId>com.google.apis</groupId>
         <artifactId>google-api-services-storage</artifactId>
         <version>v1-rev20230926-2.0.0</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.auto.value</groupId>
-        <artifactId>auto-value-annotations</artifactId>
-        <scope>provided</scope> <!-- to leave out of the all-deps jar -->
-        <version>${auto-value-annotation.version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
