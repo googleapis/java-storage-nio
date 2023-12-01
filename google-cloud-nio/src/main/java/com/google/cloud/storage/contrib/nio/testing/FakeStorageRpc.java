@@ -356,7 +356,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
     checkGeneration(key, generationMatch);
     metadata.put(key, object);
 
-    return fullname(object);
+    return key;
   }
 
   @Override
@@ -613,11 +613,12 @@ class FakeStorageRpc extends StorageRpcTestBase {
         try {
           ByteArrayOutputStream baos = new ByteArrayOutputStream();
           this.getStreamingContent().writeTo(baos);
+          bytes = futureContents.get(key);
           byte[] byteArray = baos.toByteArray();
           if (storageObject.getGeneration() != null) {
-            contents.put(key, concat(bytes, byteArray));
+            futureContents.put(key, concat(bytes, byteArray));
           } else {
-            contents.put(key, byteArray);
+            futureContents.put(key, byteArray);
           }
 
           List<String> contentRanges = getHeaders().get("content-range");
@@ -637,6 +638,8 @@ class FakeStorageRpc extends StorageRpcTestBase {
               resp.addHeader("Content-Type", "application/json;charset=utf-8");
               resp.addHeader("Content-Length", String.valueOf(string.length()));
               resp.setContent(string);
+              contents.put(key, byteArray);
+              futureContents.remove(key);
             } else {
               resp.setStatusCode(NOT_FOUND);
             }
