@@ -92,6 +92,7 @@
     <groupId>net.bytebuddy</groupId>
     <artifactId>byte-buddy</artifactId>
     <version>1.12.21</version>
+    <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.cloud</groupId>
