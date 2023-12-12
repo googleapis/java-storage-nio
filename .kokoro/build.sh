@@ -49,7 +49,7 @@ case ${JOB_TYPE} in
 test)
     echo "SUREFIRE_JVM_OPT: ${SUREFIRE_JVM_OPT}"
     retry_with_backoff 3 10 \
-      mvn test -B -ntp -Dclirr.skip=true -Denforcer.skip=true ${SUREFIRE_JVM_OPT}
+      mvn test -B -ntp -Dclirr.skip=true -Denforcer.skip=true ${SUREFIRE_JVM_OPT} -Dnet.bytebuddy.experimental=true 
     RETURN_CODE=$?
     ;;
 lint)
