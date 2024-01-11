@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-nio</artifactId>
-      <version>0.127.7</version>
+      <version>0.127.9</version>
     </dependency>
     <!-- {x-version-update-end} -->
 
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.google.truth</groupId>
       <artifactId>truth</artifactId>
-      <version>1.1.5</version>
+      <version>1.2.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
