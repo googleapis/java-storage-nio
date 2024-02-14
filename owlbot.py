@@ -26,6 +26,8 @@ java.common_templates(excludes=[
   ".kokoro/build.sh",
   ".kokoro/requirements.in",
   ".kokoro/requirements.txt",
+  ".kokoro/presubmit/graalvm-native.cfg",
+  ".kokoro/presubmit/graalvm-native-17.cfg",
   "renovate.json",
   ".github/workflows/auto-release.yaml"
 ])
