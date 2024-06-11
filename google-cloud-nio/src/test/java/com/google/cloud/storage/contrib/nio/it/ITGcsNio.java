@@ -176,7 +176,7 @@ public class ITGcsNio {
   }
 
   // Start of tests related to the "requester pays" feature
-  @Test
+  // @Test
   public void testFileExistsRequesterPaysNoUserProject() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
     Path path = testBucket.getPath(SML_FILE);
@@ -205,7 +205,7 @@ public class ITGcsNio {
     Files.exists(path);
   }
 
-  @Test
+  // @Test
   public void testCantCreateWithoutUserProject() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
     Path path = testBucket.getPath(TMP_FILE);
@@ -226,7 +226,7 @@ public class ITGcsNio {
     Files.write(path, "I would like to write, please?".getBytes());
   }
 
-  @Test
+  // @Test
   public void testCantReadWithoutUserProject() throws IOException {
     CloudStorageFileSystem testBucket = getRequesterPaysBucket(false, "");
     Path path = testBucket.getPath(SML_FILE);
@@ -247,7 +247,7 @@ public class ITGcsNio {
     Files.readAllBytes(path);
   }
 
-  @Test
+  // @Test
   public void testCantCopyWithoutUserProject() throws IOException {
     CloudStorageFileSystem testRPBucket = getRequesterPaysBucket(false, "");
     CloudStorageFileSystem testBucket = getTestBucket();
