@@ -1,18 +1,8 @@
 gapic_generator_version: 2.41.0
-protoc_version: '25.2'
 googleapis_commitish: 6f289d775912966eb0cf04bda91e5e355c998d30
 libraries_bom_version: 26.38.0
-template_excludes:
-  - "README.md"
-  - ".kokoro/build.sh"
-  - ".kokoro/requirements.in"
-  - ".kokoro/requirements.txt"
-  - ".kokoro/presubmit/graalvm-native.cfg"
-  - ".kokoro/presubmit/graalvm-native-17.cfg"
-  - "renovate.json"
-  - ".github/workflows/auto-release.yaml"
 libraries:
-  - api_shortname: "storage_nio"
+  - api_shortname: storage_nio
     name_pretty: "NIO Filesystem Provider for Google Cloud Storage"
     api_description: "provides a Google Cloud Storage extension for Java's NIO Filesystem."
     product_documentation: "https://cloud.google.com/storage/docs"
