@@ -3,17 +3,17 @@ googleapis_commitish: 6f289d775912966eb0cf04bda91e5e355c998d30
 libraries_bom_version: 26.38.0
 libraries:
   - api_shortname: storage_nio
-    name_pretty: "NIO Filesystem Provider for Google Cloud Storage"
-    api_description: "provides a Google Cloud Storage extension for Java's NIO Filesystem."
-    product_documentation: "https://cloud.google.com/storage/docs"
-    client_documentation: "https://cloud.google.com/java/docs/reference/google-cloud-nio/latest/history"
-    release_level: "preview"
-    language: "java"
-    repo: "googleapis/java-storage-nio"
-    repo_short: "java-storage-nio"
-    distribution_name: "com.google.cloud:google-cloud-nio"
-    api_id: "storage.googleapis.com"
-    library_type: "OTHER"
-    codeowner_team: "@googleapis/cloud-storage-dpe"
+    name_pretty: NIO Filesystem Provider for Google Cloud Storage
+    api_description: provides a Google Cloud Storage extension for Java's NIO Filesystem.
+    product_documentation: https://cloud.google.com/storage/docs
+    client_documentation: https://cloud.google.com/java/docs/reference/google-cloud-nio/latest/history
+    release_level: preview
+    language: java
+    repo: googleapis/java-storage-nio
+    repo_short: java-storage-nio
+    distribution_name: com.google.cloud:google-cloud-nio
+    api_id: storage.googleapis.com
+    library_type: OTHER
+    codeowner_team: @googleapis/cloud-storage-dpe
     GAPICs:
       - proto_path: google/api #we use a dummy path to produce a no-op
