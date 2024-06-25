@@ -1017,6 +1017,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   @Override
   public <V extends FileAttributeView> V getFileAttributeView(
       Path path, Class<V> type, LinkOption... options) {
+    checkNotNull(path);
     checkNotNull(type);
     CloudStorageUtil.checkNotNullArray(options);
     if (type != CloudStorageFileAttributeView.class && type != BasicFileAttributeView.class) {
