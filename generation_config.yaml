@@ -14,6 +14,6 @@ libraries:
     distribution_name: com.google.cloud:google-cloud-nio
     api_id: storage.googleapis.com
     library_type: OTHER
-    codeowner_team: @googleapis/cloud-storage-dpe
+    codeowner_team: '@googleapis/cloud-storage-dpe'
     GAPICs:
       - proto_path: google/api #we use a dummy path to produce a no-op
