@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.127.20](https://github.com/googleapis/java-storage-nio/compare/v0.127.19...v0.127.20) (2024-06-27)
+
+
+### Bug Fixes
+
+* Update CloudStorageFileSystemProvider#getFileAttributeView to return null rather than throw UnsupportedOperationException ([#1427](https://github.com/googleapis/java-storage-nio/issues/1427)) ([b9e0362](https://github.com/googleapis/java-storage-nio/commit/b9e03621af8c9a24a45ec288cc974719b3bf63d9))
+
+
+### Dependencies
+
+* Update dependency com.google.apis:google-api-services-storage to v1-rev20240524-2.0.0 ([#1410](https://github.com/googleapis/java-storage-nio/issues/1410)) ([011a78f](https://github.com/googleapis/java-storage-nio/commit/011a78f6c0b2dfb51169d1e690a33c4ddde57615))
+* Update dependency com.google.apis:google-api-services-storage to v1-rev20240621-2.0.0 ([#1425](https://github.com/googleapis/java-storage-nio/issues/1425)) ([2cc3efc](https://github.com/googleapis/java-storage-nio/commit/2cc3efc8a7f17caf4916c7a6ca6803627c26164d))
+* Update dependency com.google.cloud:google-cloud-storage to v2.40.1 ([#1429](https://github.com/googleapis/java-storage-nio/issues/1429)) ([cbeadb8](https://github.com/googleapis/java-storage-nio/commit/cbeadb87b2b24d5a1e6eff1613845fa94c39efa0))
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.32.0 ([#1426](https://github.com/googleapis/java-storage-nio/issues/1426)) ([3a4bb4f](https://github.com/googleapis/java-storage-nio/commit/3a4bb4f100f46625e5ca9c43902d6220b0a6617b))
+
 ## [0.127.19](https://github.com/googleapis/java-storage-nio/compare/v0.127.18...v0.127.19) (2024-06-11)
 
 
