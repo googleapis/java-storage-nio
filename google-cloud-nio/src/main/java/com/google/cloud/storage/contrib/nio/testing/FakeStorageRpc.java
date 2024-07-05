@@ -34,6 +34,8 @@ import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.cloud.storage.testing.StorageRpcTestBase;
 import com.google.common.base.Preconditions;
+
+import javax.annotation.concurrent.NotThreadSafe;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,7 +57,6 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.concurrent.NotThreadSafe;
 
 /**
  * A bare-bones in-memory implementation of StorageRpc, meant for testing.
@@ -446,9 +447,14 @@ class FakeStorageRpc extends StorageRpcTestBase {
 
     byte[] data = contents.get(sourceKey);
 
+    StorageObject sourceObj = metadata.get(sourceKey);
     rewriteRequest.target.setGeneration(generation);
     rewriteRequest.target.setSize(BigInteger.valueOf(data.length));
-    rewriteRequest.target.setUpdated(metadata.get(sourceKey).getUpdated());
+    rewriteRequest.target.setUpdated(sourceObj.getUpdated());
+
+    if (!rewriteRequest.targetOptions.containsKey(Option.DETECT_CONTENT_TYPE)) {
+      rewriteRequest.target.setContentType(sourceObj.getContentType());
+    } // else... not sure what to do
 
     metadata.put(destKey, rewriteRequest.target);
 
