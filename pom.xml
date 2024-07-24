@@ -110,6 +110,7 @@
     <module>google-cloud-nio</module>
     <module>google-cloud-nio-retrofit</module>
     <module>google-cloud-nio-examples</module>
+    <module>google-cloud-nio-bom</module>
   </modules>
 
   <profiles>
