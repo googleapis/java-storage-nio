@@ -20,6 +20,7 @@ import static com.google.cloud.storage.Acl.Role.OWNER;
 import static com.google.cloud.storage.contrib.nio.CloudStorageFileSystem.forBucket;
 import static com.google.common.truth.Truth.assertThat;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -36,7 +37,6 @@ import static org.mockito.Mockito.when;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
-import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.testing.NullPointerTester;
@@ -71,13 +71,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link CloudStorageFileSystemProvider}. */
 @RunWith(JUnit4.class)
 public class CloudStorageFileSystemProviderTest {
-  @Rule public final MultipleAttemptsRule multipleAttemptsRule = new MultipleAttemptsRule(3);
+  // @Rule(order = 1) public final MultipleAttemptsRule multipleAttemptsRule = new
+  // MultipleAttemptsRule(3);
+  @Rule(order = 1)
+  public final TemporaryFolder temporaryFolder = new TemporaryFolder();
 
   private static final List<String> FILE_CONTENTS =
       ImmutableList.of(
@@ -153,14 +157,14 @@ public class CloudStorageFileSystemProviderTest {
   public void testReadAllBytes() throws Exception {
     Path path = Paths.get(URI.create("gs://bucket/wat"));
     Files.write(path, SINGULARITY.getBytes(UTF_8));
-    assertThat(new String(Files.readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
+    assertThat(new String(readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
     Files.delete(path);
   }
 
   @Test
   public void testReadAllBytes_trailingSlash() throws Exception {
     try {
-      Files.readAllBytes(Paths.get(URI.create("gs://bucket/wat/")));
+      readAllBytes(Paths.get(URI.create("gs://bucket/wat/")));
       Assert.fail();
     } catch (CloudStoragePseudoDirectoryException ex) {
       assertThat(ex.getMessage()).isNotNull();
@@ -255,7 +259,7 @@ public class CloudStorageFileSystemProviderTest {
       assertThat(output.position()).isEqualTo(10);
       assertThat(output.size()).isEqualTo(10);
     }
-    assertThat(new String(Files.readAllBytes(path), UTF_8)).isEqualTo("fileconten");
+    assertThat(new String(readAllBytes(path), UTF_8)).isEqualTo("fileconten");
   }
 
   @Test
@@ -298,7 +302,7 @@ public class CloudStorageFileSystemProviderTest {
     try (OutputStream output = Files.newOutputStream(path)) {
       output.write(SINGULARITY.getBytes(UTF_8));
     }
-    assertThat(new String(Files.readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
+    assertThat(new String(readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
   }
 
   @Test
@@ -309,7 +313,7 @@ public class CloudStorageFileSystemProviderTest {
     try (OutputStream output = Files.newOutputStream(path)) {
       output.write(SINGULARITY.getBytes(UTF_8));
     }
-    assertThat(new String(Files.readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
+    assertThat(new String(readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
   }
 
   @Test
@@ -320,7 +324,7 @@ public class CloudStorageFileSystemProviderTest {
     try (OutputStream output = Files.newOutputStream(path, TRUNCATE_EXISTING)) {
       output.write(SINGULARITY.getBytes(UTF_8));
     }
-    assertThat(new String(Files.readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
+    assertThat(new String(readAllBytes(path), UTF_8)).isEqualTo(SINGULARITY);
   }
 
   @Test
@@ -577,7 +581,7 @@ public class CloudStorageFileSystemProviderTest {
     Path target = Paths.get(URI.create("gs://greenbean/adipose"));
     Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
     Files.copy(source, target);
-    assertThat(new String(Files.readAllBytes(target), UTF_8)).isEqualTo("(✿◕ ‿◕ )ノ");
+    assertThat(new String(readAllBytes(target), UTF_8)).isEqualTo("(✿◕ ‿◕ )ノ");
     assertThat(Files.exists(source)).isTrue();
     assertThat(Files.exists(target)).isTrue();
   }
@@ -641,7 +645,7 @@ public class CloudStorageFileSystemProviderTest {
     Path target = Paths.get(URI.create("gs://greenbean/adipose"));
     Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
     Files.move(source, target);
-    assertThat(new String(Files.readAllBytes(target), UTF_8)).isEqualTo("(✿◕ ‿◕ )ノ");
+    assertThat(new String(readAllBytes(target), UTF_8)).isEqualTo("(✿◕ ‿◕ )ノ");
     assertThat(Files.exists(source)).isFalse();
     assertThat(Files.exists(target)).isTrue();
   }
@@ -761,6 +765,19 @@ public class CloudStorageFileSystemProviderTest {
     Files.delete(source);
     Files.delete(target1);
     Files.delete(target2);
+  }
+
+  @Test
+  public void testCopy_path_toLocalFileSystem() throws IOException {
+    Path source = Paths.get(URI.create("gs://mybucket/myobject"));
+    byte[] helloWorldBytes = "Hello, World!".getBytes(UTF_8);
+    Files.write(source, helloWorldBytes);
+
+    Path path = temporaryFolder.newFile().toPath();
+    // The new file created by temporaryFolder is an empty file on disk, specify REPLACE_EXISTING
+    //  so we can overwrite its contents.
+    Files.copy(source, path, REPLACE_EXISTING);
+    assertThat(Files.readAllBytes(path)).isEqualTo(helloWorldBytes);
   }
 
   @Test

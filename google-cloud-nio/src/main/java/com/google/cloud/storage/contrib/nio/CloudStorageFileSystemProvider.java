@@ -1017,10 +1017,15 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   @Override
   public <V extends FileAttributeView> V getFileAttributeView(
       Path path, Class<V> type, LinkOption... options) {
+    checkNotNull(path);
     checkNotNull(type);
     CloudStorageUtil.checkNotNullArray(options);
     if (type != CloudStorageFileAttributeView.class && type != BasicFileAttributeView.class) {
-      throw new UnsupportedOperationException(type.getSimpleName());
+      // the javadocs for getFileAttributeView specify the following for @return
+      //  a file attribute view of the specified type, or null if the attribute view type is not
+      //  available
+      // Similar type of issue from the JDK itself https://bugs.openjdk.org/browse/JDK-8273935
+      return null;
     }
     CloudStoragePath cloudPath = CloudStorageUtil.checkPath(path);
     @SuppressWarnings("unchecked")
