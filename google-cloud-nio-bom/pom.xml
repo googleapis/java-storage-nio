@@ -3,20 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.google.cloud</groupId>
     <artifactId>google-cloud-nio-bom</artifactId>
-<<<<<<< HEAD
-    <version>0.127.21-SNAPSHOT</version><!-- {x-version-update:google-cloud-nio:current} -->
-=======
     <version>0.127.22-SNAPSHOT</version><!-- {x-version-update:google-cloud-nio:current} -->
->>>>>>> cb907c4f4995760f13c6b4edfad6e9ef4d173987
     <packaging>pom</packaging>
     <parent>
         <groupId>com.google.cloud</groupId>
         <artifactId>sdk-platform-java-config</artifactId>
-<<<<<<< HEAD
-        <version>3.33.1-SNAPSHOT</version>
-=======
         <version>3.34.0</version>
->>>>>>> cb907c4f4995760f13c6b4edfad6e9ef4d173987
         <relativePath/>
     </parent>
 
@@ -62,11 +54,7 @@
         <dependency>
           <groupId>com.google.cloud</groupId>
           <artifactId>google-cloud-nio</artifactId>
-<<<<<<< HEAD
-          <version>0.127.21-SNAPSHOT</version><!-- {x-version-update:google-cloud-nio:current} -->
-=======
           <version>0.127.22-SNAPSHOT</version><!-- {x-version-update:google-cloud-nio:current} -->
->>>>>>> cb907c4f4995760f13c6b4edfad6e9ef4d173987
         </dependency>
       </dependencies>
     </dependencyManagement>
