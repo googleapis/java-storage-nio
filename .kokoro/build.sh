@@ -74,7 +74,7 @@ integration)
     ;;
 graalvm)
     # Run Unit and Integration Tests with Native Image
-    mvn test -Dsurefire.failIfNoSpecifiedTests=false "-Dtest=ITGcsNio#testCopy_replaceFile_withoutOption" -Djava.util.logging.config.file=src/main/resources/logging.properties -Pnative -Penable-integration-tests
+    mvn test -Dsurefire.failIfNoSpecifiedTests=false "-Dtest=ITGcsNio#testCopy_replaceFile_withoutOption" -Djava.util.logging.config.file=src/main/resources/logging.properties -Pnative -Penable-integration-tests -X
     RETURN_CODE=$?
     ;;
 graalvm17)
