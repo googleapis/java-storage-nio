@@ -138,7 +138,7 @@ public class ITGcsNio {
     storage = storageOptions.getService();
     GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
     ServiceAccountCredentials serviceAccountCredentials = (ServiceAccountCredentials)credentials;
-    System.out.println(serviceAccountCredentials.getClientId());
+    System.out.println(serviceAccountCredentials.getClientEmail());
 
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
