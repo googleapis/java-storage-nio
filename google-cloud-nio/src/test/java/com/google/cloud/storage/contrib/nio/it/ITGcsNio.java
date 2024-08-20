@@ -52,6 +52,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
@@ -139,15 +140,17 @@ public class ITGcsNio {
     project = storageOptions.getProjectId();
     storage = storageOptions.getService();
     GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
+    System.out.println(credentials.getClass());
     // ServiceAccountCredentials serviceAccountCredentials = (ServiceAccountCredentials)credentials;
     // System.out.println(serviceAccountCredentials.getAccessToken());
     String credPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
-    File credFile = new File(credPath);
-    try (FileInputStream inputStream = new FileInputStream(credFile)) {
-      byte[] firstThreeBytes = new byte[3];
-      int bytesRead = inputStream.read(firstThreeBytes);
-      System.out.println(bytesRead);
-    }
+    System.out.println("Length: " + credPath.length());
+    // File credFile = new File(credPath);
+    // try (FileInputStream inputStream = new FileInputStream(credFile)) {
+    //   byte[] firstThreeBytes = new byte[3];
+    //   int bytesRead = inputStream.read(firstThreeBytes);
+    //   System.out.println(bytesRead);
+    // }
 
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
