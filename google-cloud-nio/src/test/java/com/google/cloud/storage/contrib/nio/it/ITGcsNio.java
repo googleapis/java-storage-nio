@@ -26,6 +26,9 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import com.google.api.client.http.HttpResponseException;
+import com.google.auth.Credentials;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
@@ -133,6 +136,10 @@ public class ITGcsNio {
     storageOptions = gcsHelper.getOptions();
     project = storageOptions.getProjectId();
     storage = storageOptions.getService();
+    GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
+    ServiceAccountCredentials serviceAccountCredentials = (ServiceAccountCredentials)credentials;
+    System.out.println(serviceAccountCredentials.getClientId());
+
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
     storage.create(BucketInfo.of(TARGET_BUCKET));
