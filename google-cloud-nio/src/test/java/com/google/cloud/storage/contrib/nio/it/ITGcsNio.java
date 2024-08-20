@@ -49,6 +49,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -137,8 +138,11 @@ public class ITGcsNio {
     project = storageOptions.getProjectId();
     storage = storageOptions.getService();
     GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
-    ServiceAccountCredentials serviceAccountCredentials = (ServiceAccountCredentials)credentials;
-    System.out.println(serviceAccountCredentials.getClientEmail());
+    // ServiceAccountCredentials serviceAccountCredentials = (ServiceAccountCredentials)credentials;
+    // System.out.println(serviceAccountCredentials.getAccessToken());
+    String credPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+    File credFile = new File(credPath);
+    System.out.println(credFile.exists());
 
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
