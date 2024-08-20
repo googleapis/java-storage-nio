@@ -50,6 +50,7 @@ import com.google.common.collect.Sets;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -142,7 +143,11 @@ public class ITGcsNio {
     // System.out.println(serviceAccountCredentials.getAccessToken());
     String credPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
     File credFile = new File(credPath);
-    System.out.println(credFile.exists());
+    try (FileInputStream inputStream = new FileInputStream(credFile)) {
+      byte[] firstThreeBytes = new byte[3];
+      int bytesRead = inputStream.read(firstThreeBytes);
+      System.out.println(bytesRead);
+    }
 
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
