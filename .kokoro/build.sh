@@ -112,6 +112,9 @@ retry_with_backoff 3 10 \
     -Dgcloud.download.skip=true \
     -T 1C
 
+echo "Printing out the Maven Dependencies to confirm latest protobuf is installed"
+mvn dependency:tree
+
 # if GOOGLE_APPLICATION_CREDIENTIALS is specified as a relative path prepend Kokoro root directory onto it
 if [[ ! -z "${GOOGLE_APPLICATION_CREDENTIALS}" && "${GOOGLE_APPLICATION_CREDENTIALS}" != /* ]]; then
     export GOOGLE_APPLICATION_CREDENTIALS=$(realpath ${KOKORO_GFILE_DIR}/${GOOGLE_APPLICATION_CREDENTIALS})
