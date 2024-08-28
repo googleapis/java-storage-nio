@@ -102,6 +102,11 @@ fi
 export JAVA_HOME="${current_java_home}"
 export PATH=${JAVA_HOME}/bin:$PATH
 
+echo "The Java Version is: "
+# Print out Java version
+java -version
+echo ${JOB_TYPE}
+
 # attempt to install 3 times with exponential backoff (starting with 10 seconds)
 retry_with_backoff 3 10 \
   mvn install -B -V -ntp \
