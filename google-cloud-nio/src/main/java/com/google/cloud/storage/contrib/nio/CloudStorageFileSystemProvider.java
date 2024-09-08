@@ -182,7 +182,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
    */
   public static void setDefaultCloudStorageConfiguration(
       @Nullable CloudStorageConfiguration newDefault) {
-    CloudStorageFileSystem.setDefaultCloudStorageConfiguration(newDefault);
+    CloudStorageConfiguration.setUserSpecifiedDefault(newDefault);
   }
 
   /**
@@ -193,7 +193,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
    */
   public CloudStorageFileSystemProvider() {
     this(
-        CloudStorageFileSystem.getDefaultCloudStorageConfiguration().userProject(),
+        CloudStorageConfiguration.getUserSpecifiedDefault().userProject(),
         futureStorageOptions);
   }
 

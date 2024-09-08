@@ -34,6 +34,28 @@ public abstract class CloudStorageConfiguration {
 
   public static final CloudStorageConfiguration DEFAULT = builder().build();
 
+  // Users can change this: then this affects every filesystem object created
+  // later, including via SPI. This is meant to be done only once, at the beginning
+  // of some main program, in order to force all libraries to use some settings we like.
+  // Libraries should never call this. It'll cause surprise to the writers of the main
+  // program and they'll be unhappy. Instead, create your own filesystem object with the
+  // right configuration and pass it along.
+  private static CloudStorageConfiguration userSpecifiedDefault = CloudStorageConfiguration.DEFAULT;
+
+  // Don't call this one, call the one in CloudStorageFileSystemProvider.
+  static void setUserSpecifiedDefault(@Nullable CloudStorageConfiguration config) {
+    if (null == config) {
+      userSpecifiedDefault = CloudStorageConfiguration.DEFAULT;
+    } else {
+      userSpecifiedDefault = config;
+    }
+  }
+
+  static CloudStorageConfiguration getUserSpecifiedDefault() {
+    return userSpecifiedDefault;
+  }
+
+
   /** Returns path of current working directory. This defaults to the root directory. */
   public abstract String workingDirectory();
 
