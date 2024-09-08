@@ -99,12 +99,13 @@ import javax.inject.Singleton;
 public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
   private Storage storage;
-  private final StorageOptions storageOptions;
+  // if null, use StorageOptionsUtil.getDefaultInstance()
+  private final @Nullable StorageOptions storageOptions;
   // if non-null, we pay via this project.
   private final @Nullable String userProject;
 
   // used only when we create a new instance of CloudStorageFileSystemProvider.
-  private static StorageOptions futureStorageOptions = StorageOptionsUtil.getDefaultInstance();
+  private static StorageOptions futureStorageOptions = null;
 
   private static class LazyPathIterator extends AbstractIterator<Path> {
     private final Iterator<Blob> blobIterator;
@@ -212,7 +213,7 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
     this.storageOptions =
         gcsStorageOptions != null
             ? StorageOptionsUtil.mergeOptionsWithUserAgent(gcsStorageOptions)
-            : StorageOptionsUtil.getDefaultInstance();
+            : null;
     this.userProject = userProject;
   }
 
@@ -1227,6 +1228,9 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
   @VisibleForTesting
   void doInitStorage() {
-    this.storage = storageOptions.getService();
+    this.storage =
+        storageOptions != null
+            ? storageOptions.getService()
+            : StorageOptionsUtil.getDefaultInstance().getService();
   }
 }
