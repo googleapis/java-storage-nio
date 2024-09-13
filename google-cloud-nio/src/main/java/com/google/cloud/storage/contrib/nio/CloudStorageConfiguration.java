@@ -55,7 +55,6 @@ public abstract class CloudStorageConfiguration {
     return userSpecifiedDefault;
   }
 
-
   /** Returns path of current working directory. This defaults to the root directory. */
   public abstract String workingDirectory();
 
