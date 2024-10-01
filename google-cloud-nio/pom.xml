@@ -191,7 +191,7 @@
         <configuration>
           <buildArgs combine.children="append">
             <buildArg>-H:-AddAllFileSystemProviders</buildArg>
-            <buildArg>--strict-image-heap</buildArg>
+<!--            <buildArg>&#45;&#45;strict-image-heap</buildArg>-->
           </buildArgs>
         </configuration>
       </plugin>
