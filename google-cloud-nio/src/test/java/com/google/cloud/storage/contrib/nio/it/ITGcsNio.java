@@ -26,9 +26,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import com.google.api.client.http.HttpResponseException;
-import com.google.auth.Credentials;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
@@ -49,10 +46,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
@@ -135,23 +130,14 @@ public class ITGcsNio {
   @BeforeClass
   public static void beforeClass() throws IOException {
     // loads the credentials from local disk as par README
-    RemoteStorageHelper gcsHelper = RemoteStorageHelper.create();
+    // String path = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+    // System.out.println(path);
+    RemoteStorageHelper gcsHelper = RemoteStorageHelper.create(System.getenv("GOOGLE_CLOUD_PROJECT"),
+        new FileInputStream(System.getenv("GOOGLE_APPLICATION_CREDENTIALS")));
+    // RemoteStorageHelper gcsHelper = RemoteStorageHelper.create();
     storageOptions = gcsHelper.getOptions();
     project = storageOptions.getProjectId();
     storage = storageOptions.getService();
-    GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
-    System.out.println(credentials.getClass());
-    // ServiceAccountCredentials serviceAccountCredentials = (ServiceAccountCredentials)credentials;
-    // System.out.println(serviceAccountCredentials.getAccessToken());
-    String credPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
-    System.out.println("Length: " + credPath.length());
-    // File credFile = new File(credPath);
-    // try (FileInputStream inputStream = new FileInputStream(credFile)) {
-    //   byte[] firstThreeBytes = new byte[3];
-    //   int bytesRead = inputStream.read(firstThreeBytes);
-    //   System.out.println(bytesRead);
-    // }
-
     // create and populate test bucket
     storage.create(BucketInfo.of(BUCKET));
     storage.create(BucketInfo.of(TARGET_BUCKET));
