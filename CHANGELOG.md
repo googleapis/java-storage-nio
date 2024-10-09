@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.127.25](https://github.com/googleapis/java-storage-nio/compare/v0.127.24...v0.127.25) (2024-10-09)
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.37.0 ([#1484](https://github.com/googleapis/java-storage-nio/issues/1484)) ([5281b99](https://github.com/googleapis/java-storage-nio/commit/5281b99bbec8d72c5cc7657aece2cefd786bb973))
+* Update dependency org.ow2.asm:asm to v9.7.1 ([#1485](https://github.com/googleapis/java-storage-nio/issues/1485)) ([dd8d9f6](https://github.com/googleapis/java-storage-nio/commit/dd8d9f6cbca5c374d5abd7a37de669db6e69008a))
+* Update dependency org.ow2.asm:asm-commons to v9.7.1 ([#1486](https://github.com/googleapis/java-storage-nio/issues/1486)) ([0001634](https://github.com/googleapis/java-storage-nio/commit/00016341bbd3277d0271e08165fdb5fbb87b7cc1))
+
 ## [0.127.24](https://github.com/googleapis/java-storage-nio/compare/v0.127.23...v0.127.24) (2024-09-30)
 
 
