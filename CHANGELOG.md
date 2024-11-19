@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.127.27](https://github.com/googleapis/java-storage-nio/compare/v0.127.26...v0.127.27) (2024-11-19)
+
+
+### Dependencies
+
+* Update dependency com.google.apis:google-api-services-storage to v1-rev20241113-2.0.0 ([#1506](https://github.com/googleapis/java-storage-nio/issues/1506)) ([8400c67](https://github.com/googleapis/java-storage-nio/commit/8400c674938adddf4d5156f136a3ee00771ba151))
+* Update dependency com.google.cloud:google-cloud-storage to v2.45.0 ([#1505](https://github.com/googleapis/java-storage-nio/issues/1505)) ([623c960](https://github.com/googleapis/java-storage-nio/commit/623c9600c1b027e9e39c592860d26a8466fe0eba))
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.40.0 ([#1504](https://github.com/googleapis/java-storage-nio/issues/1504)) ([461583f](https://github.com/googleapis/java-storage-nio/commit/461583fab0f7aa8792a8162e5fb026b1ce5d3fd3))
+
 ## [0.127.26](https://github.com/googleapis/java-storage-nio/compare/v0.127.25...v0.127.26) (2024-10-29)
 
 
