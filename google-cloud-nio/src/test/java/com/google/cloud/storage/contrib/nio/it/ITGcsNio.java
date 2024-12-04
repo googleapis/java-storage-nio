@@ -46,6 +46,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -129,7 +130,11 @@ public class ITGcsNio {
   @BeforeClass
   public static void beforeClass() throws IOException {
     // loads the credentials from local disk as par README
-    RemoteStorageHelper gcsHelper = RemoteStorageHelper.create();
+    // String path = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+    // System.out.println(path);
+    RemoteStorageHelper gcsHelper = RemoteStorageHelper.create(System.getenv("GOOGLE_CLOUD_PROJECT"),
+        new FileInputStream(System.getenv("GOOGLE_APPLICATION_CREDENTIALS")));
+    // RemoteStorageHelper gcsHelper = RemoteStorageHelper.create();
     storageOptions = gcsHelper.getOptions();
     project = storageOptions.getProjectId();
     storage = storageOptions.getService();
