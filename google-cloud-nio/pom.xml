@@ -183,6 +183,18 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.graalvm.buildtools</groupId>
+        <artifactId>native-maven-plugin</artifactId>
+        <version>${native-maven-plugin.version}</version>
+        <configuration>
+          <buildArgs combine.children="append">
+            <buildArg>-H:-AddAllFileSystemProviders</buildArg>
+<!--            <buildArg>&#45;&#45;strict-image-heap</buildArg>-->
+          </buildArgs>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

@@ -98,6 +98,10 @@ import javax.inject.Singleton;
 @ThreadSafe
 public final class CloudStorageFileSystemProvider extends FileSystemProvider {
 
+  static {
+    System.out.println("helloooo");
+  }
+
   private Storage storage;
   private final StorageOptions storageOptions;
   // if non-null, we pay via this project.
