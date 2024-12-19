@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.127.29](https://github.com/googleapis/java-storage-nio/compare/v0.127.28...v0.127.29) (2024-12-19)
+
+
+### Bug Fixes
+
+* Minimize initialize at buildtime ([#1465](https://github.com/googleapis/java-storage-nio/issues/1465)) ([fbc842d](https://github.com/googleapis/java-storage-nio/commit/fbc842d42ab3d3f0bf5168e9273edff50bf5a8e0))
+
+
+### Dependencies
+
+* Update dependency com.google.guava:guava to v33.4.0-android ([#1519](https://github.com/googleapis/java-storage-nio/issues/1519)) ([c496bc6](https://github.com/googleapis/java-storage-nio/commit/c496bc657f0fc1ef93754d0df7df1518cafdc3d6))
+
 ## [0.127.28](https://github.com/googleapis/java-storage-nio/compare/v0.127.27...v0.127.28) (2024-12-13)
 
 
