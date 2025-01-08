@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.127.29](https://github.com/googleapis/java-storage-nio/compare/v0.127.28...v0.127.29) (2025-01-08)
+
+
+### Bug Fixes
+
+* Minimize initialize at buildtime ([#1465](https://github.com/googleapis/java-storage-nio/issues/1465)) ([fbc842d](https://github.com/googleapis/java-storage-nio/commit/fbc842d42ab3d3f0bf5168e9273edff50bf5a8e0))
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:google-cloud-storage to v2.47.0 ([#1522](https://github.com/googleapis/java-storage-nio/issues/1522)) ([133ab80](https://github.com/googleapis/java-storage-nio/commit/133ab803e720359fd0024464517f53483946546e))
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.41.1 ([#1521](https://github.com/googleapis/java-storage-nio/issues/1521)) ([7ce2a91](https://github.com/googleapis/java-storage-nio/commit/7ce2a91ecc460df5c84e194ad3f49c42f54b05ff))
+* Update dependency com.google.guava:guava to v33.4.0-android ([#1519](https://github.com/googleapis/java-storage-nio/issues/1519)) ([c496bc6](https://github.com/googleapis/java-storage-nio/commit/c496bc657f0fc1ef93754d0df7df1518cafdc3d6))
+
 ## [0.127.28](https://github.com/googleapis/java-storage-nio/compare/v0.127.27...v0.127.28) (2024-12-13)
 
 
