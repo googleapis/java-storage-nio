@@ -21,6 +21,7 @@ import com.google.cloud.WriteChannel;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.HttpStorageOptions;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobWriteOption;
 import com.google.cloud.storage.StorageOptions;
@@ -28,6 +29,7 @@ import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper.FakeStora
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import org.junit.Test;
 
 public final class FakeStorageRpcTest {
@@ -64,5 +66,26 @@ public final class FakeStorageRpcTest {
     String gen2read1 = new String(gen2.getContent(), StandardCharsets.UTF_8);
     System.out.println("gen2read1 = " + gen2read1);
     assertThat(gen2read1).isEqualTo("def");
+  }
+
+  @Test
+  public void multiChunkUploadWorks() throws Exception {
+    FakeStorageRpcFactory serviceRpcFactory = new FakeStorageRpcFactory();
+    HttpStorageOptions options =
+        StorageOptions.http().setServiceRpcFactory(serviceRpcFactory).build();
+    try (Storage storage = options.getService()) {
+
+      byte[] bytes = new byte[256 * 1024 + 37];
+      Arrays.fill(bytes, (byte) 'A');
+
+      BlobId id = BlobId.of("bucket", "object");
+      BlobInfo info = BlobInfo.newBuilder(id).build();
+      try (WriteChannel writeChannel = storage.writer(info)) {
+        writeChannel.setChunkSize(256 * 1024);
+        writeChannel.write(ByteBuffer.wrap(bytes));
+      }
+      byte[] actual = storage.readAllBytes(id);
+      assertThat(actual).isEqualTo(bytes);
+    }
   }
 }
