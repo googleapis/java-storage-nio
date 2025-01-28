@@ -1,4 +1,4 @@
 # Format:
 # module:released-version:current-version
 
-google-cloud-nio:0.127.30:0.127.30
+google-cloud-nio:0.127.30:0.127.31-SNAPSHOT
