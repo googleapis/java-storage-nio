@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.127.30](https://github.com/googleapis/java-storage-nio/compare/v0.127.29...v0.127.30) (2025-01-28)
+
+
+### Bug Fixes
+
+* Update FakeStorageRpc to be able to handle incremental resumable upload puts ([#1527](https://github.com/googleapis/java-storage-nio/issues/1527)) ([5ca338e](https://github.com/googleapis/java-storage-nio/commit/5ca338e24fe9fb180b34948c14e216b32bc9a4c9))
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:google-cloud-storage to v2.48.0 ([#1528](https://github.com/googleapis/java-storage-nio/issues/1528)) ([b1ee43a](https://github.com/googleapis/java-storage-nio/commit/b1ee43aa29604bdea88ca491af5b5e30e2d4a2d8))
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.42.0 ([#1529](https://github.com/googleapis/java-storage-nio/issues/1529)) ([006259b](https://github.com/googleapis/java-storage-nio/commit/006259b4ef962d5683d8b1f092aab8cb9d513273))
+
 ## [0.127.29](https://github.com/googleapis/java-storage-nio/compare/v0.127.28...v0.127.29) (2025-01-08)
 
 
