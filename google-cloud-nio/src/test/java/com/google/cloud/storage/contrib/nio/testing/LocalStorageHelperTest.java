@@ -16,14 +16,19 @@
 
 package com.google.cloud.storage.contrib.nio.testing;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import com.google.cloud.WriteChannel;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,12 +37,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+
+import static com.google.common.truth.Truth.assertThat;
 
 /** Unit tests for {@link LocalStorageHelper}. */
 @RunWith(JUnit4.class)
@@ -179,5 +180,26 @@ public class LocalStorageHelperTest {
 
     assertThat(localStorageService.readAllBytes(BlobId.of(bucket, original)))
         .isEqualTo(replacementContent);
+  }
+
+  @Test
+  public void testCopyOperationRetainsContentType() {
+    String bucket = "original";
+    String sourceBlob = "source";
+    String targetBlob = "target";
+
+    BlobInfo sourceInfo = BlobInfo.newBuilder(bucket, sourceBlob)
+        .setContentType("text/plain")
+        .build();
+
+    Blob source = localStorageService.create(sourceInfo, "content".getBytes());
+
+    localStorageService.copy(Storage.CopyRequest.newBuilder()
+        .setSource(source.getBlobId())
+        .setTarget(BlobId.of(bucket, targetBlob))
+        .build());
+
+    Blob target = localStorageService.get(BlobId.of(bucket, targetBlob));
+    assertThat(target.getContentType()).isEqualTo("text/plain");
   }
 }
