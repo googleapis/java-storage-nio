@@ -356,6 +356,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
     }
     checkGeneration(key, generationMatch);
     metadata.put(key, object);
+    futureContents.put(key, new byte[0]);
 
     return key;
   }
@@ -621,7 +622,7 @@ class FakeStorageRpc extends StorageRpcTestBase {
           this.getStreamingContent().writeTo(baos);
           bytes = futureContents.get(key);
           byte[] byteArray = baos.toByteArray();
-          if (storageObject.getGeneration() != null) {
+          if (bytes != null) {
             futureContents.put(key, concat(bytes, byteArray));
           } else {
             futureContents.put(key, byteArray);
@@ -630,21 +631,27 @@ class FakeStorageRpc extends StorageRpcTestBase {
           List<String> contentRanges = getHeaders().get("content-range");
           if (contentRanges != null && !contentRanges.isEmpty()) {
             String contentRange = contentRanges.get(0);
-            // finalization PUT
-            // Pattern matches both froms of begin-end/size, */size
-            Pattern pattern = Pattern.compile("bytes (?:\\d+-\\d+|\\*)/(\\d+)");
-            Matcher matcher = pattern.matcher(contentRange);
-            if (matcher.matches()) {
-              storageObject.setSize(new BigInteger(matcher.group(1), 10));
+            if ("bytes */*".equals(contentRange) || contentRange.endsWith("/*")) {
+              // query or incremental put
+              resp.addHeader(
+                  "Range", String.format("bytes=0-%d", futureContents.get(key).length - 1));
+              resp.setStatusCode(308);
+            } else if (contentRange.startsWith("bytes */")
+                || contentRange.matches("bytes \\d+-\\d+/\\d+$")) {
+              // finalize
+              byte[] finalBytes = futureContents.get(key);
+              BigInteger size = BigInteger.valueOf(finalBytes.length);
               storageObject.setGeneration(System.currentTimeMillis());
               DateTime now = now();
               storageObject.setTimeCreated(now);
               storageObject.setUpdated(now);
+              storageObject.setSize(size);
               String string = GsonFactory.getDefaultInstance().toPrettyString(storageObject);
               resp.addHeader("Content-Type", "application/json;charset=utf-8");
               resp.addHeader("Content-Length", String.valueOf(string.length()));
               resp.setContent(string);
-              contents.put(key, byteArray);
+              resp.setStatusCode(200);
+              contents.put(key, finalBytes);
               futureContents.remove(key);
             } else {
               resp.setStatusCode(NOT_FOUND);
