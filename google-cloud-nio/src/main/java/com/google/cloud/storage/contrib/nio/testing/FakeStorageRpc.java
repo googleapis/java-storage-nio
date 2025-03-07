@@ -34,24 +34,14 @@ import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.spi.v1.StorageRpc;
 import com.google.cloud.storage.testing.StorageRpcTestBase;
 import com.google.common.base.Preconditions;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,6 +98,8 @@ class FakeStorageRpc extends StorageRpcTestBase {
 
   private final boolean throwIfOption;
 
+  private static final Comparator<String> lexicographicalStringComparator = String::compareTo;
+
   /** @param throwIfOption if true, we throw when given any option */
   public FakeStorageRpc(boolean throwIfOption) {
     this.throwIfOption = throwIfOption;
@@ -142,6 +134,8 @@ class FakeStorageRpc extends StorageRpcTestBase {
     String preprefix = "";
     String pageToken = null;
     long maxResults = Long.MAX_VALUE;
+    String startOffset = null;
+    String endOffset = null;
     for (Map.Entry<Option, ?> e : options.entrySet()) {
       switch (e.getKey()) {
         case PAGE_TOKEN:
@@ -162,6 +156,18 @@ class FakeStorageRpc extends StorageRpcTestBase {
         case MAX_RESULTS:
           maxResults = (Long) e.getValue();
           break;
+        case START_OFF_SET:
+          startOffset = (String) e.getValue();
+          if (startOffset.startsWith("/")) {
+            startOffset = startOffset.substring(1);
+          }
+          break;
+        case END_OFF_SET:
+          endOffset = (String) e.getValue();
+          if (endOffset.startsWith("/")) {
+            endOffset = endOffset.substring(1);
+          }
+          break;
         case USER_PROJECT:
           // prevent unsupported operation
           break;
@@ -175,6 +181,14 @@ class FakeStorageRpc extends StorageRpcTestBase {
     Map<String, StorageObject> folders = new ConcurrentHashMap<>();
     for (StorageObject so : metadata.values()) {
       if (!so.getBucket().equals(bucket) || !so.getName().startsWith(prefix)) {
+        continue;
+      }
+      if (startOffset != null
+          && lexicographicalStringComparator.compare(so.getName(), startOffset) < 0) {
+        continue;
+      }
+      if (endOffset != null
+          && lexicographicalStringComparator.compare(so.getName(), endOffset) >= 0) {
         continue;
       }
       if (processedAsFolder(so, delimiter, prefix, folders)) {

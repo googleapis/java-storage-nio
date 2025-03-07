@@ -17,21 +17,17 @@
 package com.google.cloud.storage.contrib.nio.testing;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertEquals;
 
+import com.google.api.client.util.Lists;
+import com.google.api.gax.paging.Page;
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.google.cloud.storage.*;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
+import java.util.List;
+import java.util.stream.IntStream;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -179,5 +175,109 @@ public class LocalStorageHelperTest {
 
     assertThat(localStorageService.readAllBytes(BlobId.of(bucket, original)))
         .isEqualTo(replacementContent);
+  }
+
+  @Test
+  public void testListObjectsWithStartOffsetOnly() {
+    // Arrange
+    String bucket = "bucket";
+    byte[] originalContent = "original content".getBytes();
+    IntStream.range(1, 10)
+        .forEach(
+            i ->
+                localStorageService.create(
+                    BlobInfo.newBuilder(bucket, String.valueOf(i)).build(), originalContent));
+    // Act
+    Page<Blob> pages = localStorageService.list(bucket, Storage.BlobListOption.startOffset("5"));
+    List<Blob> blobs = Lists.newArrayList(pages.iterateAll());
+    // Assert
+    assertEquals(6, blobs.size());
+  }
+
+  @Test
+  public void testListObjectsWithEndOffsetOnly() {
+    // Arrange
+    String bucket = "bucket";
+    byte[] originalContent = "original content".getBytes();
+    IntStream.range(1, 10)
+        .forEach(
+            i ->
+                localStorageService.create(
+                    BlobInfo.newBuilder(bucket, String.valueOf(i)).build(), originalContent));
+    // Act
+    Page<Blob> pages = localStorageService.list(bucket, Storage.BlobListOption.endOffset("5"));
+    List<Blob> blobs = Lists.newArrayList(pages.iterateAll());
+    // Assert
+    assertEquals(4, blobs.size());
+  }
+
+  @Test
+  public void testListObjectsWithStartOffsetAndEndOffset() {
+    // Arrange
+    String bucket = "bucket";
+    byte[] originalContent = "original content".getBytes();
+    IntStream.range(1, 10)
+        .forEach(
+            i ->
+                localStorageService.create(
+                    BlobInfo.newBuilder(bucket, String.valueOf(i)).build(), originalContent));
+    // Act
+    Page<Blob> pages =
+        localStorageService.list(
+            bucket, Storage.BlobListOption.startOffset("1"), Storage.BlobListOption.endOffset("5"));
+    List<Blob> blobs = Lists.newArrayList(pages.iterateAll());
+    // Assert
+    System.out.println(blobs);
+    assertEquals(4, blobs.size());
+  }
+
+  @Test
+  public void testListObjectsWithPrefixAndStartOffsetAndEndOffset() {
+    // Arrange
+    String bucket = "bucket";
+    byte[] originalContent = "original content".getBytes();
+    IntStream.range(1, 10)
+        .forEach(
+            i -> {
+              localStorageService.create(
+                  BlobInfo.newBuilder(bucket, "abc/" + i).build(), originalContent);
+              localStorageService.create(
+                  BlobInfo.newBuilder(bucket, "bcd/" + i).build(), originalContent);
+            });
+    // Act
+    Page<Blob> pages =
+        localStorageService.list(
+            bucket,
+            Storage.BlobListOption.startOffset("abc/1"),
+            Storage.BlobListOption.endOffset("abc/5"),
+            Storage.BlobListOption.prefix("abc/"));
+    List<Blob> blobs = Lists.newArrayList(pages.iterateAll());
+    // Assert
+    assertEquals(4, blobs.size());
+  }
+
+  @Test
+  public void testListObjectsWithPrefixAndStartOffsetAndEndOffsetWithFileSeparatorInBeginning() {
+    // Arrange
+    String bucket = "bucket";
+    byte[] originalContent = "original content".getBytes();
+    IntStream.range(1, 10)
+        .forEach(
+            i -> {
+              localStorageService.create(
+                  BlobInfo.newBuilder(bucket, "abc/" + i).build(), originalContent);
+              localStorageService.create(
+                  BlobInfo.newBuilder(bucket, "bcd/" + i).build(), originalContent);
+            });
+    // Act
+    Page<Blob> pages =
+        localStorageService.list(
+            bucket,
+            Storage.BlobListOption.startOffset("/abc/1"),
+            Storage.BlobListOption.endOffset("/abc/5"),
+            Storage.BlobListOption.prefix("/abc/"));
+    List<Blob> blobs = Lists.newArrayList(pages.iterateAll());
+    // Assert
+    assertEquals(4, blobs.size());
   }
 }
