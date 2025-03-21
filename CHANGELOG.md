@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.127.34](https://github.com/googleapis/java-storage-nio/compare/v0.127.33...v0.127.34) (2025-03-21)
+
+
+### Dependencies
+
+* Update dependency com.google.apis:google-api-services-storage to v1-rev20250312-2.0.0 ([#1561](https://github.com/googleapis/java-storage-nio/issues/1561)) ([ff7d9df](https://github.com/googleapis/java-storage-nio/commit/ff7d9dfc168fa12798434675a59b28d992eddad3))
+* Update dependency com.google.guava:guava to v33.4.5-android ([#1563](https://github.com/googleapis/java-storage-nio/issues/1563)) ([211e5e8](https://github.com/googleapis/java-storage-nio/commit/211e5e88e00293b72e355ed54d2e4917708bc7d3))
+
 ## [0.127.33](https://github.com/googleapis/java-storage-nio/compare/v0.127.32...v0.127.33) (2025-03-14)
 
 
