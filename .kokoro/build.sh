@@ -77,11 +77,6 @@ graalvm)
     mvn test -Pnative -Penable-integration-tests
     RETURN_CODE=$?
     ;;
-graalvm17)
-    # Run Unit and Integration Tests with Native Image
-    mvn test -Pnative -Penable-integration-tests
-    RETURN_CODE=$?
-    ;;
 samples)
     SAMPLES_DIR=samples
     # only run ITs in snapshot/ on presubmit PRs. run ITs in all 3 samples/ subdirectories otherwise.
