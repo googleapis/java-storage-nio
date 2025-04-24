@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.128.0](https://github.com/googleapis/java-storage-nio/compare/v0.127.34...v0.128.0) (2025-04-24)
+
+
+### Features
+
+* Introduce testing infra for GraalVM "C" ([#1571](https://github.com/googleapis/java-storage-nio/issues/1571)) ([e1097f5](https://github.com/googleapis/java-storage-nio/commit/e1097f5dcc6d4eba9eead2ccc6ab2fa8578c805a))
+
 ## [0.127.34](https://github.com/googleapis/java-storage-nio/compare/v0.127.33...v0.127.34) (2025-04-24)
 
 
