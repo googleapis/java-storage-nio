@@ -375,6 +375,7 @@ public class ITGcsNio {
     Assert.assertTrue(message, ioex.getMessage().startsWith("400"));
     Assert.assertTrue(message, ioex.getMessage().contains("requester pays"));
   }
+
   // End of tests related to the "requester pays" feature
 
   @Test

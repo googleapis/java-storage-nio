@@ -86,12 +86,16 @@ public class CloudStorageRetryHandler {
     this.config = config;
   }
 
-  /** @return number of retries we've performed */
+  /**
+   * @return number of retries we've performed
+   */
   public int retries() {
     return retries;
   }
 
-  /** @return number of reopens we've performed */
+  /**
+   * @return number of reopens we've performed
+   */
   public int reopens() {
     return reopens;
   }

@@ -108,7 +108,9 @@ class FakeStorageRpc extends StorageRpcTestBase {
 
   private final boolean throwIfOption;
 
-  /** @param throwIfOption if true, we throw when given any option */
+  /**
+   * @param throwIfOption if true, we throw when given any option
+   */
   public FakeStorageRpc(boolean throwIfOption) {
     this.throwIfOption = throwIfOption;
   }
