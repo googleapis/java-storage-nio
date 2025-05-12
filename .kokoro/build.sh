@@ -54,7 +54,7 @@ test)
     RETURN_CODE=$?
     ;;
 lint)
-    mvn com.coveo:fmt-maven-plugin:check
+    mvn com.spotify.fmt:fmt-maven-plugin:check
     RETURN_CODE=$?
     ;;
 javadoc)
