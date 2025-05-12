@@ -897,8 +897,8 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
         fileAttributes = readAttributes(path, CloudStorageFileAttributes.class, options);
         break;
       case "posix":
-        // There is no real support for posix.
-        // Some systems expect Posix support for everything so these attributes are faked.
+      // There is no real support for posix.
+      // Some systems expect Posix support for everything so these attributes are faked.
       case "basic":
         fileAttributes = readAttributes(path, BasicFileAttributes.class, options);
         break;
