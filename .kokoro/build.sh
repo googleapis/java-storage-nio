@@ -54,7 +54,7 @@ test)
     RETURN_CODE=$?
     ;;
 lint)
-    mvn com.coveo:fmt-maven-plugin:check
+    mvn com.spotify.fmt:fmt-maven-plugin:check
     RETURN_CODE=$?
     ;;
 javadoc)
@@ -73,11 +73,6 @@ integration)
     RETURN_CODE=$?
     ;;
 graalvm)
-    # Run Unit and Integration Tests with Native Image
-    mvn test -Pnative -Penable-integration-tests
-    RETURN_CODE=$?
-    ;;
-graalvm17)
     # Run Unit and Integration Tests with Native Image
     mvn test -Pnative -Penable-integration-tests
     RETURN_CODE=$?
