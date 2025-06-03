@@ -194,11 +194,6 @@
         <executions>
           <execution>
             <configuration>
-              <ignoredDependencies>
-                <ignoredDependency>com.google.api:gax:jar:testlib</ignoredDependency>
-              </ignoredDependencies>
-            </configuration>
-            <configuration>
             <ignoredUnusedDeclaredDependencies>
 			  <!-- This dependency is used for its native image configuration -->
               <ignoredUnusedDeclaredDependency>com.google.api:gax:jar:testlib</ignoredUnusedDeclaredDependency>
