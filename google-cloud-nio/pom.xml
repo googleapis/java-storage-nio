@@ -196,7 +196,7 @@
             <configuration>
             <ignoredUnusedDeclaredDependencies>
 			  <!-- This dependency is used for its native image configuration -->
-              <ignoredUnusedDeclaredDependency>com.google.api:gax:jar:testlib</ignoredUnusedDeclaredDependency>
+              <ignoredUnusedDeclaredDependency>com.google.api:gax</ignoredUnusedDeclaredDependency>
             </ignoredUnusedDeclaredDependencies>
           </configuration>
           </execution>
