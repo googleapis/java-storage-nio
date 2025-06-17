@@ -192,8 +192,10 @@
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <configuration>
-		<!-- This dependency is used for its native image configuration in the test scope -->
-        <ignoredUnusedDeclaredDependencies>com.google.api:gax:jar:testlib</ignoredUnusedDeclaredDependencies>
+        <ignoredUnusedDeclaredDependencies>
+		  <!-- This dependency is used for its native image configuration in the test scope -->
+          <ignoredUnusedDeclaredDependency>com.google.api:gax:jar</ignoredUnusedDeclaredDependency>
+		</ignoredUnusedDeclaredDependencies>
         </configuration>
       </plugin>
     </plugins>
