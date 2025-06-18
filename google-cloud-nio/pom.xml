@@ -61,6 +61,12 @@
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.google.api</groupId>
+      <artifactId>gax</artifactId>
+      <classifier>testlib</classifier>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>junit</groupId>
@@ -182,6 +188,15 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+        <ignoredUnusedDeclaredDependencies>
+		  <!-- This dependency is used for its native image configuration in the test scope -->
+          <ignoredUnusedDeclaredDependency>com.google.api:gax:jar</ignoredUnusedDeclaredDependency>
+		</ignoredUnusedDeclaredDependencies>
+        </configuration>
       </plugin>
     </plugins>
   </build>
