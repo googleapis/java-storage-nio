@@ -42,6 +42,7 @@ import com.google.cloud.storage.contrib.nio.testing.LocalStorageHelper;
 import com.google.cloud.storage.testing.RemoteStorageHelper;
 import com.google.cloud.testing.junit4.MultipleAttemptsRule;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.io.ByteArrayOutputStream;
@@ -1118,6 +1119,25 @@ public class ITGcsNio {
     Files.copy(sourceFileSystemPath, targetFileSystemPath);
     assertNotSame(sourceFileSystem.provider(), targetFileSystem.provider());
     assertNotEquals(sourceFileSystem.config(), targetFileSystem.config());
+  }
+
+  @Test
+  public void testMove() throws Exception {
+    ImmutableMap<String, String> metadata = ImmutableMap.of("k", "v");
+    BlobInfo info1 = BlobInfo.newBuilder(BUCKET, "testMove-0001").setMetadata(metadata).build();
+    BlobInfo info2 = BlobInfo.newBuilder(BUCKET, "testMove-0002").build();
+    storage.create(info1, "Hello".getBytes(UTF_8), BlobTargetOption.doesNotExist());
+
+    CloudStorageFileSystem fs = getTestBucket();
+    CloudStoragePath src = fs.getPath(info1.getName());
+    CloudStoragePath dst = fs.getPath(info2.getName());
+
+    Path moved = Files.move(src, dst);
+    assertThat(moved).isNotNull();
+
+    BlobInfo movedInfo = storage.get(info2.getBlobId());
+    assertThat(movedInfo).isNotNull();
+    assertThat(movedInfo.getMetadata()).isEqualTo(metadata);
   }
 
   @Test
