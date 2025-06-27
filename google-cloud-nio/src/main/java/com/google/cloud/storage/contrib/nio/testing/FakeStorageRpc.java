@@ -465,6 +465,34 @@ class FakeStorageRpc extends StorageRpcTestBase {
         data.length);
   }
 
+  @Override
+  public StorageObject moveObject(
+      String bucket,
+      String sourceObject,
+      String destinationObject,
+      Map<StorageRpc.Option, ?> sourceOptions,
+      Map<StorageRpc.Option, ?> targetOptions)
+      throws StorageException {
+    // This logic doesn't exactly match the semantics of the Objects: move API. But it should be
+    // close enough for the test.
+    String sourceKey = fullname(bucket, sourceObject);
+    if (!contents.containsKey(sourceKey)) {
+      throw new StorageException(NOT_FOUND, "File not found: " + sourceKey);
+    }
+    String destKey = fullname(bucket, destinationObject);
+    StorageObject sourceMetadata = metadata.get(sourceKey);
+    DateTime currentTime = now();
+    sourceMetadata.setGeneration(sourceMetadata.getGeneration() + 1);
+    sourceMetadata.setTimeCreated(currentTime);
+    sourceMetadata.setUpdated(currentTime);
+    byte[] sourceData = contents.get(sourceKey);
+    metadata.put(destKey, sourceMetadata);
+    contents.put(destKey, Arrays.copyOf(sourceData, sourceData.length));
+    metadata.remove(sourceKey);
+    contents.remove(sourceKey);
+    return sourceMetadata;
+  }
+
   private static DateTime now() {
     return DateTime.parseRfc3339(RFC_3339_FORMATTER.format(new Date()));
   }
