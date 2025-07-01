@@ -640,14 +640,36 @@ public class CloudStorageFileSystemProviderTest {
   }
 
   @Test
-  public void testMove() throws Exception {
+  public void testMove_atomic() throws Exception {
+    Path source = Paths.get(URI.create("gs://greenbean/fashion.show"));
+    Path target = Paths.get(URI.create("gs://greenbean/adipose"));
+    Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
+    Files.move(source, target, ATOMIC_MOVE);
+    assertThat(Files.exists(source)).isFalse();
+    assertThat(Files.exists(target)).isTrue();
+  }
+
+  @Test
+  public void testMove_crossBucket() throws Exception {
     Path source = Paths.get(URI.create("gs://military/fashion.show"));
     Path target = Paths.get(URI.create("gs://greenbean/adipose"));
     Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
     Files.move(source, target);
-    assertThat(new String(readAllBytes(target), UTF_8)).isEqualTo("(✿◕ ‿◕ )ノ");
     assertThat(Files.exists(source)).isFalse();
     assertThat(Files.exists(target)).isTrue();
+  }
+
+  @Test
+  public void testMove_atomicCrossBucket_throwsUnsupported() throws Exception {
+    Path source = Paths.get(URI.create("gs://military/fashion.show"));
+    Path target = Paths.get(URI.create("gs://greenbean/adipose"));
+    Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
+    try {
+      Files.move(source, target, ATOMIC_MOVE);
+      Assert.fail();
+    } catch (AtomicMoveNotSupportedException ex) {
+      assertThat(ex.getMessage()).isNotNull();
+    }
   }
 
   @Test
@@ -655,19 +677,6 @@ public class CloudStorageFileSystemProviderTest {
     Path path = Paths.get(URI.create("gs://greenbean/dir/"));
     Files.createDirectory(path);
     assertThat(Files.exists(path)).isTrue();
-  }
-
-  @Test
-  public void testMove_atomicMove_notSupported() throws Exception {
-    try {
-      Path source = Paths.get(URI.create("gs://military/fashion.show"));
-      Path target = Paths.get(URI.create("gs://greenbean/adipose"));
-      Files.write(source, "(✿◕ ‿◕ )ノ".getBytes(UTF_8));
-      Files.move(source, target, ATOMIC_MOVE);
-      Assert.fail();
-    } catch (AtomicMoveNotSupportedException ex) {
-      assertThat(ex.getMessage()).isNotNull();
-    }
   }
 
   @Test
