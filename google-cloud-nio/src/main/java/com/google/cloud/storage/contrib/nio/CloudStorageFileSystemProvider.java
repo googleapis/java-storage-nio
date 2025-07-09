@@ -36,6 +36,7 @@ import com.google.cloud.storage.CopyWriter;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobGetOption;
 import com.google.cloud.storage.Storage.BlobSourceOption;
+import com.google.cloud.storage.Storage.BlobTargetOption;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import com.google.common.annotations.VisibleForTesting;
@@ -564,16 +565,92 @@ public final class CloudStorageFileSystemProvider extends FileSystemProvider {
   @Override
   public void move(Path source, Path target, CopyOption... options) throws IOException {
     initStorage();
+
+    boolean replaceExisting = false;
+    boolean atomicMove = false;
+    boolean hasCloudStorageOptions = false;
     for (CopyOption option : options) {
-      if (option == StandardCopyOption.ATOMIC_MOVE) {
+      if (option instanceof StandardCopyOption) {
+        switch ((StandardCopyOption) option) {
+          case COPY_ATTRIBUTES:
+            // The Objects: move API copies attributes by default.
+            break;
+          case REPLACE_EXISTING:
+            replaceExisting = true;
+            break;
+          case ATOMIC_MOVE:
+            atomicMove = true;
+            break;
+          default:
+            throw new UnsupportedOperationException(option.toString());
+        }
+      }
+      hasCloudStorageOptions = option instanceof CloudStorageOption;
+    }
+
+    CloudStoragePath fromPath = CloudStorageUtil.checkPath(source);
+    if (fromPath.seemsLikeADirectoryAndUsePseudoDirectories(null)) {
+      throw new CloudStoragePseudoDirectoryException(fromPath);
+    }
+    CloudStoragePath toPath = CloudStorageUtil.checkPath(target);
+    if (toPath.seemsLikeADirectoryAndUsePseudoDirectories(null)) {
+      throw new CloudStoragePseudoDirectoryException(toPath);
+    }
+    if (fromPath.seemsLikeADirectory() && toPath.seemsLikeADirectory()) {
+      if (fromPath.getFileSystem().config().usePseudoDirectories()
+          && toPath.getFileSystem().config().usePseudoDirectories()) {
+        // NOOP: This would normally create an empty directory.
+        return;
+      } else {
+        checkArgument(
+            !fromPath.getFileSystem().config().usePseudoDirectories()
+                && !toPath.getFileSystem().config().usePseudoDirectories(),
+            "File systems associated with paths don't agree on pseudo-directories.");
+      }
+    }
+    boolean crossBucketMove = !fromPath.bucket().equals(toPath.bucket());
+    if (atomicMove) {
+      if (hasCloudStorageOptions) {
         throw new AtomicMoveNotSupportedException(
             source.toString(),
             target.toString(),
-            "Google Cloud Storage does not support atomic move operations.");
+            "Cloud Storage does not support atomic move operations with CloudStorageOptions.");
+      }
+      if (crossBucketMove) {
+        throw new AtomicMoveNotSupportedException(
+            source.toString(),
+            target.toString(),
+            "Cloud Storage does not support atomic move operations between buckets.");
+      }
+    } else if (hasCloudStorageOptions || crossBucketMove) {
+      // Fall back to copy and delete if atomic move is not possible.
+      copy(source, target, options);
+      delete(source);
+      return;
+    }
+
+    Storage.MoveBlobRequest.Builder builder =
+        Storage.MoveBlobRequest.newBuilder()
+            .setSource(fromPath.getBlobId())
+            .setTarget(toPath.getBlobId());
+    if (!replaceExisting) {
+      builder.setTargetOptions(BlobTargetOption.doesNotExist());
+    }
+    Storage.MoveBlobRequest request = builder.build();
+    CloudStorageRetryHandler retryHandler =
+        new CloudStorageRetryHandler(fromPath.getFileSystem().config());
+    while (true) {
+      try {
+        storage.moveBlob(request);
+        break;
+      } catch (StorageException e) {
+        try {
+          retryHandler.handleStorageException(e);
+        } catch (StorageException retriesExhaustedException) {
+          throw asIoException(retriesExhaustedException, true);
+        }
       }
     }
-    copy(source, target, options);
-    delete(source);
   }
 
   @Override
