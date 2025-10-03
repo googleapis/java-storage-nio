@@ -73,6 +73,18 @@ integration)
     RETURN_CODE=$?
     ;;
 graalvm)
+    echo "Install GraalVM 25"
+    echo "$JAVA_HOME"
+    pwd
+    mkdir -p ~/tools/jdk
+    cd ~/tools/jdk
+    wget https://download.oracle.com/graalvm/25/latest/graalvm-jdk-25_linux-x64_bin.tar.gz
+    tar -xf graalvm-jdk-25_linux-x64_bin.tar.gz
+    export JAVA_HOME=~/tools/jdk/graalvm-jdk-25+37.1
+    export PATH=$JAVA_HOME/bin:$PATH
+    java -version
+    echo "Running native image tests..."
+    cd "${scriptDir}/.."
     # Run Unit and Integration Tests with Native Image
     mvn test -Pnative -Penable-integration-tests
     RETURN_CODE=$?
