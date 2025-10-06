@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.google.cloud</groupId>
     <artifactId>sdk-platform-java-config</artifactId>
-    <version>3.52.2</version>
+    <version>3.52.3</version>
   </parent>
 
   <developers>
@@ -89,7 +89,7 @@
       <dependency>
         <groupId>com.google.apis</groupId>
         <artifactId>google-api-services-storage</artifactId>
-        <version>v1-rev20250815-2.0.0</version>
+        <version>v1-rev20250925-2.0.0</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
