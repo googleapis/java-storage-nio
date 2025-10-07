@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.128.6](https://github.com/googleapis/java-storage-nio/compare/v0.128.5...v0.128.6) (2025-10-07)
+
+
+### Dependencies
+
+* Update dependency com.google.apis:google-api-services-storage to v1-rev20250925-2.0.0 ([#1668](https://github.com/googleapis/java-storage-nio/issues/1668)) ([998c565](https://github.com/googleapis/java-storage-nio/commit/998c56528b521e7c3604bc13c4c04f047fa0cb42))
+* Update dependency com.google.cloud:google-cloud-storage to v2.58.1 ([#1678](https://github.com/googleapis/java-storage-nio/issues/1678)) ([021de43](https://github.com/googleapis/java-storage-nio/commit/021de436e63f774f00049f2383adffbb4e1a2fff))
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.52.3 ([#1671](https://github.com/googleapis/java-storage-nio/issues/1671)) ([30984fd](https://github.com/googleapis/java-storage-nio/commit/30984fdd919a7ea173ce3875b42e1812fb589ebb))
+* Update dependency org.ow2.asm:asm to v9.9 ([#1673](https://github.com/googleapis/java-storage-nio/issues/1673)) ([30e5c66](https://github.com/googleapis/java-storage-nio/commit/30e5c66560805fa67c06e36b938eafcd543602ed))
+* Update dependency org.ow2.asm:asm-commons to v9.9 ([#1674](https://github.com/googleapis/java-storage-nio/issues/1674)) ([fc8bcb2](https://github.com/googleapis/java-storage-nio/commit/fc8bcb2bb0c70cb59a54455d0cd1f934cc6e15f0))
+
 ## [0.128.5](https://github.com/googleapis/java-storage-nio/compare/v0.128.4...v0.128.5) (2025-09-23)
 
 
