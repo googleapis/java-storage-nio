@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.128.7](https://github.com/googleapis/java-storage-nio/compare/v0.128.6...v0.128.7) (2025-10-09)
+
+
+### Bug Fixes
+
+* Remove explicit guava version from examples module ([#1685](https://github.com/googleapis/java-storage-nio/issues/1685)) ([76291ce](https://github.com/googleapis/java-storage-nio/commit/76291cefe3aba7a72d1fc1396c6a80c645a813e0))
+
 ## [0.128.6](https://github.com/googleapis/java-storage-nio/compare/v0.128.5...v0.128.6) (2025-10-07)
 
 
