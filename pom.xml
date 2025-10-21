@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.google.cloud</groupId>
     <artifactId>sdk-platform-java-config</artifactId>
-    <version>3.52.3</version>
+    <version>3.53.0</version>
   </parent>
 
   <developers>
@@ -78,7 +78,7 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>google-cloud-storage</artifactId>
-        <version>2.58.1</version>
+        <version>2.59.0</version>
         <exclusions>
           <exclusion>
             <groupId>io.opentelemetry.semconv</groupId>
