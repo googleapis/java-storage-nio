@@ -64,7 +64,7 @@ javadoc)
 integration)
     mvn -B ${INTEGRATION_TEST_ARGS} \
       -ntp \
-      -Dprotobuf.version=4.32.1 \
+      -Dprotobuf.version=4.33.0 \
       -Penable-integration-tests \
       -DtrimStackTrace=false \
       -Dclirr.skip=true \
@@ -76,7 +76,7 @@ integration)
 graalvm)
     # Run Unit and Integration Tests with Native Image
     mvn test -Pnative -Penable-integration-tests \
-      -Dprotobuf.version=4.32.1
+      -Dprotobuf.version=4.33.0
     RETURN_CODE=$?
     ;;
 samples)
