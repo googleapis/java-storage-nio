@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.128.7](https://github.com/googleapis/java-storage-nio/compare/v0.128.6...v0.128.7) (2025-10-21)
+
+
+### Bug Fixes
+
+* Remove explicit guava version from examples module ([#1685](https://github.com/googleapis/java-storage-nio/issues/1685)) ([76291ce](https://github.com/googleapis/java-storage-nio/commit/76291cefe3aba7a72d1fc1396c6a80c645a813e0))
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:google-cloud-storage to v2.59.0 ([6c3e5ee](https://github.com/googleapis/java-storage-nio/commit/6c3e5eeb4b815158a86d83f5f60736ec99e9aaee)), closes [#1690](https://github.com/googleapis/java-storage-nio/issues/1690)
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.53.0 ([6c3e5ee](https://github.com/googleapis/java-storage-nio/commit/6c3e5eeb4b815158a86d83f5f60736ec99e9aaee)), closes [#1689](https://github.com/googleapis/java-storage-nio/issues/1689)
+
 ## [0.128.6](https://github.com/googleapis/java-storage-nio/compare/v0.128.5...v0.128.6) (2025-10-07)
 
 
