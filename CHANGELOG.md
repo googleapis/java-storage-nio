@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.128.9-rc1](https://github.com/googleapis/java-storage-nio/compare/v0.128.8...v0.128.9-rc1) (2025-12-04)
+
+
+### Bug Fixes
+
+* next release candidate ([e50043a](https://github.com/googleapis/java-storage-nio/commit/e50043abcd7dbeafc4f7ed5503d8a418c5b1a3be))
+
 ## [0.128.8](https://github.com/googleapis/java-storage-nio/compare/v0.128.7...v0.128.8) (2025-11-10)
 
 
