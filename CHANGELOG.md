@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.129.0-rc1](https://github.com/googleapis/java-storage-nio/compare/v0.128.9...v0.129.0-rc1) (2025-12-17)
+
+
+### Features
+
+* update with latest from main ([#1714](https://github.com/googleapis/java-storage-nio/issues/1714)) ([f518983](https://github.com/googleapis/java-storage-nio/commit/f5189831341ff290d727eee5819f8b18817c2778))
+
+
+### Bug Fixes
+
+* next release candidate ([e50043a](https://github.com/googleapis/java-storage-nio/commit/e50043abcd7dbeafc4f7ed5503d8a418c5b1a3be))
+
+
+### Dependencies
+
+* update google-cloud-storage to 2.62.0-rc1 ([#1720](https://github.com/googleapis/java-storage-nio/issues/1720)) ([132cdd2](https://github.com/googleapis/java-storage-nio/commit/132cdd2f041899accdf6f7e423c473beff5ed1da))
+* update sdk-platform-java-config to 3.55.0-rc1 ([#1715](https://github.com/googleapis/java-storage-nio/issues/1715)) ([ed96f73](https://github.com/googleapis/java-storage-nio/commit/ed96f73060d271ca37e38856e716fcadf94bc93b))
+
 ## [0.128.9](https://github.com/googleapis/java-storage-nio/compare/v0.128.8...v0.128.9) (2025-12-15)
 
 
