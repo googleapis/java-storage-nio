@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.128.11](https://github.com/googleapis/java-storage-nio/compare/v0.128.10...v0.128.11) (2026-01-28)
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.56.0 ([#1729](https://github.com/googleapis/java-storage-nio/issues/1729)) ([bc62ff5](https://github.com/googleapis/java-storage-nio/commit/bc62ff565e19dd97b4c25e327b94887c7bb0e8f4))
+
 ## [0.128.10](https://github.com/googleapis/java-storage-nio/compare/v0.128.9...v0.128.10) (2026-01-16)
 
 
