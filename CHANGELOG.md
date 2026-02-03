@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.128.10](https://github.com/googleapis/java-storage-nio/compare/v0.128.9...v0.128.10) (2026-01-16)
+
+
+### Dependencies
+
+* Update dependency com.google.cloud:google-cloud-storage to v2.62.0 ([#1721](https://github.com/googleapis/java-storage-nio/issues/1721)) ([aea8635](https://github.com/googleapis/java-storage-nio/commit/aea86353f90e29b5da5e9409e45e8e3a27231698))
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.55.1 ([#1725](https://github.com/googleapis/java-storage-nio/issues/1725)) ([4701cca](https://github.com/googleapis/java-storage-nio/commit/4701ccaa028482880f087690d48649be71e5604e))
+* Update dependency org.ow2.asm:asm to v9.9.1 ([#1717](https://github.com/googleapis/java-storage-nio/issues/1717)) ([edd4ec4](https://github.com/googleapis/java-storage-nio/commit/edd4ec46b9ad0cd365c1c06d7859611ba59d3dd9))
+* Update dependency org.ow2.asm:asm-commons to v9.9.1 ([#1718](https://github.com/googleapis/java-storage-nio/issues/1718)) ([ecf4ebe](https://github.com/googleapis/java-storage-nio/commit/ecf4ebe09d0a75178457847e5695ba239e171dc9))
+
+## [0.128.9](https://github.com/googleapis/java-storage-nio/compare/v0.128.8...v0.128.9) (2025-12-15)
+
+
+### Dependencies
+
+* Update dependency com.google.apis:google-api-services-storage to v1-rev20251118-2.0.0 ([#1710](https://github.com/googleapis/java-storage-nio/issues/1710)) ([55c6f31](https://github.com/googleapis/java-storage-nio/commit/55c6f3147a838eefd79df9012dd6e7f789e3fbab))
+* Update dependency com.google.cloud:google-cloud-storage to v2.61.0 ([#1712](https://github.com/googleapis/java-storage-nio/issues/1712)) ([aaf92d0](https://github.com/googleapis/java-storage-nio/commit/aaf92d044542ddd6dec565207a60c18b30604aba))
+* Update dependency com.google.cloud:sdk-platform-java-config to v3.54.2 ([#1709](https://github.com/googleapis/java-storage-nio/issues/1709)) ([abf9691](https://github.com/googleapis/java-storage-nio/commit/abf9691683ed0df4605c7ed16de163806c47eec4))
+
 ## [0.128.8](https://github.com/googleapis/java-storage-nio/compare/v0.128.7...v0.128.8) (2025-11-10)
 
 
