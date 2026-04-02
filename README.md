@@ -1,3 +1,5 @@
+**_THIS REPOSITORY IS DEPRECATED. ALL OF ITS CONTENT AND HISTORY HAS BEEN MOVED TO [GOOGLE-CLOUD-JAVA](https://github.com/googleapis/google-cloud-java/tree/main/java-storage-nio)_**
+
 # Google NIO Filesystem Provider for Google Cloud Storage Client for Java
 
 Java idiomatic client for [NIO Filesystem Provider for Google Cloud Storage][product-docs].
